@@ -3,13 +3,13 @@ package cz.upce.fei.bdast.kolekce;
 import java.util.Iterator;
 
 /**
- * Tento interfejs deklaruje metody obousměrně necyklicého zřetězeného
- * lineárního seznamu.
+ * Tento interfejs deklaruje metody obousměrně necyklického zřetězeného
+ * lineárního seznamu
  * <p>
  * V tomto rozhraní jsou signatury metody zajišťují pohyb, vložení, převzetí
- * a vyjmutí dat do nebo ze seznamu na pozici aktuálního prvku.
+ * a vyjmutí dat do nebo ze seznamu na pozici aktuálního prvku
  * <p>
- * Implementuje implicitní rozhraní {@link Iterable}.
+ * Implementuje implicitní rozhraní {@link Iterable}
  * <p>
  * Výhody spojového seznamu:
  * <ol>
@@ -17,20 +17,20 @@ import java.util.Iterator;
  * vědět, kolik potřebujeme alokovat místa. Například, interně {@link java.util.ArrayList}
  * alokuje při svém vytvoření v parametrickém konstruktoru 16 nebo 32 potic.
  * A když dojdeme na vrchol tohohletoho zásobníku (16 nebo 32 pozic), tak
- * interně realokuje nové místo. Dělá se to všechno v pozadí.
+ * interně realokuje nové místo. Dělá se to všechno v pozadí
  * <li> velikost obsazené paměti je přímo závislá jen na počtu prvků, není
- * zde žádné plýtvání.
+ * zde žádné plýtvání
  * <li> rychlost přidávání a odebrání prvků je vždy stejně vysoká. Je to
- * vlastně přepsání dvou referencí v té datové struktuře.
+ * vlastně přepsání dvou referencí v té datové struktuře
  * </ol>
  * Nevýhody spojového seznamu:
  * <ol>
- * <li> pomalý přístup k prvkům na zadaném indexu.
- * <li> uložené hodnoty nejsou v paměti uspořádány za sebou.
+ * <li> pomalý přístup k prvkům na zadaném indexu
+ * <li> uložené hodnoty nejsou v paměti uspořádány za sebou
  * <li> pomalejší procházení (ke každům datům přidáváme ještě nějakou informaci o
- * následujícím a předchozím indexu, kvůli čemuž stoupá paměťová nárošnost).
+ * následujícím a předchozím indexu, kvůli čemuž stoupá paměťová nárošnost)
  * <li> stejné množství dat zabítá více paměti než stejné prvky uložené v
- * poli (kvůli ukazatelům navíc).
+ * poli (kvůli ukazatelům navíc)
  * </ol>
  *
  * @author amirov 10/4/2023

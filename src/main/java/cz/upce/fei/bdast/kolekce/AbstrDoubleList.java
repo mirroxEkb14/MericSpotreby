@@ -5,15 +5,15 @@ import java.util.NoSuchElementException;
 
 /**
  * Tato třída implementuje abstraktní datovou strukturu (ADS) obousměrně
- * necyklicky zřetězený lineární seznam v dynamické paměti.
+ * necyklicky zřetězený lineární seznam v dynamické paměti
  * <p>
  * Reprezentuje dynamickou datovou strukturu, která se skládá z lineárně uspořádaných
- * prvků (nodes) vzájemně propojených ukazateli.
+ * prvků (nodes) vzájemně propojených ukazateli
  * <p>
- * Implementuje rozhraní {@link IAbstrDoubleList}.
+ * Implementuje rozhraní {@link IAbstrDoubleList}
  *
  * @author amirov 10/4/2023
- * @param <T> generický parametr, reprezentující datový typ.
+ * @param <T> generický parametr, reprezentující budoucí datový typ
  */
 public class AbstrDoubleList<T> implements IAbstrDoubleList<T> {
 
@@ -378,7 +378,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T> {
         final Prvek<T> odebranyPrvek = aktualni;
         aktualni.predchozi.dalsi = aktualni.dalsi;
         aktualni.dalsi.predchozi = aktualni.predchozi;
-        aktualni = null;
+        aktualni = hlavicka;
         snizPocet();
         return odebranyPrvek.polozka;
     }

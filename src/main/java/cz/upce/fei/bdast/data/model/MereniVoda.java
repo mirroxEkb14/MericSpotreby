@@ -23,4 +23,11 @@ public final class MereniVoda extends Mereni {
     }
 
     public double getSpotrebaM3() { return spotrebaM3; }
+
+    @Override
+    public String toString() {
+        return "MereniVoda{" +
+                "spotrebaM3=" + spotrebaM3 +
+                '}';
+    }
 }

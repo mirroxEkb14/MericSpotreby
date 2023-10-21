@@ -30,4 +30,12 @@ public final class MereniElektrika extends Mereni {
     public double getSpotrebaVT() { return spotrebaVT; }
 
     public double getSpotrebaNT() { return spotrebaNT; }
+
+    @Override
+    public String toString() {
+        return "MereniElektrika{" +
+                "spotrebaVT=" + spotrebaVT +
+                ", spotrebaNT=" + spotrebaNT +
+                '}';
+    }
 }

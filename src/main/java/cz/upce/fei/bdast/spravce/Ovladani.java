@@ -7,6 +7,7 @@ import cz.upce.fei.bdast.kolekce.IAbstrDoubleList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * Tento interfejs deklaruje metody pro implementaci všech příkazů v rámci

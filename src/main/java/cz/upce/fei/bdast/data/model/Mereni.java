@@ -38,7 +38,16 @@ public abstract class Mereni {
 
     public int getIdSenzor() { return idSenzor; }
 
-    public TypSenzoru getTypSenzoru() { return typSenzoru; }
+//    public TypSenzoru getTypSenzoru() { return typSenzoru; }
 
     public LocalDateTime getCasMereni() { return casMereni; }
+
+    @Override
+    public String toString() {
+        return "Mereni{" +
+                "idSenzor=" + idSenzor +
+                ", typSenzoru=" + typSenzoru +
+                ", casMereni=" + casMereni +
+                '}';
+    }
 }
