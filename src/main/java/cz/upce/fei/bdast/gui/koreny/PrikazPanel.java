@@ -1,8 +1,9 @@
 package cz.upce.fei.bdast.gui.koreny;
 
 import cz.upce.fei.bdast.data.model.Mereni;
+import cz.upce.fei.bdast.gui.kontejnery.KomponentVlozeni;
 import cz.upce.fei.bdast.spravce.SpravceMereni;
-import javafx.scene.control.Button;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ListView;
 
@@ -25,7 +26,7 @@ public final class PrikazPanel extends VBox {
     /**
      * Konstanta vyjadřuje minimální možnou šiřku panelu s tlačítky
      */
-    private static final int MIN_SIRKA_SEZNAMU = 220;
+    private static final int MIN_SIRKA_PRIKAZ_PANELU = 220;
 
     /**
      * Reference na již existující {@link SeznamPanel} vytvořený
@@ -34,9 +35,9 @@ public final class PrikazPanel extends VBox {
     private final SeznamPanel seznamPanel;
 
     /**
-     * Deklarace všech možných tlačítek
+     * Deklarace jednotlivých komponent okna
      */
-    private Button btnVlozPrvni, btnVlozPosledni, btnVlozNaslednika, btnVlozPredchudce;
+    private TitledPane komponentVlozeni;
 
     /**
      * Instance na správu seznamu
@@ -52,13 +53,21 @@ public final class PrikazPanel extends VBox {
     public PrikazPanel(SeznamPanel seznamPanel) {
         this.seznamPanel = seznamPanel;
 
-        inicializujTlacitka();
+        nastavPrikazPanel();
     }
 
-    private void inicializujTlacitka() {
-        btnVlozPrvni = new Button();
-        btnVlozPosledni = new Button();
-        btnVlozNaslednika = new Button();
-        btnVlozPredchudce = new Button();
+    /**
+     * Privátní pomocní metoda
+     * <p>
+     * Nastaví veškeré grafické komponenty obsahující tlačítka pro
+     * ovládání panelem se seznamem
+     */
+    private void nastavPrikazPanel() {
+        nastavVlozeni();
+    }
+
+    private void nastavVlozeni() {
+        komponentVlozeni = new KomponentVlozeni();
+        this.getChildren().add(komponentVlozeni);
     }
 }
