@@ -11,7 +11,13 @@ public enum Titulek {
     VLOZ_PRVNI("První"),
     VLOZ_POSLEDNI("Poslední"),
     VLOZ_NASLEDNIKA("Následník"),
-    VLOZ_PREDCHUDCE("Předchůdce");
+    VLOZ_PREDCHUDCE("Předchůdce"),
+    KOMPONENT_ZPRISTUPNI("Zpřístupňování"),
+    ZPRISTUPNI_PRVNI("První"),
+    ZPRISTUPNI_POSLEDNI("Poslední"),
+    ZPRISTUPNI_NASLEDNIKA("Následník"),
+    ZPRISTUPNI_PREDCHUDCE("Předchůdce"),
+    ZPRISTUPNI_AKTUALNI("Aktuální");
 
     private final String nadpis;
 

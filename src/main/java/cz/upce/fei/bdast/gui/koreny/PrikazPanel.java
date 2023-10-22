@@ -1,9 +1,10 @@
 package cz.upce.fei.bdast.gui.koreny;
 
 import cz.upce.fei.bdast.data.model.Mereni;
-import cz.upce.fei.bdast.gui.kontejnery.KomponentVlozeni;
+import cz.upce.fei.bdast.gui.komponenty.KomponentVlozeni;
+import cz.upce.fei.bdast.gui.komponenty.KomponentZpristupnovani;
+import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
 import cz.upce.fei.bdast.spravce.SpravceMereni;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ListView;
 
@@ -37,7 +38,8 @@ public final class PrikazPanel extends VBox {
     /**
      * Deklarace jednotlivých komponent okna
      */
-    private TitledPane komponentVlozeni;
+    private TitulkovyPanel komponentVlozeni;
+    private TitulkovyPanel komponentZpristupnovani;
 
     /**
      * Instance na správu seznamu
@@ -54,6 +56,7 @@ public final class PrikazPanel extends VBox {
         this.seznamPanel = seznamPanel;
 
         nastavPrikazPanel();
+        nastavZpristupnovani();
     }
 
     /**
@@ -69,5 +72,10 @@ public final class PrikazPanel extends VBox {
     private void nastavVlozeni() {
         komponentVlozeni = new KomponentVlozeni();
         this.getChildren().add(komponentVlozeni);
+    }
+
+    private void nastavZpristupnovani() {
+        komponentZpristupnovani = new KomponentZpristupnovani();
+        this.getChildren().add(komponentZpristupnovani);
     }
 }
