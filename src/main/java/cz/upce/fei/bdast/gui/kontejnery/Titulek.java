@@ -8,16 +8,19 @@ import javafx.scene.control.Button;
  */
 public enum Titulek {
     KOMPONENT_VLOZENI("Vložení"),
-    VLOZ_PRVNI("První"),
-    VLOZ_POSLEDNI("Poslední"),
-    VLOZ_NASLEDNIKA("Následník"),
-    VLOZ_PREDCHUDCE("Předchůdce"),
     KOMPONENT_ZPRISTUPNI("Zpřístupňování"),
-    ZPRISTUPNI_PRVNI("První"),
-    ZPRISTUPNI_POSLEDNI("Poslední"),
-    ZPRISTUPNI_NASLEDNIKA("Následník"),
-    ZPRISTUPNI_PREDCHUDCE("Předchůdce"),
-    ZPRISTUPNI_AKTUALNI("Aktuální");
+    KOMPONENT_ODEBRANI("Odebrání"),
+    KOMPONENT_PRIKAZU("Příkazy"),
+    KOMPONENT_SOUBORU("Soubory"),
+    PRVNI("První"),
+    POSLEDNI("Poslední"),
+    NASLEDNIK("Následník"),
+    PREDCHUDCE("Předchůdce"),
+    AKTUALNI("Aktuální"),
+    GENERUJ("Generuj"),
+    ZRUS("Zruš"),
+    ULOZ("Ulož"),
+    NACTI("Načti");
 
     private final String nadpis;
 

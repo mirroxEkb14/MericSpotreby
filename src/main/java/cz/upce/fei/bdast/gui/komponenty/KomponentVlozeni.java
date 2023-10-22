@@ -1,14 +1,13 @@
 package cz.upce.fei.bdast.gui.komponenty;
 
 // <editor-fold defaultstate="collapsed" desc="Importy">
+import cz.upce.fei.bdast.gui.kontejnery.MrizkovyPanel;
 import cz.upce.fei.bdast.gui.kontejnery.Titulek;
 import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
 import cz.upce.fei.bdast.gui.kontejnery.Tlacitko;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.Node;
 // </editor-fold>
 
 /**
@@ -24,37 +23,18 @@ public final class KomponentVlozeni extends TitulkovyPanel {
      */
     private final Button btnVlozPrvni, btnVlozPosledni, btnVlozNaslednika, btnVlozPredchudce;
 
-// <editor-fold defaultstate="collapsed" desc="Konstanty pro umístění prvků u GridPane">
-    /**
-     * Metoda {@code add(Node child, int columnIndex, int rowIndex)} je metodou třídy
-     * {@link GridPane}, která se používá k přidávání prvků (některého typu {@link Node},
-     * což může být například tlačítko, textové pole nebo jiný uživatelský ovládací prvek)
-     * do mřížky (grid) v {@link GridPane}. Tato metoda umožňuje specifikovat, kam v mřížce
-     * má být prvek umístěn na základě jeho sloupcového (columnIndex) a řádkového (rowIndex)
-     * indexu
-     */
-    private static final int SLOUPCOVY_INDEX_PRVNIHO = 0;
-    private static final int RADKOVY_INDEX_PRVNIHO = 0;
-    private static final int SLOUPCOVY_INDEX_POSLEDNIHO = 1;
-    private static final int RADKOVY_INDEX_POSLEDNIHO = 0;
-    private static final int SLOUPCOVY_INDEX_NASLEDNIKA = 0;
-    private static final int RADKOVY_INDEX_NASLEDNIKA = 1;
-    private static final int SLOUPCOVY_INDEX_PREDCHUDCE = 1;
-    private static final int RADKOVY_INDEX_PREDCHUDCE = 1;
-// </editor-fold>
-
     /**
      * Konstruktor inicializuje veškerá tlačítka a titulky
      */
     public KomponentVlozeni() {
         this.btnVlozPrvni = new Tlacitko(
-                Titulek.VLOZ_PRVNI.getNadpis());
+                Titulek.PREDCHUDCE.getNadpis());
         this.btnVlozPosledni = new Tlacitko(
-                Titulek.VLOZ_POSLEDNI.getNadpis());
+                Titulek.POSLEDNI.getNadpis());
         this.btnVlozNaslednika = new Tlacitko(
-                Titulek.VLOZ_NASLEDNIKA.getNadpis());
+                Titulek.NASLEDNIK.getNadpis());
         this.btnVlozPredchudce = new Tlacitko(
-                Titulek.VLOZ_PREDCHUDCE.getNadpis());
+                Titulek.PREDCHUDCE.getNadpis());
 
         nastavKomponentVlozeni();
     }
@@ -65,14 +45,11 @@ public final class KomponentVlozeni extends TitulkovyPanel {
     }
 
     private GridPane dejGridPane() {
-        final GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(super.ODSAZENI_OKRAJE));
-        gridPane.setVgap(super.VERTIKALNI_MEZERA);
-        gridPane.setHgap(super.HORIZONTALNI_MEZERA);
-        gridPane.add(btnVlozPrvni, SLOUPCOVY_INDEX_PRVNIHO, RADKOVY_INDEX_PRVNIHO);
-        gridPane.add(btnVlozPosledni, SLOUPCOVY_INDEX_POSLEDNIHO, RADKOVY_INDEX_POSLEDNIHO);
-        gridPane.add(btnVlozNaslednika, SLOUPCOVY_INDEX_NASLEDNIKA, RADKOVY_INDEX_NASLEDNIKA);
-        gridPane.add(btnVlozPredchudce, SLOUPCOVY_INDEX_PREDCHUDCE, RADKOVY_INDEX_PREDCHUDCE);
+        final GridPane gridPane = new MrizkovyPanel();
+        gridPane.add(btnVlozPrvni, MrizkovyPanel.SLOUPCOVY_INDEX_PRVNI, MrizkovyPanel.RADKOVY_INDEX_PRVNI);
+        gridPane.add(btnVlozPosledni, MrizkovyPanel.SLOUPCOVY_INDEX_DRUHY, MrizkovyPanel.RADKOVY_INDEX_PRVNI);
+        gridPane.add(btnVlozNaslednika, MrizkovyPanel.SLOUPCOVY_INDEX_PRVNI, MrizkovyPanel.RADKOVY_INDEX_DRUHY);
+        gridPane.add(btnVlozPredchudce, MrizkovyPanel.SLOUPCOVY_INDEX_DRUHY, MrizkovyPanel.RADKOVY_INDEX_DRUHY);
         return gridPane;
     }
 

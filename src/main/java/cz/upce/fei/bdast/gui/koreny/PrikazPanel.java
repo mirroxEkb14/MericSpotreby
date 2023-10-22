@@ -1,8 +1,7 @@
 package cz.upce.fei.bdast.gui.koreny;
 
 import cz.upce.fei.bdast.data.model.Mereni;
-import cz.upce.fei.bdast.gui.komponenty.KomponentVlozeni;
-import cz.upce.fei.bdast.gui.komponenty.KomponentZpristupnovani;
+import cz.upce.fei.bdast.gui.komponenty.*;
 import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
 import cz.upce.fei.bdast.spravce.SpravceMereni;
 import javafx.scene.layout.VBox;
@@ -25,11 +24,6 @@ import javafx.scene.control.ListView;
 public final class PrikazPanel extends VBox {
 
     /**
-     * Konstanta vyjadřuje minimální možnou šiřku panelu s tlačítky
-     */
-    private static final int MIN_SIRKA_PRIKAZ_PANELU = 220;
-
-    /**
      * Reference na již existující {@link SeznamPanel} vytvořený
      * v rámci třídy {@link Okno}, aby byl možným přístup ke seznamu s prvky
      */
@@ -40,6 +34,9 @@ public final class PrikazPanel extends VBox {
      */
     private TitulkovyPanel komponentVlozeni;
     private TitulkovyPanel komponentZpristupnovani;
+    private TitulkovyPanel komponentOdebrani;
+    private TitulkovyPanel komponentPrikazu;
+    private TitulkovyPanel komponentSouboru;
 
     /**
      * Instance na správu seznamu
@@ -57,6 +54,9 @@ public final class PrikazPanel extends VBox {
 
         nastavPrikazPanel();
         nastavZpristupnovani();
+        nastavOdebrani();
+        nastavPrikazy();
+        nastavSoubory();
     }
 
     /**
@@ -77,5 +77,20 @@ public final class PrikazPanel extends VBox {
     private void nastavZpristupnovani() {
         komponentZpristupnovani = new KomponentZpristupnovani();
         this.getChildren().add(komponentZpristupnovani);
+    }
+
+    private void nastavOdebrani() {
+        komponentOdebrani = new KomponentOdebrani();
+        this.getChildren().add(komponentOdebrani);
+    }
+
+    private void nastavPrikazy() {
+        komponentPrikazu = new KomponentPrikazu();
+        this.getChildren().add(komponentPrikazu);
+    }
+
+    private void nastavSoubory() {
+        komponentSouboru = new KomponentSouboru();
+        this.getChildren().add(komponentSouboru);
     }
 }

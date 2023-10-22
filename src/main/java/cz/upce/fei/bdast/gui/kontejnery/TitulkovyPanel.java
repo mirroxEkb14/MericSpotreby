@@ -1,8 +1,6 @@
 package cz.upce.fei.bdast.gui.kontejnery;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.GridPane;
 
 /**
  * Třída dědí {@link TitledPane} reprezentující jednu z komponentů uživatelského
@@ -27,10 +25,6 @@ import javafx.scene.layout.GridPane;
  * <li> <b>Obsah (Content)</b>: uvnitř je možné umístit libovolný obsah, včetně textu,
  * ovládacích prvků, dalších kontejnerů nebo grafických prvků
  * </ol>
- * Také obsahuje veřejné konstanty pro odsazení u třídy {@link GridPane}, které jsou
- * používany potomky této třídy a jsou stejné pro každého potomka, a proto není
- * potřeba je definovat uvnitř potomků, když je možné umožnit potomkům přistupovat
- * k těmto konstantám přes klíčové slovo {@code super}
  */
 public class TitulkovyPanel extends TitledPane {
 
@@ -65,30 +59,9 @@ public class TitulkovyPanel extends TitledPane {
     private static final boolean JE_ANIMOVANY = true;
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Konstanty pro odsazení u GridPane">
     /**
-     * Konstanta pro vytvýření nového objektu {@link Insets}, reprezentující odsazení
-     * okraje (místa mezi okrajem a obsahem) v různých směrech
-     * <p>
-     * Konstruktor bere jedno číslo typu {@code double} jako argument a používá ho pro
-     * vytvoření odsazení (insets) ve všech směrech (horní, pravý, dolní a levý) se
-     * stejnou hodnotou {@code v}.
-     * <p>
-     * Používá se obvykle k definování mezery nebo okraje kolem komponenty (například
-     * tlačítka, panelu apod.), aby byl zachován určitý odstup od okolního obsahu nebo
-     * okraje okna
+     * Konstruktor nastaví obecné vlastnosti, které budou dědit všechny potomky
      */
-    public final double ODSAZENI_OKRAJE = 10.0;
-    /**
-     * Třída {@link GridPane} je používána k vytváření mřížky (grid) pro uspořádání prvků
-     * (komponent) do řádků a sloupců. Metody {@link GridPane#setVgap(double)} a
-     * {@link GridPane#setHgap(double)} slouží k nastavení vertikálního (mezery mezi řádky)
-     * a horizontálního (mezery mezi sloupci) mezery mezi jednotlivými buňkami mřížky
-     */
-    public final double VERTIKALNI_MEZERA = 5.0;
-    public final double HORIZONTALNI_MEZERA = 5.0;
-// </editor-fold>
-
     public TitulkovyPanel() {
         this.setExpanded(JE_ROZLOZEN);
         this.setCollapsible(JE_SKLADAN);
