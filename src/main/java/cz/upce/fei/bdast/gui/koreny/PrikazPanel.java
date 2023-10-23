@@ -24,6 +24,16 @@ import javafx.scene.control.ListView;
 public final class PrikazPanel extends VBox {
 
     /**
+     * Veřejná konstanta vyjadřuje číslo zvyšující velikost seznamu o jedničku
+     * <p>
+     * Používá se hlavně při dostávání id pro nový prvek v seznamu (například, při
+     * operaci vložení), který je možné dostat sečtením aktuální velikosti seznamu
+     * s touto konstantou, což vlastně dá číslo, které by bylo možné vyjadřit jako
+     * id posledního prvku seznamu + jednička
+     */
+    public static final int ZVETSOVAC_SEZNAMU = 1;
+
+    /**
      * Reference na již existující {@link SeznamPanel} vytvořený
      * v rámci třídy {@link Okno}, aby byl možným přístup ke seznamu s prvky
      */
@@ -51,12 +61,7 @@ public final class PrikazPanel extends VBox {
      */
     public PrikazPanel(SeznamPanel seznamPanel) {
         this.seznamPanel = seznamPanel;
-
         nastavPrikazPanel();
-        nastavZpristupnovani();
-        nastavOdebrani();
-        nastavPrikazy();
-        nastavSoubory();
     }
 
     /**
@@ -67,6 +72,10 @@ public final class PrikazPanel extends VBox {
      */
     private void nastavPrikazPanel() {
         nastavVlozeni();
+        nastavZpristupnovani();
+        nastavOdebrani();
+        nastavPrikazy();
+        nastavSoubory();
     }
 
     private void nastavVlozeni() {

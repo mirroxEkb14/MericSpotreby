@@ -27,6 +27,8 @@ import java.util.Iterator;
  * U této implementaci dochází k tomu, že tento seznam obsahuje prvky typu
  * {@link Mereni} a pomocí tlačítek z druhé části okna ({@link PrikazPanel})
  * je možné manipulovat těmito položkami
+ * <p>
+ * Třída je Singleton
  */
 public final class SeznamPanel extends ListView<Mereni> {
 
@@ -41,7 +43,19 @@ public final class SeznamPanel extends ListView<Mereni> {
     private static final int DIMENZE_SEZNAM_FONTU = 13;
     private static final String PRAZDNY_RETEZEC = "";
 
-    public SeznamPanel() { nastavSeznamPanel(); }
+    private static SeznamPanel instance;
+
+    /**
+     * Tovární metoda (factory method) vratí existující nebo nově vytvořenou instanci
+     * této třídy
+     */
+    public static SeznamPanel getInstance() {
+        if (instance == null)
+            return new SeznamPanel();
+        return instance;
+    }
+
+    private SeznamPanel() { nastavSeznamPanel(); }
 
     /**
      * Popis logicky:

@@ -33,7 +33,7 @@ public final class SpravceMereni implements Ovladani {
     /**
      * Tovární metoda (factory method) pro vytvoření a získání instance Singletonu
      *
-     * @return vrátí existující nebo nově vytvořenou instanci
+     * @return vratí existující nebo nově vytvořenou instanci
      */
     public static SpravceMereni getInstance() {
         if (instance == null)

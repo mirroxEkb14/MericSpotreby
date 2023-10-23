@@ -1,39 +1,73 @@
 package cz.upce.fei.bdast.gui.komponenty;
 
 // <editor-fold defaultstate="collapsed" desc="Importy">
-import cz.upce.fei.bdast.gui.kontejnery.MrizkovyPanel;
-import cz.upce.fei.bdast.gui.kontejnery.Titulek;
-import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
-import cz.upce.fei.bdast.gui.kontejnery.Tlacitko;
+import cz.upce.fei.bdast.data.model.Mereni;
+import cz.upce.fei.bdast.data.vycty.TypSenzoru;
+import cz.upce.fei.bdast.gui.Titulek;
+import cz.upce.fei.bdast.gui.dialogy.DialogVlozeni;
+import cz.upce.fei.bdast.gui.dialogy.TypSenzoruValidator;
+import cz.upce.fei.bdast.gui.kontejnery.*;
+import cz.upce.fei.bdast.gui.koreny.PrikazPanel;
+import cz.upce.fei.bdast.gui.koreny.SeznamPanel;
+import cz.upce.fei.bdast.tvurce.TvurceMereni;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.GridPane;
+import javafx.scene.control.ButtonBar.ButtonData;
+
+import java.util.Optional;
 // </editor-fold>
 
 /**
- * U této implementace dochází k vytvoření panelu s tlačítky ({@link Button}) pro
- * vložení prvků do seznamu. Označení těchto tlačítek je reprezentováno enumerací
+ * U této implementace dochází k vytvoření panelu s výběrovými poli ({@link ChoiceBox})
+ * pro vložení prvků do seznamu. Označení těchto tlačítek je reprezentováno enumerací
  * {@link Titulek}. Tato tlačítka jsou uspořádány v kontejnerové třídě {@link GridPane},
  * která umožňuje organizovat prvky do řádků a sloupců
  */
 public final class KomponentVlozeni extends TitulkovyPanel {
 
     /**
-     * Deklarace tlačítek
+     * Deklarace výběrových polí
      */
-    private final Button btnVlozPrvni, btnVlozPosledni, btnVlozNaslednika, btnVlozPredchudce;
+    private final ChoiceBox<String> cbVlozPrvni, cbVlozPosledni, cbVlozNaslednika, cbVlozPredchudce;
+    /**
+     * Implementace {@link TypSenzoruValidator} pro ověření typu senzorů a
+     * následné vracení nalezeného typu
+     */
+    private final TypSenzoruValidator<String, TypSenzoru> typValidator = e -> {
+        for (TypSenzoru typ : TypSenzoru.values()) {
+            if (e.equalsIgnoreCase(typ.getNazev()))
+                return typ;
+        }
+        return null;
+    };
 
     /**
-     * Konstruktor inicializuje veškerá tlačítka a titulky
+     * Konstruktor inicializuje veškerá tlačítka a nastaví výchozí hodnotu
+     * (tj. vybírá položku)
      */
     public KomponentVlozeni() {
-        this.btnVlozPrvni = new Tlacitko(
-                Titulek.PREDCHUDCE.getNadpis());
-        this.btnVlozPosledni = new Tlacitko(
+        this.cbVlozPrvni = new VyberovePole(
+                Titulek.PRVNI.getNadpis());
+        this.cbVlozPrvni.getSelectionModel().select(
+                Titulek.PRVNI.getNadpis());
+        this.cbVlozPrvni.setOnAction(actionEvent -> nastavUdalostVlozPrvni());
+
+        this.cbVlozPosledni = new VyberovePole(
                 Titulek.POSLEDNI.getNadpis());
-        this.btnVlozNaslednika = new Tlacitko(
+        this.cbVlozPosledni.getSelectionModel().select(
+                Titulek.POSLEDNI.getNadpis());
+
+        this.cbVlozNaslednika = new VyberovePole(
                 Titulek.NASLEDNIK.getNadpis());
-        this.btnVlozPredchudce = new Tlacitko(
+        this.cbVlozNaslednika.getSelectionModel().select(
+                Titulek.NASLEDNIK.getNadpis());
+
+        this.cbVlozPredchudce = new VyberovePole(
+                Titulek.PREDCHUDCE.getNadpis());
+        this.cbVlozPredchudce.getSelectionModel().select(
                 Titulek.PREDCHUDCE.getNadpis());
 
         nastavKomponentVlozeni();
@@ -46,10 +80,10 @@ public final class KomponentVlozeni extends TitulkovyPanel {
 
     private GridPane dejGridPane() {
         final GridPane gridPane = new MrizkovyPanel();
-        gridPane.add(btnVlozPrvni, MrizkovyPanel.SLOUPCOVY_INDEX_PRVNI, MrizkovyPanel.RADKOVY_INDEX_PRVNI);
-        gridPane.add(btnVlozPosledni, MrizkovyPanel.SLOUPCOVY_INDEX_DRUHY, MrizkovyPanel.RADKOVY_INDEX_PRVNI);
-        gridPane.add(btnVlozNaslednika, MrizkovyPanel.SLOUPCOVY_INDEX_PRVNI, MrizkovyPanel.RADKOVY_INDEX_DRUHY);
-        gridPane.add(btnVlozPredchudce, MrizkovyPanel.SLOUPCOVY_INDEX_DRUHY, MrizkovyPanel.RADKOVY_INDEX_DRUHY);
+        gridPane.add(cbVlozPrvni, MrizkovyPanel.SLOUPCOVY_INDEX_PRVNI, MrizkovyPanel.RADKOVY_INDEX_PRVNI);
+        gridPane.add(cbVlozPosledni, MrizkovyPanel.SLOUPCOVY_INDEX_DRUHY, MrizkovyPanel.RADKOVY_INDEX_PRVNI);
+        gridPane.add(cbVlozNaslednika, MrizkovyPanel.SLOUPCOVY_INDEX_PRVNI, MrizkovyPanel.RADKOVY_INDEX_DRUHY);
+        gridPane.add(cbVlozPredchudce, MrizkovyPanel.SLOUPCOVY_INDEX_DRUHY, MrizkovyPanel.RADKOVY_INDEX_DRUHY);
         return gridPane;
     }
 
@@ -67,8 +101,68 @@ public final class KomponentVlozeni extends TitulkovyPanel {
      * <li>
      * </ul>
      */
-    private void nastavUdalostPrvni() {
+    private void nastavUdalostVlozPrvni() {
+        final Optional<Mereni> noveMereni = dejNoveMereni();
+        cbVlozPrvni.getSelectionModel().select(Titulek.PRVNI.getNadpis());
+    }
 
+    /**
+     * Přivátní pomocní metoda
+     * <p>
+     *
+     * @return
+     */
+    private Optional<Mereni> dejNoveMereni() {
+        final String vstupniTyp = cbVlozPrvni.getSelectionModel().getSelectedItem();
+        if (!jeTypSenzoru(vstupniTyp))
+            return Optional.empty();
+
+        final TypSenzoru typSenzoru = typValidator.aplikovat(vstupniTyp);
+        final int idSenzoru = SeznamPanel.getInstance().getItems().size() + PrikazPanel.ZVETSOVAC_SEZNAMU;
+
+        final DialogVlozeni dialogVlozeni = new DialogVlozeni(idSenzoru, typSenzoru);
+        Optional<ButtonType> odpoved = dialogVlozeni.showAndWait();
+        if (odpoved.isPresent() && jeTlacitkoOk(odpoved.get()))
+            return Optional.of(TvurceMereni.dejNoveMereni(dialogVlozeni, idSenzoru, typSenzoru));
+        return Optional.empty();
+    }
+
+    /**
+     * Ověří, zda {@link ButtonType} reprezentuje výchozí tlačítko v dialogu nebo scéně.
+     * Výchozí tlačítko obvykle bývá aktivováno, když uživatel stiskne klávesu "Enter"
+     * nebo "Return" a poskytuje pohodlný způsob pro vykonání akce:
+     * <ul>
+     * <li> <b>ButtonType</b>: Reprezentuje konkrétní typ tlačítka v dialogu nebo scéně,
+     * například OK, Storno, Ano, Ne, atd.
+     * <li> <b>getButtonData()</b>: Získává {@link ButtonData}, který je spojen s {@link ButtonType}.
+     * {@link ButtonData} poskytuje informace o roli tlačítka, například zda jde o
+     * tlačítko Storno, OK, atd.
+     * <li> <b>isDefaultButton()</b>: Když je volána na objektu {@link ButtonData},
+     * ověřuje, zda je tlačítko výchozí
+     * </ul>
+     *
+     * @param odpoved typ tlačítka z dialogu vložení
+     *
+     * @return vratí {@code true}, když bylo stisknuto {@code OK}, v opačném případě {@code false}
+     */
+    private boolean jeTlacitkoOk(ButtonType odpoved) {
+        return odpoved.getButtonData().isDefaultButton();
+    }
+
+    /**
+     * Privátní pomocní metoda
+     * <p>
+     * Ošetřuje, zda při stisknutí {@link ChoiceBox}u uživatel zvolil nějaký navržený
+     * typ anebo zvolil název tohoto {@link ChoiceBox}u, což, například, u {@code cbVlozPrvni}
+     * je {@link Titulek#PRVNI}
+     *
+     * @param vstupniTyp zvolený uživatelem typ
+     *
+     * @return vratí {@code true}, pokud byl vybrán nějaký z typů senzorů, jinak byla
+     * vybraná hodnota z Enumu {@link Titulek} a proto {@code false}
+     */
+    private boolean jeTypSenzoru(String vstupniTyp) {
+        return !vstupniTyp.equalsIgnoreCase(Titulek.PRVNI.getNadpis());
     }
 
 /**
@@ -84,13 +178,13 @@ public final class KomponentVlozeni extends TitulkovyPanel {
  * aby bylo možné rychle najít potřebnou hodnotu
  * </ul>
  */
-//<editor-fold defaultstate="collapsed" desc="Gettery">
-    public Button getBtnVlozPrvni() { return btnVlozPrvni; }
+// <editor-fold defaultstate="collapsed" desc="Gettery">
+    public ChoiceBox<String> getBtnVlozPrvni() { return cbVlozPrvni; }
 
-    public Button getBtnVlozPosledni() { return btnVlozPosledni; }
+    public ChoiceBox<String> getBtnVlozPosledni() { return cbVlozPosledni; }
 
-    public Button getBtnVlozNaslednika() { return btnVlozNaslednika; }
+    public ChoiceBox<String> getBtnVlozNaslednika() { return cbVlozNaslednika; }
 
-    public Button getBtnVlozPredchudce() { return btnVlozPredchudce; }
-//</editor-fold>
+    public ChoiceBox<String> getBtnVlozPredchudce() { return cbVlozPredchudce; }
+// </editor-fold>
 }

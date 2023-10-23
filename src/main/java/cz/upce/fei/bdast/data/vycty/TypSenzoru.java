@@ -8,8 +8,8 @@ import cz.upce.fei.bdast.generator.MereniGenerator;
  * @author amirov 10/4/2023
  */
 public enum TypSenzoru {
-    ELEKTRIKA,
-    VODA;
+    ELEKTRIKA("Elektrika"),
+    VODA("Voda");
 
     /**
      * Tyto dvě konstanty reprezentují unikátní identifikátory pro každý
@@ -19,7 +19,13 @@ public enum TypSenzoru {
     public static final int ELEKTRIKA_ID = 1;
     public static final int VODA_ID = 2;
 
-//    /**
+    private final String nazev;
+
+    TypSenzoru(String nazev) { this.nazev = nazev; }
+
+    public String getNazev() { return nazev; }
+
+    //    /**
 //     * Získá náhodnou enum konstantu z tohoto výčtového typu
 //     *
 //     * @return náhodná hodnota tohoto vyčtového typy

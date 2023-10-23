@@ -2,7 +2,7 @@ package cz.upce.fei.bdast.gui.komponenty;
 
 // <editor-fold defaultstate="collapsed" desc="Importy">
 import cz.upce.fei.bdast.gui.kontejnery.MrizkovyPanel;
-import cz.upce.fei.bdast.gui.kontejnery.Titulek;
+import cz.upce.fei.bdast.gui.Titulek;
 import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
 import cz.upce.fei.bdast.gui.kontejnery.Tlacitko;
 import javafx.scene.control.Button;
@@ -13,7 +13,7 @@ import javafx.scene.layout.GridPane;
  * U této implementace dochází k vytvoření panelu {@link javafx.scene.control.TitledPane} s tlačítky
  * ({@link javafx.scene.control.Button}) pro uložení a načtení dat do a z souboru
  */
-public class KomponentSouboru extends TitulkovyPanel {
+public final class KomponentSouboru extends TitulkovyPanel {
 
     /**
      * Deklarace tlačítek

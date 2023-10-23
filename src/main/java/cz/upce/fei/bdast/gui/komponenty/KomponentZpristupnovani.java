@@ -2,7 +2,7 @@ package cz.upce.fei.bdast.gui.komponenty;
 
 // <editor-fold defaultstate="collapsed" desc="Importy">
 import cz.upce.fei.bdast.gui.kontejnery.MrizkovyPanel;
-import cz.upce.fei.bdast.gui.kontejnery.Titulek;
+import cz.upce.fei.bdast.gui.Titulek;
 import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
 import cz.upce.fei.bdast.gui.kontejnery.Tlacitko;
 import javafx.scene.control.TitledPane;

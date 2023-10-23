@@ -32,7 +32,7 @@ public final class Okno extends HBox {
     private final PrikazPanel panelPrikazu;
 
     public Okno() {
-        seznam = new SeznamPanel();
+        seznam = SeznamPanel.getInstance();
         panelPrikazu = new PrikazPanel(seznam);
         nastavOkno();
     }

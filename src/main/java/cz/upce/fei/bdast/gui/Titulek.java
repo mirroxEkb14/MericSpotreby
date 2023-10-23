@@ -1,4 +1,4 @@
-package cz.upce.fei.bdast.gui.kontejnery;
+package cz.upce.fei.bdast.gui;
 
 import javafx.scene.control.Button;
 
@@ -20,7 +20,16 @@ public enum Titulek {
     GENERUJ("Generuj"),
     ZRUS("Zruš"),
     ULOZ("Ulož"),
-    NACTI("Načti");
+    NACTI("Načti"),
+    DIALOG_VLOZENI("Vložení"),
+    KOMPONENT_DIALOGU_VLOZENI("Vytvořte vlastní měření"),
+    ID_SENZORU("Identifikátor:"),
+    SPOTREBA_VT("Spotřeba VT:"),
+    SPOTREBA_NT("Spotřeba NT:"),
+    SPOTREBA_M3("Spotřeba m^3:"),
+    KALENDAR("Kalendář:"),
+    TLACITKO_FAJN("Fajn"),
+    TLACITKO_ZRUSIT("Zrušit");
 
     private final String nadpis;
 

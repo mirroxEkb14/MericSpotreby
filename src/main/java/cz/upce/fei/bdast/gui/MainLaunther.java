@@ -5,7 +5,5 @@ package cz.upce.fei.bdast.gui;
  * metodu {@code launch()}, aby se program vyhnul "Runtime Components" problému
  */
 public class MainLaunther {
-    public static void main(String[] args) {
-        ProgMereni.main(args);
-    }
+    public static void main(String[] args) { ProgMereni.main(args); }
 }
