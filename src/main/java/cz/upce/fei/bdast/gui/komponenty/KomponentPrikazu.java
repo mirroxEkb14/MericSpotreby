@@ -14,6 +14,8 @@ import javafx.scene.layout.GridPane;
  * U této implementace dochází k vytvoření panelu {@link TitledPane} s tlačítky
  * ({@link Button}) pro některé určité příkazy jako je generování prvků nebo
  * zrušení celého seznamu
+ * <p>
+ * Třída je Singleton
  */
 public final class KomponentPrikazu extends TitulkovyPanel {
 
@@ -22,14 +24,28 @@ public final class KomponentPrikazu extends TitulkovyPanel {
      */
     private final Button btnGeneruj, btnZrus;
 
+    private static KomponentPrikazu instance;
+
+    /**
+     * Tovární metoda (factory method) vracející existující nebo nově vytvořenou instanci
+     * dané třídy
+     */
+    public static KomponentPrikazu getInstance() {
+        if (instance == null)
+            instance = new KomponentPrikazu();
+        return instance;
+    }
+
     /**
      * Konstruktor inicializuje veškerá tlačítka a titulky
      */
-    public KomponentPrikazu() {
+    private KomponentPrikazu() {
         this.btnGeneruj = new Tlacitko(
                 Titulek.GENERUJ.getNadpis());
+
         this.btnZrus = new Tlacitko(
                 Titulek.ZRUS.getNadpis());
+        this.btnZrus.setDisable(true);
 
         nastavKomponentPrikazu();
     }
@@ -46,9 +62,18 @@ public final class KomponentPrikazu extends TitulkovyPanel {
         return gridPane;
     }
 
-//<editor-fold defaultstate="collapsed" desc="Gettery">
-    public Button getBtnGeneruj() { return btnGeneruj; }
+    /**
+     * Veřejná pomocní metoda
+     * <p>
+     * Ověří, zda je tlačítko {@code btnZrus} vypnuto/deaktivováno
+     *
+     * @return vrací {@code true}, pokud je vypnuto (disabled), v opačném případě {@code false}
+     */
+    public boolean jeVypnutoZrus() { return btnZrus.isDisabled(); }
 
-    public Button getBtnZrus() { return btnZrus; }
-//</editor-fold>
+// <editor-fold defaultstate="collapsed" desc="Přepínače">
+    public void zapniBtnZrus() { btnZrus.setDisable(true); }
+
+    public void vypniBtnZrus() { btnZrus.setDisable(false); }
+// </editor-fold>
 }

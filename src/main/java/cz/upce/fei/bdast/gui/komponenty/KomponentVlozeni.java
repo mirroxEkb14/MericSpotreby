@@ -2,6 +2,7 @@ package cz.upce.fei.bdast.gui.komponenty;
 
 // <editor-fold defaultstate="collapsed" desc="Importy">
 import cz.upce.fei.bdast.data.model.Mereni;
+import cz.upce.fei.bdast.data.vycty.Pozice;
 import cz.upce.fei.bdast.data.vycty.TypSenzoru;
 import cz.upce.fei.bdast.gui.Titulek;
 import cz.upce.fei.bdast.gui.dialogy.DialogVlozeni;
@@ -26,6 +27,8 @@ import java.util.Optional;
  * pro vložení prvků do seznamu. Označení těchto tlačítek je reprezentováno enumerací
  * {@link Titulek}. Tato tlačítka jsou uspořádány v kontejnerové třídě {@link GridPane},
  * která umožňuje organizovat prvky do řádků a sloupců
+ * <p>
+ * Třída je Singleton
  */
 public final class KomponentVlozeni extends TitulkovyPanel {
 
@@ -50,11 +53,23 @@ public final class KomponentVlozeni extends TitulkovyPanel {
         return null;
     };
 
+    private static KomponentVlozeni instance;
+
+    /**
+     * Tovární metoda (factory method) vracející existující nebo nově vytvořenou instanci
+     * dané třídy
+     */
+    public static KomponentVlozeni getInstance() {
+        if (instance == null)
+            instance = new KomponentVlozeni();
+        return instance;
+    }
+
     /**
      * Konstruktor inicializuje veškerá tlačítka a nastaví výchozí hodnotu
      * (tj. vybírá položku)
      */
-    public KomponentVlozeni() {
+    private KomponentVlozeni() {
         this.cbVlozPrvni = new VyberovePole(
                 Titulek.PRVNI.getNadpis());
         this.cbVlozPrvni.getSelectionModel().select(
@@ -65,18 +80,21 @@ public final class KomponentVlozeni extends TitulkovyPanel {
                 Titulek.POSLEDNI.getNadpis());
         this.cbVlozPosledni.getSelectionModel().select(
                 Titulek.POSLEDNI.getNadpis());
+        this.cbVlozPosledni.setOnAction(actionEvent -> nastavUdalostVlozPosledni());
 
         this.cbVlozNaslednika = new VyberovePole(
                 Titulek.NASLEDNIK.getNadpis());
         this.cbVlozNaslednika.getSelectionModel().select(
                 Titulek.NASLEDNIK.getNadpis());
         this.cbVlozNaslednika.setDisable(true);
+        this.cbVlozNaslednika.setOnAction(actionEvent -> nastavUdalostVlozNaslednika());
 
         this.cbVlozPredchudce = new VyberovePole(
                 Titulek.PREDCHUDCE.getNadpis());
         this.cbVlozPredchudce.getSelectionModel().select(
                 Titulek.PREDCHUDCE.getNadpis());
         this.cbVlozPredchudce.setDisable(true);
+        this.cbVlozPredchudce.setOnAction(actionEvent -> nastavUdalostVlozPredchudce());
 
         nastavKomponentVlozeni();
     }
@@ -104,18 +122,16 @@ public final class KomponentVlozeni extends TitulkovyPanel {
      * <p>
      * Akce může být definována jako lambda výraz
      * <p>
-     * U implementrace tlačítka {@code Prvni} dojde k vytvoření dialogu podle
-     * zvoleného uživateli měření a vytvoření nového měření podle dat z dialogu
+     * U implementrace tlačítek {@code Prvni}, {@code Posledni}, {@code Naslednik} a {@code Predchudce}
+     * dojde k vytvoření dialogu podle zvoleného uživateli měření a vytvoření nového měření podle dat
+     * z dialogu
      */
     private void nastavUdalostVlozPrvni() {
-        final Optional<Mereni> noveMereni = dejNoveMereni();
+        final Optional<Mereni> noveMereni = dejNoveMereni(Pozice.PRVNI);
 
         if (noveMereni.isPresent()) {
-            seznamPanel.pridej(noveMereni.get());
-            if (jsouVypnutyNasladenikPredchudce()) {
-                prepniBtnVlozNaslednika();
-                prepniBtnVlozPredchudce();
-            }
+            seznamPanel.pridej(noveMereni.get(), Pozice.PRVNI);
+            overPanelProPrvniPosledni();
         }
         cbVlozPrvni.getSelectionModel().select(Titulek.PRVNI.getNadpis());
     }
@@ -123,13 +139,92 @@ public final class KomponentVlozeni extends TitulkovyPanel {
     /**
      * Přivátní pomocní metoda
      * <p>
-     * Ověří, zda jsou tlačítka {@code cbVlozNaslednika} a {@code cbVlozPredchudce} vypnuty/deaktivovány
-     *
-     * @return vrací {@code true}, pokud jsou vypnuty (disabled), v opačném případě {@code false}
+     * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#POSLEDNI}
+     * <p>
+     * U implementrace tlačítek {@code Prvni}, {@code Posledni}, {@code Naslednik} a {@code Predchudce}
+     * dojde k vytvoření dialogu podle zvoleného uživateli měření a vytvoření nového měření podle dat
+     * z dialogu
      */
-    private boolean jsouVypnutyNasladenikPredchudce() {
-        return cbVlozNaslednika.isDisabled() && cbVlozPredchudce.isDisabled();
+    private void nastavUdalostVlozPosledni() {
+        final Optional<Mereni> noveMereni = dejNoveMereni(Pozice.POSLEDNI);
+
+        if (noveMereni.isPresent()) {
+            seznamPanel.pridej(noveMereni.get(), Pozice.POSLEDNI);
+            overPanelProPrvniPosledni();
+        }
+        cbVlozPosledni.getSelectionModel().select(Titulek.POSLEDNI.getNadpis());
     }
+
+    /**
+     * Přivátní pomocní metoda
+     * <p>
+     * Ověří ostatní tlačítka v rámci panelu {@link PrikazPanel}, které jsou vypnuty (disabled) a
+     * které jsou nevypnuty (enabled). Volá se po stisknutí uživatelem tlačítka {@code Prvni} nebo
+     * tlačítka {@code Posledni}
+     */
+    private void overPanelProPrvniPosledni() {
+        if (KomponentZpristupnovani.getInstance().jeVypnutoZpristupniPrvni())
+            KomponentZpristupnovani.getInstance().zapniBtnZpristupniPrvni();
+        if (KomponentZpristupnovani.getInstance().jeVypnutoZpristupniPosledni())
+            KomponentZpristupnovani.getInstance().zapniBtnZpristupniPosledni();
+        if (KomponentOdebrani.getInstance().jeVypnutoOdeberPrvni())
+            KomponentOdebrani.getInstance().zapniBtnOdeberPrvni();
+        if (KomponentOdebrani.getInstance().jeVypnutoOdeberPosledni())
+            KomponentOdebrani.getInstance().zapniBtnOdeberPosledni();
+        if (KomponentPrikazu.getInstance().jeVypnutoZrus())
+            KomponentPrikazu.getInstance().zapniBtnZrus();
+        if (KomponentSouboru.getInstance().jeVypnutoUloz())
+            KomponentSouboru.getInstance()
+
+        if () {
+            KomponentZpristupnovani.getInstance().prepniBtnZpristupniPrvni();
+            KomponentZpristupnovani.getInstance().prepniBtnZpristupniPosledni();
+            KomponentOdebrani.getInstance().prepniBtnOdeberPrvni();
+            KomponentOdebrani.getInstance().prepniBtnOdeberPosledni();
+            KomponentPrikazu.getInstance().prepniBtnZrus();
+            KomponentSouboru.getInstance().prepniBtnUloz();
+        }
+    }
+
+    /**
+     * Přivátní pomocní metoda
+     * <p>
+     * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#NASLEDNIK}
+     * <p>
+     * U implementrace tlačítek {@code Prvni}, {@code Posledni}, {@code Naslednik} a {@code Predchudce}
+     * dojde k vytvoření dialogu podle zvoleného uživateli měření a vytvoření nového měření podle dat
+     * z dialogu
+     */
+    private void nastavUdalostVlozNaslednika() {
+        final Optional<Mereni> noveMereni = dejNoveMereni(Pozice.NASLEDNIK);
+
+        noveMereni.ifPresent(mereni -> seznamPanel.pridej(mereni, Pozice.NASLEDNIK));
+        cbVlozNaslednika.getSelectionModel().select(Titulek.NASLEDNIK.getNadpis());
+    }
+
+    /**
+     * Přivátní pomocní metoda
+     * <p>
+     * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#PREDCHUDCE}
+     * <p>
+     * U implementrace tlačítek {@code Prvni}, {@code Posledni}, {@code Naslednik} a {@code Predchudce}
+     * dojde k vytvoření dialogu podle zvoleného uživateli měření a vytvoření nového měření podle dat
+     * z dialogu
+     */
+    private void nastavUdalostVlozPredchudce() {
+        final Optional<Mereni> noveMereni = dejNoveMereni(Pozice.PREDCHUDCE);
+
+        noveMereni.ifPresent(mereni -> seznamPanel.pridej(mereni, Pozice.PREDCHUDCE));
+        cbVlozPredchudce.getSelectionModel().select(Titulek.PREDCHUDCE.getNadpis());
+    }
+
+    public boolean jeVypnutoVlozPrvni() { return cbVlozPrvni.isDisabled(); }
+
+    public boolean jeVypnutoVlozPosledni() { return cbVlozPosledni.isDisabled(); }
+
+    public boolean jeVypnutoVlozNaslednika() { return cbVlozNaslednika.isDisabled(); }
+
+    public boolean jeVypnutoVlozPredchudce() { return cbVlozPredchudce.isDisabled(); }
 
     /**
      * Přivátní pomocní metoda
@@ -141,16 +236,23 @@ public final class KomponentVlozeni extends TitulkovyPanel {
      * {@link Titulek#PRVNI}, {@link Titulek#POSLEDNI}, {@link Titulek#NASLEDNIK} anebo
      * {@link Titulek#PREDCHUDCE}, tak dialog se neotevře
      *
+     * @param pozice umístění v seznamu
+     *
      * @return vratí {@link Optional} s nově vytvořeným {@link Mereni}m, pokud uživatel zvolil
      * nějaký typ měření z {@link ChoiceBox}, v opačném přídaně {@link Optional#empty()}
      */
-    private Optional<Mereni> dejNoveMereni() {
-        final String vstupniTyp = cbVlozPrvni.getSelectionModel().getSelectedItem();
+    private Optional<Mereni> dejNoveMereni(Pozice pozice) {
+        final String vstupniTyp = switch (pozice) {
+            case PRVNI -> cbVlozPrvni.getSelectionModel().getSelectedItem();
+            case POSLEDNI -> cbVlozPosledni.getSelectionModel().getSelectedItem();
+            case NASLEDNIK -> cbVlozNaslednika.getSelectionModel().getSelectedItem();
+            case PREDCHUDCE -> cbVlozPredchudce.getSelectionModel().getSelectedItem();
+        };
         if (!jeTypSenzoru(vstupniTyp))
             return Optional.empty();
 
         final TypSenzoru typSenzoru = typValidator.aplikovat(vstupniTyp);
-        final int idSenzoru = seznamPanel.dejVelikost() + PrikazPanel.ZVETSOVAC_SEZNAMU;
+        final int idSenzoru = seznamPanel.dejVelikost() + seznamPanel.ZVETSOVAC_SEZNAMU;
 
         final DialogVlozeni dialogVlozeni = new DialogVlozeni(idSenzoru, typSenzoru);
         Optional<ButtonType> odpoved = dialogVlozeni.showAndWait();
@@ -213,12 +315,20 @@ public final class KomponentVlozeni extends TitulkovyPanel {
  * </ul>
  */
 // <editor-fold defaultstate="collapsed" desc="Přepínače">
-    public void prepniBtnVlozPrvni() { cbVlozPrvni.setDisable(!cbVlozPrvni.isDisabled()); }
+    public void zapniBtnVlozPrvni() { cbVlozPrvni.setDisable(false); }
 
-    public void prepniBtnVlozPosledni() { cbVlozPosledni.setDisable(!cbVlozPosledni.isDisabled()); }
+    public void vypniBtnVlozPrvni() { cbVlozPrvni.setDisable(true); }
 
-    public void prepniBtnVlozNaslednika() { cbVlozNaslednika.setDisable(!cbVlozNaslednika.isDisabled()); }
+    public void zapniBtnVlozPosledni() { cbVlozPosledni.setDisable(false); }
 
-    public void prepniBtnVlozPredchudce() { cbVlozPredchudce.setDisable(!cbVlozPredchudce.isDisabled()); }
+    public void vypniBtnVlozPosledni() { cbVlozPosledni.setDisable(true); }
+
+    public void zapniBtnVlozNaslednika() { cbVlozNaslednika.setDisable(false); }
+
+    public void vypniBtnVlozNaslednika() { cbVlozNaslednika.setDisable(true); }
+
+    public void zapniBtnVlozPredchudce() { cbVlozPredchudce.setDisable(false); }
+
+    public void vypniBtnVlozPredchudce() { cbVlozPredchudce.setDisable(true); }
 // </editor-fold>
 }

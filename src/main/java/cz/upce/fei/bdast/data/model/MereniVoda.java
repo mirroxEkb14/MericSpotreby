@@ -26,9 +26,9 @@ public final class MereniVoda extends Mereni {
 
     @Override
     public String toString() {
-        return "MěřeníVoda: " +
+        return "Voda: " +
                 "id(" + super.getIdSenzor() + "), " +
                 "datum(" + super.getZformatovanyCasMereni() + "), " +
-                "spotřeba m^3(" + spotrebaM3 + ")";
+                "spotřebaM3(" + spotrebaM3 + ")";
     }
 }

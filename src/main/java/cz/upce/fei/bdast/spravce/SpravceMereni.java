@@ -37,7 +37,7 @@ public final class SpravceMereni implements Ovladani {
      */
     public static SpravceMereni getInstance() {
         if (instance == null)
-            return new SpravceMereni();
+            instance = new SpravceMereni();
         return instance;
     }
 

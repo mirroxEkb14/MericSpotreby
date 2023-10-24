@@ -12,6 +12,8 @@ import javafx.scene.layout.GridPane;
 /**
  * U této implementace dochází k vytvoření panelu {@link javafx.scene.control.TitledPane} s tlačítky
  * ({@link javafx.scene.control.Button}) pro uložení a načtení dat do a z souboru
+ * <p>
+ * Třída je Singleton
  */
 public final class KomponentSouboru extends TitulkovyPanel {
 
@@ -20,14 +22,29 @@ public final class KomponentSouboru extends TitulkovyPanel {
      */
     private final Button btnUloz, btnNacti;
 
+    private static KomponentSouboru instance;
+
+    /**
+     * Tovární metoda (factory method) vracející existující nebo nově vytvořenou instanci
+     * dané třídy
+     */
+    public static KomponentSouboru getInstance() {
+        if (instance == null)
+            instance = new KomponentSouboru();
+        return instance;
+    }
+
     /**
      * Konstruktor inicializuje veškerá tlačítka a titulky
      */
-    public KomponentSouboru() {
+    private KomponentSouboru() {
         this.btnUloz = new Tlacitko(
                 Titulek.ULOZ.getNadpis());
+        this.btnUloz.setDisable(true);
+
         this.btnNacti = new Tlacitko(
                 Titulek.NACTI.getNadpis());
+        this.btnNacti.setDisable(true);
 
         nastavKomponentSouboru();
     }
@@ -44,9 +61,32 @@ public final class KomponentSouboru extends TitulkovyPanel {
         return gridPane;
     }
 
-//<editor-fold defaultstate="collapsed" desc="Gettery">
-    public Button getBtnGeneruj() { return btnUloz; }
+    /**
+     * Veřejná pomocní metoda
+     * <p>
+     * Ověří, zda je tlačítko {@code btnUloz} vypnuto/deaktivováno
+     *
+     * @return vrací {@code true}, pokud je vypnuto (disabled), v opačném případě {@code false}
+     */
+    public boolean jeVypnutoUloz() { return btnUloz.isDisabled(); }
 
-    public Button getBtnZrus() { return btnNacti; }
-//</editor-fold>
+    /**
+     * Veřejná pomocní metoda
+     * <p>
+     * Ověří, zda je tlačítko {@code btnNacti} vypnuto/deaktivováno
+     *
+     * @return vrací {@code true}, pokud je vypnuto (disabled), v opačném případě {@code false}
+     */
+    public boolean jeVypnutoNacti() { return btnNacti.isDisabled(); }
+
+
+// <editor-fold defaultstate="collapsed" desc="Přepínače">
+    public void zapniBtnUloz() { btnUloz.setDisable(true); }
+
+    public void vypniBtnUloz() { btnUloz.setDisable(false); }
+
+    public void zapniBtnNacti() { btnNacti.setDisable(true); }
+
+    public void vypniBtnNacti() { btnNacti.setDisable(false); }
+// </editor-fold>
 }

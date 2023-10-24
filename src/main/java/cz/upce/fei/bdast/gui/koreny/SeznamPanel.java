@@ -10,6 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.text.Font;
+import cz.upce.fei.bdast.gui.Titulek;
 
 import java.util.Iterator;
 
@@ -37,7 +38,7 @@ public final class SeznamPanel extends ListView<Mereni> {
     /**
      * Konstanta vyjadřuje minimální možnou šiřku seznamu prvků
      */
-    private static final int MIN_SIRKA_SEZNAMU = 580;
+    private static final int MIN_SIRKA_SEZNAMU = 660;
     /**
      * Konstanty jsou potřebné pro nastavení této třídy v metodě {@link SeznamPanel#nastavSeznamPanel()}
      */
@@ -53,6 +54,44 @@ public final class SeznamPanel extends ListView<Mereni> {
      * Instance na správu seznamu {@link SpravceMereni}
      */
     private final SpravceMereni seznamMereni = SpravceMereni.getInstance();
+    /**
+     * Konstanta reprezentuje první pozici v seznamu. Používá se hlavně pri přidávání
+     * prvků na začátek seznamu
+     *
+     * @see SeznamPanel#pridej(Mereni, Pozice)
+     */
+    private final int PRVNI_INDEX_SEZNAMU = 0;
+    /**
+     * Veřejná konstanta vyjadřuje číslo zvyšující velikost seznamu o jedničku
+     * <p>
+     * Používá se hlavně při dostávání id pro nový prvek v seznamu (například, při
+     * operaci vložení), který je možné dostat sečtením aktuální velikosti seznamu
+     * s touto konstantou, což vlastně dá číslo, které by bylo možné vyjadřit jako
+     * id posledního prvku seznamu + jednička
+     */
+    public final int ZVETSOVAC_SEZNAMU = 1;
+    /**
+     * Konstanta vyjadřuje číslo zmenšující velikost seznamu o jedničku
+     * <p>
+     * Používá se hlavně při operací zpřistupňování, když je stisknuto tlačítko {@link Titulek#POSLEDNI}
+     */
+    private final int ZMENSOVAC_SEZNAMU = 1;
+    /**
+     * Konstanta slouží pro vložení prvku za prvek, na kterém je aktuální index zaměřený
+     * pomocí vzorečku {@code aktualniIndex + 1}
+     */
+    private final int ZVETSOVAC_NASLEDNIKA = 1;
+    /**
+     * Privátní atribut sloužící k uchování indexu aktuálního vybraného prvku v seznamu.
+     * Tento index označuje, na který prvek v seznamu je aktuálně zaměřený. Tím umožňuje
+     * sledovat, který prvek v seznamu je aktuálně vybrán, což je zapotřebí pro navigaci
+     * a manipulaci s prvky v seznamu
+     */
+    private int aktualniIndex = -1;
+    /**
+     * Konstanta reprezentuje pozici prvního prvku v seznamu
+     */
+    private final int INDEX_PRVNI = 0;
 
     private static SeznamPanel instance;
 
@@ -61,9 +100,8 @@ public final class SeznamPanel extends ListView<Mereni> {
      * této třídy
      */
     public static SeznamPanel getInstance() {
-        if (instance == null){
-            return new SeznamPanel();
-        }
+        if (instance == null)
+            instance = new SeznamPanel();
         return instance;
     }
 
@@ -72,12 +110,72 @@ public final class SeznamPanel extends ListView<Mereni> {
     /**
      * Přidá novou instanci třídy {@link Mereni} do seznamu a do vizuálního seznamu
      *
-     * @param noveMereni nově vytvořená instance {@link Mereni}
+     * @param mereni nově vytvořená instance {@link Mereni}
      */
-    public void pridej(Mereni noveMereni) {
-        this.getItems().add(noveMereni);
-        seznamMereni.vlozMereni(noveMereni, Pozice.POSLEDNI);
+    public void pridej(Mereni mereni, Pozice pozice) {
+        switch (pozice) {
+            case PRVNI -> this.getItems().add(PRVNI_INDEX_SEZNAMU, mereni);
+            case POSLEDNI -> this.getItems().add(mereni);
+            case NASLEDNIK -> pridejNaslednika(mereni);
+            case PREDCHUDCE -> pridejPredchudce(mereni);
+        }
+        seznamMereni.vlozMereni(mereni, pozice);
     }
+
+    /**
+     * Privátní pomocní metoda
+     * <p>
+     * Vloží nový prvek za aktuálně vybraný prvek v seznamu
+     *
+     * @param mereni nový prvek typu {@link Mereni}
+     */
+    private void pridejNaslednika(Mereni mereni) {
+        if (jeIndexPlatny())
+            this.getItems().add(aktualniIndex + ZVETSOVAC_NASLEDNIKA, mereni);
+    }
+
+    /**
+     * Privátní pomocní metoda
+     * <p>
+     * Vloží nový prvek před aktuálně vybraným prvkem v seznamu
+     *
+     * @param mereni nový prvek typu {@link Mereni}
+     */
+    private void pridejPredchudce(Mereni mereni) {
+        if (jeIndexPlatny()) {
+            this.getItems().add(aktualniIndex, mereni);
+            aktualniIndex++;
+        }
+    }
+
+    /**
+     * Nastaví interní ukazatel {@code aktualniIndex} na {@code 0} (první prvek) a zvolí
+     * tento prvek v seznamu
+     */
+    public void posunNaPrvni() {
+        aktualniIndex = INDEX_PRVNI;
+        this.getSelectionModel().select(aktualniIndex);
+    }
+
+    /**
+     * Nastaví interní ukazatel {@code aktualniIndex} na index posledního prvku v seznamu
+     * a vybere tento prvek
+     */
+    public void posunNaPosledni() {
+        aktualniIndex = this.getItems().size() - ZMENSOVAC_SEZNAMU;
+        this.getSelectionModel().select(aktualniIndex);
+    }
+
+    /**
+     * Privátní pomocní metoda
+     * <p>
+     * Zkontroluje, zda je {@code aktualniIndex} v platném rozmezí pro seznam prvků. To znamená, že se
+     * ověřuje, zda je aktuální index větší než nebo roven {@code 0} (což značí platný index v seznamu)
+     * a zároveň menší než počet prvků v seznamu (což značí, že index nevykazuje mimo rozsah seznamu)
+     *
+     * @return vrací {@code true}, pokud je index v platném rozmezí, v opačném případě {@code false}
+     */
+    private boolean jeIndexPlatny() { return aktualniIndex >= 0 && aktualniIndex < getItems().size(); }
 
     /**
      * Popis logicky:
@@ -102,7 +200,6 @@ public final class SeznamPanel extends ListView<Mereni> {
         while (seznamIterator.hasNext()) {
             final Mereni mereni = seznamIterator.next();
             this.getItems().add(mereni);
-            refresh();
         }
     }
 

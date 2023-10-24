@@ -13,6 +13,8 @@ import javafx.scene.layout.GridPane;
 /**
  * U této implementace dochází k vytvoření panelu {@link TitledPane} s
  * tlačítky ({@link Button}) pro odebrání prvků seznamu
+ * <p>
+ * Třída je Singleton
  */
 public final class KomponentOdebrani extends TitulkovyPanel {
 
@@ -22,20 +24,42 @@ public final class KomponentOdebrani extends TitulkovyPanel {
     private final Button btnOdeberPrvni, btnOdeberPosledni,
             btnOdeberNaslednika, btnOdeberPredchudce, btnOdeberAktualni;
 
+    private static KomponentOdebrani instance;
+
+    /**
+     * Tovární metoda (factory method) vracející existující nebo nově vytvořenou instanci
+     * dané třídy
+     */
+    public static KomponentOdebrani getInstance() {
+        if (instance == null)
+            instance = new KomponentOdebrani();
+        return instance;
+    }
+
     /**
      * Konstruktor inicializuje veškerá tlačítka a titulky
      */
-    public KomponentOdebrani() {
+    private KomponentOdebrani() {
         this.btnOdeberPrvni = new Tlacitko(
                 Titulek.PRVNI.getNadpis());
+        this.btnOdeberPrvni.setDisable(true);
+
         this.btnOdeberPosledni = new Tlacitko(
                 Titulek.POSLEDNI.getNadpis());
+        this.btnOdeberPosledni.setDisable(true);
+
         this.btnOdeberNaslednika = new Tlacitko(
                 Titulek.NASLEDNIK.getNadpis());
+        this.btnOdeberNaslednika.setDisable(true);
+
         this.btnOdeberPredchudce = new Tlacitko(
                 Titulek.PREDCHUDCE.getNadpis());
+        this.btnOdeberPredchudce.setDisable(true);
+
         this.btnOdeberAktualni = new Tlacitko(
                 Titulek.AKTUALNI.getNadpis());
+        this.btnOdeberAktualni.setDisable(true);
+
         this.btnOdeberAktualni.setPrefWidth(MrizkovyPanel.PREFEROVANA_SIRKA_VELKEHO_TLACITKA);
 
         nastavKomponentOdebrani();
@@ -57,15 +81,50 @@ public final class KomponentOdebrani extends TitulkovyPanel {
         return gridPane;
     }
 
-//<editor-fold defaultstate="collapsed" desc="Gettery">
-    public Button getBtnOdeberPrvni() { return btnOdeberPrvni; }
+    public boolean jeVypnutoOdeberPrvni() { return btnOdeberPrvni.isDisabled(); }
 
-    public Button getBtnOdeberPosledni() { return btnOdeberPosledni; }
+    public boolean jeVypnutoOdeberPosledni() { return btnOdeberPosledni.isDisabled(); }
 
-    public Button getBtnOdeberNaslednika() { return btnOdeberNaslednika; }
+    public boolean jeVypnutoOdeberNaslednika() { return btnOdeberNaslednika.isDisabled(); }
 
-    public Button getBtnOdeberPredchudce() { return btnOdeberPredchudce; }
+    public boolean jeVypnutoOdeberPredchudce() { return btnOdeberPredchudce.isDisabled(); }
 
-    public Button getBtnOdeberAktualni() { return btnOdeberAktualni; }
-//</editor-fold>
+    /**
+     * Veřejná pomocní metoda
+     * <p>
+     * Ověří, zda jsou tlačítka {@code btnOdeberNaslednika} a {@code btnOdeberPredchudce} vypnuty/deaktivovány
+     *
+     * @return vrací {@code true}, pokud jsou vypnuty (disabled), v opačném případě {@code false}
+     */
+    public boolean jsouVypnutyNasladenikPredchudce() {
+        return btnOdeberNaslednika.isDisabled() && btnOdeberPredchudce.isDisabled();
+    }
+
+    /**
+     * Veřejná pomocní metoda
+     * <p>
+     * Ověří, zda je tlačítko {@code btnOdeberAktualni} vypnuto/deaktivováno
+     *
+     * @return vrací {@code true}, pokud je vypnuto (disabled), v opačném případě {@code false}
+     */
+    public boolean jeVypnutoAktualni() { return btnOdeberAktualni.isDisabled(); }
+
+
+// <editor-fold defaultstate="collapsed" desc="Přepínače">
+    public void zapniBtnOdeberPrvni() { btnOdeberPrvni.setDisable(false); }
+
+    public void vypniBtnOdeberPrvni() { btnOdeberPrvni.setDisable(true); }
+
+    public void zapniBtnOdeberPosledni() { btnOdeberPosledni.setDisable(false); }
+
+    public void vypniBtnOdeberPosledni() { btnOdeberPosledni.setDisable(true); }
+
+    public void zapniBtnOdeberNaslednika() { btnOdeberNaslednika.setDisable(false); }
+
+    public void vypniBtnOdeberNaslednika() { btnOdeberNaslednika.setDisable(true); }
+
+    public void zapniBtnOdeberPredchudce() { btnOdeberPredchudce.setDisable(false); }
+
+    public void vypniBtnOdeberPredchudce() { btnOdeberPredchudce.setDisable(true); }
+// </editor-fold>
 }
