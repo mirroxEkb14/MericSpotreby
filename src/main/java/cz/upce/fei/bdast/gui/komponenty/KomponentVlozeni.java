@@ -175,6 +175,22 @@ public final class KomponentVlozeni extends TitulkovyPanel {
             KomponentPrikazu.getInstance().zapniBtnZrus();
         if (KomponentSouboru.getInstance().jeVypnutoBtnUloz())
             KomponentSouboru.getInstance().zapniBtnUloz();
+        if (SeznamPanel.getInstance().jeIndexPlatnyProNaslednika() &&
+                KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniNaslednika()) {
+            KomponentZpristupnovani.getInstance().zapniBtnZpristupniNaslednika();
+        }
+        if (SeznamPanel.getInstance().jeIndexPlatnyProNaslednika() &&
+                KomponentOdebrani.getInstance().jeVypnutoBtnOdeberNaslednika()) {
+            KomponentOdebrani.getInstance().zapniBtnOdeberNaslednika();
+        }
+        if (SeznamPanel.getInstance().jeIndexPlatnyProPredchudce() &&
+                KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniPredchudce()) {
+            KomponentZpristupnovani.getInstance().zapniBtnZpristupniPredchudce();
+        }
+        if (SeznamPanel.getInstance().jeIndexPlatnyProPredchudce() &&
+                KomponentOdebrani.getInstance().jeVypnutoBtnOdeberPredchudce()) {
+            KomponentOdebrani.getInstance().zapniBtnOdeberPredchudce();
+        }
     }
 
     /**
@@ -194,6 +210,10 @@ public final class KomponentVlozeni extends TitulkovyPanel {
 
         if (KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniNaslednika())
             KomponentZpristupnovani.getInstance().zapniBtnZpristupniNaslednika();
+        if (SeznamPanel.getInstance().jeNastavenAktualni() &&
+                KomponentOdebrani.getInstance().jeVypnutoBtnOdeberNaslednika()) {
+            KomponentOdebrani.getInstance().zapniBtnOdeberNaslednika();
+        }
     }
 
     /**
@@ -213,6 +233,10 @@ public final class KomponentVlozeni extends TitulkovyPanel {
 
         if (KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniPredchudce())
             KomponentZpristupnovani.getInstance().zapniBtnZpristupniPredchudce();
+        if (SeznamPanel.getInstance().jeNastavenAktualni() &&
+                KomponentOdebrani.getInstance().jeVypnutoBtnOdeberPredchudce()) {
+            KomponentOdebrani.getInstance().zapniBtnOdeberPredchudce();
+        }
     }
 
     public boolean jeVypnutoBtnVlozPrvni() { return cbVlozPrvni.isDisabled(); }

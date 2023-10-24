@@ -2,6 +2,7 @@ package cz.upce.fei.bdast.gui.komponenty;
 
 // <editor-fold defaultstate="collapsed" desc="Importy">
 import cz.upce.fei.bdast.data.vycty.Pozice;
+import cz.upce.fei.bdast.gui.alerty.InfoAlert;
 import cz.upce.fei.bdast.gui.kontejnery.MrizkovyPanel;
 import cz.upce.fei.bdast.gui.Titulek;
 import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
@@ -67,6 +68,7 @@ public final class KomponentZpristupnovani extends TitulkovyPanel {
                 Titulek.AKTUALNI.getNadpis());
         this.btnZpristupniAktualni.setDisable(true);
         this.btnZpristupniAktualni.setPrefWidth(MrizkovyPanel.PREFEROVANA_SIRKA_VELKEHO_TLACITKA);
+        this.btnZpristupniAktualni.setOnAction(actionEvent -> nastavUdalostZpristupniAktualni());
 
         nastavKomponentZpristupnovani();
     }
@@ -96,10 +98,18 @@ public final class KomponentZpristupnovani extends TitulkovyPanel {
         SeznamPanel.getInstance().posunNaPrvni();
         SpravceMereni.getInstance().zpristupniMereni(Pozice.PRVNI);
         if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozNaslednika())  KomponentVlozeni.getInstance().zapniBtnVlozNaslednika();
-        if (jeVypnutoBtnZpristupniNaslednika())  zapniBtnZpristupniNaslednika();
+        if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozPredchudce())  KomponentVlozeni.getInstance().zapniBtnVlozPredchudce();
+        if (jeVypnutoBtnZpristupniNaslednika() && SeznamPanel.getInstance().jeIndexPlatnyProNaslednika())
+            zapniBtnZpristupniNaslednika();
         if (jeVypnutoBtnZpristupniAktualni()) zapniBtnZpristupniAktualni();
+        if (KomponentOdebrani.getInstance().jeVypnutoBtnOdeberNaslednika() &&
+                SeznamPanel.getInstance().jeIndexPlatnyProNaslednika())
+            KomponentOdebrani.getInstance().zapniBtnOdeberNaslednika();
+        if (KomponentOdebrani.getInstance().jeVypnutoBtnOdeberAktualni())
+            KomponentOdebrani.getInstance().zapniBtnOdeberAktualni();
 
         vypniBtnZpristupniPredchudce();
+        KomponentOdebrani.getInstance().vypniBtnOdeberPredchudce();
     }
 
     /**
@@ -111,10 +121,18 @@ public final class KomponentZpristupnovani extends TitulkovyPanel {
         SeznamPanel.getInstance().posunNaPosledni();
         SpravceMereni.getInstance().zpristupniMereni(Pozice.POSLEDNI);
         if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozPredchudce())  KomponentVlozeni.getInstance().zapniBtnVlozPredchudce();
-        if (jeVypnutoBtnZpristupniPredchudce()) zapniBtnZpristupniPredchudce();
+        if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozNaslednika())  KomponentVlozeni.getInstance().zapniBtnVlozNaslednika();
+        if (jeVypnutoBtnZpristupniPredchudce() && SeznamPanel.getInstance().jeIndexPlatnyProPredchudce())
+            zapniBtnZpristupniPredchudce();
         if (jeVypnutoBtnZpristupniAktualni()) zapniBtnZpristupniAktualni();
+        if (KomponentOdebrani.getInstance().jeVypnutoBtnOdeberPredchudce() &&
+                SeznamPanel.getInstance().jeIndexPlatnyProPredchudce())
+            KomponentOdebrani.getInstance().zapniBtnOdeberPredchudce();
+        if (KomponentOdebrani.getInstance().jeVypnutoBtnOdeberAktualni())
+            KomponentOdebrani.getInstance().zapniBtnOdeberAktualni();
 
         vypniBtnZpristupniNaslednika();
+        KomponentOdebrani.getInstance().vypniBtnOdeberNaslednika();
     }
 
     /**
@@ -129,6 +147,10 @@ public final class KomponentZpristupnovani extends TitulkovyPanel {
 
             if (SeznamPanel.getInstance().jeNaslednikPoslednim()) {
                 vypniBtnZpristupniNaslednika();
+                KomponentOdebrani.getInstance().vypniBtnOdeberNaslednika();
+                if (jeVypnutoBtnZpristupniPredchudce()) zapniBtnZpristupniPredchudce();
+                if (KomponentOdebrani.getInstance().jeVypnutoBtnOdeberPredchudce())
+                    KomponentOdebrani.getInstance().zapniBtnOdeberPredchudce();
                 return;
             }
             if (jeVypnutoBtnZpristupniPredchudce()) zapniBtnZpristupniPredchudce();
@@ -137,6 +159,8 @@ public final class KomponentZpristupnovani extends TitulkovyPanel {
                 KomponentVlozeni.getInstance().zapniBtnVlozNaslednika();
             if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozPredchudce())
                 KomponentVlozeni.getInstance().zapniBtnVlozPredchudce();
+            if (KomponentOdebrani.getInstance().jeVypnutoBtnOdeberPredchudce())
+                KomponentOdebrani.getInstance().zapniBtnOdeberPredchudce();
         }
     }
 
@@ -152,16 +176,32 @@ public final class KomponentZpristupnovani extends TitulkovyPanel {
 
             if (SeznamPanel.getInstance().jePredchudcePrvnim()) {
                 vypniBtnZpristupniPredchudce();
+                KomponentOdebrani.getInstance().vypniBtnOdeberPredchudce();
+                if (jeVypnutoBtnZpristupniNaslednika()) zapniBtnZpristupniNaslednika();
+                if (KomponentOdebrani.getInstance().jeVypnutoBtnOdeberNaslednika())
+                    KomponentOdebrani.getInstance().zapniBtnOdeberNaslednika();
                 return;
             }
-            if (jeVypnutoBtnZpristupniNaslednika()) zapniBtnZpristupniNaslednika();
             if (jeVypnutoBtnZpristupniPredchudce()) zapniBtnZpristupniPredchudce();
+            if (jeVypnutoBtnZpristupniNaslednika()) zapniBtnZpristupniNaslednika();
             if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozNaslednika())
                 KomponentVlozeni.getInstance().zapniBtnVlozNaslednika();
             if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozPredchudce())
                 KomponentVlozeni.getInstance().zapniBtnVlozPredchudce();
-
+            if (KomponentOdebrani.getInstance().jeVypnutoBtnOdeberNaslednika())
+                KomponentOdebrani.getInstance().zapniBtnOdeberNaslednika();
         }
+    }
+
+    /**
+     * Přivátní pomocní metoda
+     * <p>
+     * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#AKTUALNI}
+     */
+    private void nastavUdalostZpristupniAktualni() {
+        final InfoAlert infoAlert = new InfoAlert(
+                SeznamPanel.getInstance().dejAktualniPrvek().toString());
+        infoAlert.showAndWait();
     }
 
     public boolean jeVypnutoBtnZpristupniPrvni() { return btnZpristupniPrvni.isDisabled(); }

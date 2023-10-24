@@ -5,6 +5,7 @@ import cz.upce.fei.bdast.gui.kontejnery.MrizkovyPanel;
 import cz.upce.fei.bdast.gui.Titulek;
 import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
 import cz.upce.fei.bdast.gui.kontejnery.Tlacitko;
+import cz.upce.fei.bdast.gui.koreny.SeznamPanel;
 import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
@@ -43,6 +44,7 @@ public final class KomponentOdebrani extends TitulkovyPanel {
         this.btnOdeberPrvni = new Tlacitko(
                 Titulek.PRVNI.getNadpis());
         this.btnOdeberPrvni.setDisable(true);
+        this.btnOdeberPrvni.setOnAction(actionEvent -> nastavUdalostOdeberPrvni());
 
         this.btnOdeberPosledni = new Tlacitko(
                 Titulek.POSLEDNI.getNadpis());
@@ -81,6 +83,47 @@ public final class KomponentOdebrani extends TitulkovyPanel {
         return gridPane;
     }
 
+    /**
+     * Přivátní pomocní metoda
+     * <p>
+     * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#PRVNI}
+     */
+    private void nastavUdalostOdeberPrvni() {
+        final boolean bylAktualniPrvnim = SeznamPanel.getInstance().smazPrvni();
+        if (bylAktualniPrvnim) {
+            if (!KomponentVlozeni.getInstance().jeVypnutoBtnVlozNaslednika())
+                KomponentVlozeni.getInstance().vypniBtnVlozNaslednika();
+            if (!KomponentVlozeni.getInstance().jeVypnutoBtnVlozPredchudce())
+                KomponentVlozeni.getInstance().vypniBtnVlozPredchudce();
+            if (!KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniNaslednika())
+                KomponentZpristupnovani.getInstance().vypniBtnZpristupniNaslednika();
+            if (!KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniPredchudce())
+                KomponentZpristupnovani.getInstance().vypniBtnZpristupniPredchudce();
+            if (!KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniAktualni())
+                KomponentZpristupnovani.getInstance().vypniBtnZpristupniAktualni();
+            if (!KomponentOdebrani.getInstance().jeVypnutoBtnOdeberNaslednika())
+                KomponentOdebrani.getInstance().vypniBtnOdeberNaslednika();
+            if (!KomponentOdebrani.getInstance().jeVypnutoBtnOdeberPredchudce())
+                KomponentOdebrani.getInstance().vypniBtnOdeberPredchudce();
+            if (!KomponentOdebrani.getInstance().jeVypnutoBtnOdeberAktualni())
+                KomponentOdebrani.getInstance().vypniBtnOdeberAktualni();
+        }
+        if (SeznamPanel.getInstance().jePrazdny()) {
+            vypniBtnOdeberPrvni();
+            vypniBtnOdeberPosledni();
+            KomponentZpristupnovani.getInstance().vypniBtnZpristupniPrvni();
+            KomponentZpristupnovani.getInstance().vypniBtnZpristupniPosledni();
+        }
+        if (!SeznamPanel.getInstance().jeIndexPlatnyProPredchudce() &&
+                !KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniPredchudce()) {
+            KomponentZpristupnovani.getInstance().vypniBtnZpristupniPredchudce();
+        }
+        if (!SeznamPanel.getInstance().jeIndexPlatnyProPredchudce() &&
+                !KomponentOdebrani.getInstance().jeVypnutoBtnOdeberPredchudce()) {
+            KomponentOdebrani.getInstance().vypniBtnOdeberPredchudce();
+        }
+    }
+
     public boolean jeVypnutoBtnOdeberPrvni() { return btnOdeberPrvni.isDisabled(); }
 
     public boolean jeVypnutoBtnOdeberPosledni() { return btnOdeberPosledni.isDisabled(); }
@@ -89,7 +132,7 @@ public final class KomponentOdebrani extends TitulkovyPanel {
 
     public boolean jeVypnutoBtnOdeberPredchudce() { return btnOdeberPredchudce.isDisabled(); }
 
-    public boolean jeVypnutoBtnAktualni() { return btnOdeberAktualni.isDisabled(); }
+    public boolean jeVypnutoBtnOdeberAktualni() { return btnOdeberAktualni.isDisabled(); }
 
 
 // <editor-fold defaultstate="collapsed" desc="Přepínače">

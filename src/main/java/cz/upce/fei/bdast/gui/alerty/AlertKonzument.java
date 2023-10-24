@@ -10,9 +10,10 @@ import java.util.function.Consumer;
  * tisk, zpracování, ukládání, nebo jakákoliv jiná manipulace s daty, která neprovádí
  * návratovou hodnotu
  * <p>
- * U této implementace dochází k logování chyb
+ * U této implementace dochází k logování chyb a vytvočení aleru s informací o aktuálním prvku
+ * seznamu
  */
 @FunctionalInterface
-public interface ErrorLogKonzument<T> {
+public interface AlertKonzument<T> {
     void akceptovat(T t);
 }

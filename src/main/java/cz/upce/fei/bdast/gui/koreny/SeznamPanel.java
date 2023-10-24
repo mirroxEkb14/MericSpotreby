@@ -82,12 +82,16 @@ public final class SeznamPanel extends ListView<Mereni> {
      */
     private final int ZVETSOVAC_NASLEDNIKA = 1;
     /**
+     * Konstanta obsahuje hodnotu, která říká, že aktuální prvek není nastaven
+     */
+    private final int VYCHOZI_HODNOTA_AKTUALNIHO_INDEXU = Integer.MIN_VALUE;
+    /**
      * Privátní atribut sloužící k uchování indexu aktuálního vybraného prvku v seznamu.
      * Tento index označuje, na který prvek v seznamu je aktuálně zaměřený. Tím umožňuje
      * sledovat, který prvek v seznamu je aktuálně vybrán, což je zapotřebí pro navigaci
      * a manipulaci s prvky v seznamu
      */
-    private int aktualniIndex = -1;
+    private int aktualniIndex = VYCHOZI_HODNOTA_AKTUALNIHO_INDEXU;
     /**
      * Konstanta reprezentuje pozici prvního prvku v seznamu
      */
@@ -184,6 +188,23 @@ public final class SeznamPanel extends ListView<Mereni> {
         this.getSelectionModel().select(aktualniIndex);
     }
 
+    public Mereni dejAktualniPrvek() { return this.getItems().get(aktualniIndex); }
+
+    /**
+     * Odstraní první prvek ze seznamu a pokud tento prvek byl zároveň aktuální,
+     * nastaví tento index an výchozí hodnotu (tj. teď aktuální prvek není nastaven)
+     *
+     * @return vrací {@code true}, pokud smazaný prvek byl zároveň aktuální , v opačném
+     * případě {@code false}
+     */
+    public boolean smazPrvni() {
+        final boolean bylAktualniPrvnim = (aktualniIndex == INDEX_PRVNI);
+        aktualniIndex = VYCHOZI_HODNOTA_AKTUALNIHO_INDEXU;
+        this.getItems().remove(INDEX_PRVNI);
+        this.getSelectionModel().clearSelection();
+        return bylAktualniPrvnim;
+    }
+
     /**
      * Veřejná pomocní metoda
      * <p>
@@ -219,7 +240,9 @@ public final class SeznamPanel extends ListView<Mereni> {
      * @return vrací {@code true}, pokud aktuální prvek je předchůdcem pvního prvku v seznamu,
      * a {@code false}, pokud není
      */
-    public boolean jePredchudcePrvnim() { return aktualniIndex == NULOVA_HODNOTA; }
+    public boolean jePredchudcePrvnim() { return aktualniIndex == INDEX_PRVNI; }
+
+    public boolean jePrazdny() { return this.getItems().isEmpty(); }
 
     /**
      * Privátní pomocní metoda
@@ -316,7 +339,7 @@ public final class SeznamPanel extends ListView<Mereni> {
 
     public int dejVelikost() { return this.getItems().size(); }
 
-    public boolean jeSeznamPanelPrazdny() { return dejVelikost() == NULOVA_HODNOTA; }
+    public boolean jeNastavenAktualni() { return aktualniIndex != VYCHOZI_HODNOTA_AKTUALNIHO_INDEXU; }
 
     /**
      * Privátní pomocní metoda

@@ -8,10 +8,10 @@ import javafx.scene.control.Alert;
 public final class ErrorAlert extends Alert {
 
     /**
-     * Konstanta reprezentující instance rozhraní {@link ErrorLogKonzument}, která je
+     * Konstanta reprezentující instance rozhraní {@link AlertKonzument}, která je
      * inicializována anonymní funkcí
      */
-    private static final ErrorLogKonzument<String> errorLog = t -> {
+    private static final AlertKonzument<String> errorLog = t -> {
         final Alert chyboveOkenko = new ErrorAlert(t);
         chyboveOkenko.showAndWait();
     };
