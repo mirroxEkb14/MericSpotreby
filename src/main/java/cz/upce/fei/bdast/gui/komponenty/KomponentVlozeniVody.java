@@ -16,7 +16,8 @@ import javafx.scene.layout.GridPane;
  * U této implementace dochází k vytvoření dialogu pro vytvoření nového {@link Mereni},
  * a to je měření typu {@link MereniVoda}
  */
-public final class KomponentVlozeniVody extends TitulkovyPanel {
+public final class KomponentVlozeniVody extends TitulkovyPanel
+        implements PolozkaVlozeni {
 
     /**
      * Deklarace grafických prvků
@@ -27,7 +28,8 @@ public final class KomponentVlozeniVody extends TitulkovyPanel {
 
     public KomponentVlozeniVody(int idSenzoru) {
         this.tfSpotrebaM3 = new TextField();
-        this.kalendar = new DatePicker();
+        this.tfSpotrebaM3.setText(this.VYCHOZI_HODNOTA_SPOTREBY);
+        this.kalendar = this.dejMesicniKalendar();
         this.lSpotrebaM3 = new Label(Titulek.SPOTREBA_M3.getNadpis());
         this.lKalendar = new Label(Titulek.KALENDAR.getNadpis());
         this.lIdSenzoru = new Label(Titulek.ID_SENZORU.getNadpis());

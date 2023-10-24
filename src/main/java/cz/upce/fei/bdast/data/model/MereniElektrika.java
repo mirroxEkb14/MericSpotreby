@@ -33,9 +33,10 @@ public final class MereniElektrika extends Mereni {
 
     @Override
     public String toString() {
-        return "MereniElektrika{" +
-                "spotrebaVT=" + spotrebaVT +
-                ", spotrebaNT=" + spotrebaNT +
-                '}';
+        return "MěřeníElektrika: " +
+                "id(" + super.getIdSenzor() + "), " +
+                "datum(" + super.getZformatovanyCasMereni() + "), " +
+                "spotřeba VT(" + spotrebaVT + "), " +
+                "spotřeba NT(" + spotrebaNT + ")";
     }
 }

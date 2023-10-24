@@ -4,8 +4,11 @@ import cz.upce.fei.bdast.data.vycty.TypSenzoru;
 import cz.upce.fei.bdast.gui.Titulek;
 import cz.upce.fei.bdast.gui.komponenty.KomponentVlozeniElektriky;
 import cz.upce.fei.bdast.gui.komponenty.KomponentVlozeniVody;
+import cz.upce.fei.bdast.gui.komponenty.PolozkaVlozeni;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.collections.ObservableList;
+import cz.upce.fei.bdast.data.model.Mereni;
 
 import java.util.Collection;
 
@@ -25,12 +28,10 @@ import java.util.Collection;
  */
 public final class DialogVlozeni extends Dialog<ButtonType> {
 
-//    private final TypSenzoruKonzument<TypSenzoru> typKonzument = t -> {
-//        switch (t) {
-//            case ELEKTRIKA ->;
-//            case VODA -> ;
-//        }
-//    };
+    /**
+     *
+     */
+    private static PolozkaVlozeni dialogovyKomponent;
 
     public DialogVlozeni(int idSenzoru, TypSenzoru typSenzoru) {
         this.setTitle(Titulek.DIALOG_VLOZENI.getNadpis());
@@ -38,10 +39,27 @@ public final class DialogVlozeni extends Dialog<ButtonType> {
         nastavDialogVlozeni(idSenzoru, typSenzoru);
     }
 
+    /**
+     * Privátní pomocní metoda.
+     * <p>
+     * Nastaví komponentu pro toto dialogové okénko podle typy {@link Mereni}, zvolené
+     * uživatelem u {@link ChoiceBox}
+     *
+     * <b>Poznámka</b>: případ {@code default} zde není zapotřebí, protože vstupní typ
+     * senzoru bude nějakou hodnotou z již existujících ve výčtovém typu {@link TypSenzoru}
+     * a na to již byla proveda kontrola na začátku metody {@code KomponentVlozeni.dejNoveMereni()},
+     * která by nepovolila pokročování logiky
+     */
     private void nastavDialogVlozeni(int idSenzoru, TypSenzoru typSenzoru) {
         switch (typSenzoru) {
-            case ELEKTRIKA -> this.getDialogPane().setContent(new KomponentVlozeniElektriky(idSenzoru));
-            case VODA -> this.getDialogPane().setContent(new KomponentVlozeniVody(idSenzoru));
+            case ELEKTRIKA -> {
+                dialogovyKomponent = new KomponentVlozeniElektriky(idSenzoru);
+                this.getDialogPane().setContent((Node) dialogovyKomponent);
+            }
+            case VODA -> {
+                dialogovyKomponent = new KomponentVlozeniVody(idSenzoru);
+                this.getDialogPane().setContent((Node) dialogovyKomponent);
+            }
         }
     }
 
@@ -70,4 +88,8 @@ public final class DialogVlozeni extends Dialog<ButtonType> {
                 Titulek.TLACITKO_ZRUSIT.getNadpis(), ButtonBar.ButtonData.CANCEL_CLOSE);
         this.getDialogPane().getButtonTypes().addAll(okTlacitko, cancelTlacitko);
     }
+
+// <editor-fold defaultstate="collapsed" desc="Gettery">
+    public static PolozkaVlozeni getDialogovyKomponent() { return dialogovyKomponent; }
+// </editor-fold>
 }

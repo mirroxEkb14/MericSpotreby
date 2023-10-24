@@ -16,7 +16,8 @@ import javafx.scene.layout.GridPane;
  * U této implementace dochází k vytvoření dialogu pro vytvoření nového {@link Mereni},
  * a to je měření typu {@link MereniElektrika}
  */
-public final class KomponentVlozeniElektriky extends TitulkovyPanel {
+public final class KomponentVlozeniElektriky extends TitulkovyPanel
+        implements PolozkaVlozeni {
 
     /**
      * Deklarace grafických prvků
@@ -27,8 +28,10 @@ public final class KomponentVlozeniElektriky extends TitulkovyPanel {
 
     public KomponentVlozeniElektriky(int idSenzoru) {
         this.tfSpotrebaVT = new TextField();
+        this.tfSpotrebaVT.setText(this.VYCHOZI_HODNOTA_SPOTREBY);
         this.tfSpotrebaNT = new TextField();
-        this.kalendar = new DatePicker();
+        this.tfSpotrebaNT.setText(this.VYCHOZI_HODNOTA_SPOTREBY);
+        this.kalendar = this.dejMesicniKalendar();
         this.lSpotrebaVT = new Label(Titulek.SPOTREBA_VT.getNadpis());
         this.lSpotrebaNT = new Label(Titulek.SPOTREBA_NT.getNadpis());
         this.lKalendar = new Label(Titulek.KALENDAR.getNadpis());

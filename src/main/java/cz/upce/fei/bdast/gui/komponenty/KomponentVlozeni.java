@@ -4,6 +4,8 @@ package cz.upce.fei.bdast.gui.komponenty;
 import cz.upce.fei.bdast.data.model.Mereni;
 import cz.upce.fei.bdast.data.vycty.TypSenzoru;
 import cz.upce.fei.bdast.gui.Titulek;
+import cz.upce.fei.bdast.gui.alerty.ChybovaZprava;
+import cz.upce.fei.bdast.gui.alerty.ErrorAlert;
 import cz.upce.fei.bdast.gui.dialogy.DialogVlozeni;
 import cz.upce.fei.bdast.gui.dialogy.TypSenzoruValidator;
 import cz.upce.fei.bdast.gui.kontejnery.*;
@@ -94,23 +96,27 @@ public final class KomponentVlozeni extends TitulkovyPanel {
      * <p>
      * Akce může být definována jako lambda výraz
      * <p>
-     * U implementrace tlačítka {@code Prvni} dojde k:
-     * <ul>
-     * <li>
-     * <li>
-     * <li>
-     * </ul>
+     * U implementrace tlačítka {@code Prvni} dojde k vytvoření dialogu podle
+     * zvoleného uživateli měření a vytvoření nového měření podle dat z dialogu
      */
     private void nastavUdalostVlozPrvni() {
         final Optional<Mereni> noveMereni = dejNoveMereni();
+        System.out.println(noveMereni);
         cbVlozPrvni.getSelectionModel().select(Titulek.PRVNI.getNadpis());
     }
 
     /**
      * Přivátní pomocní metoda
      * <p>
+     * Pokud uživatel ve výběrovém poli ({@link ChoiceBox}) zvolil {@link TypSenzoru#ELEKTRIKA}
+     * anebo {@link TypSenzoru#VODA}, tak po ošetření vytvoří nové měření podle požadovaných
+     * dat a přidá ho do seznamu. Pokud během ošetření vstupu uživatele dojde v výjimce, tak
+     * se dialog zavře a uživateli se zobrazí alert. Pokud ve výběrovém poli uživatel zvolil
+     * {@link Titulek#PRVNI}, {@link Titulek#POSLEDNI}, {@link Titulek#NASLEDNIK} anebo
+     * {@link Titulek#PREDCHUDCE}, tak dialog se neotevře
      *
-     * @return
+     * @return vratí {@link Optional} s nově vytvořeným {@link Mereni}m, pokud uživatel zvolil
+     * nějaký typ měření z {@link ChoiceBox}, v opačném přídaně {@link Optional#empty()}
      */
     private Optional<Mereni> dejNoveMereni() {
         final String vstupniTyp = cbVlozPrvni.getSelectionModel().getSelectedItem();
@@ -122,9 +128,14 @@ public final class KomponentVlozeni extends TitulkovyPanel {
 
         final DialogVlozeni dialogVlozeni = new DialogVlozeni(idSenzoru, typSenzoru);
         Optional<ButtonType> odpoved = dialogVlozeni.showAndWait();
-        if (odpoved.isPresent() && jeTlacitkoOk(odpoved.get()))
-            return Optional.of(TvurceMereni.dejNoveMereni(dialogVlozeni, idSenzoru, typSenzoru));
-        return Optional.empty();
+        try {
+            if (odpoved.isPresent() && jeTlacitkoOk(odpoved.get()))
+                return TvurceMereni.dejNoveMereni(idSenzoru, typSenzoru);
+            return Optional.empty(); // nedosažitelný kód
+        } catch (NumberFormatException | NullPointerException ex) {
+            ErrorAlert.nahlasErrorLog(ChybovaZprava.VYTVORENI_ELEKTRIKY.getZprava());
+            return Optional.empty();
+        }
     }
 
     /**

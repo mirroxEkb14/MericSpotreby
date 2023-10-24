@@ -3,6 +3,7 @@ package cz.upce.fei.bdast.data.model;
 import cz.upce.fei.bdast.data.vycty.TypSenzoru;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Abstraktní třída je rodičem pro potomky:
@@ -15,6 +16,10 @@ import java.time.LocalDateTime;
  */
 public abstract class Mereni {
 
+    /**
+     * Vlastní formát pro zobrazení {@link LocalDateTime} u přektyté metody {@link Object#toString()}
+     */
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
     /**
      * Unikátní identifikátor jednotlivého senzoru
      */
@@ -38,16 +43,7 @@ public abstract class Mereni {
 
     public int getIdSenzor() { return idSenzor; }
 
-//    public TypSenzoru getTypSenzoru() { return typSenzoru; }
-
     public LocalDateTime getCasMereni() { return casMereni; }
 
-    @Override
-    public String toString() {
-        return "Mereni{" +
-                "idSenzor=" + idSenzor +
-                ", typSenzoru=" + typSenzoru +
-                ", casMereni=" + casMereni +
-                '}';
-    }
+    public String getZformatovanyCasMereni() { return casMereni.format(formatter); }
 }

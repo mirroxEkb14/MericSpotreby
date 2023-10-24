@@ -1,4 +1,4 @@
-package cz.upce.fei.bdast.gui.dialogy;
+package cz.upce.fei.bdast.gui.alerty;
 
 import java.util.function.Consumer;
 
@@ -9,8 +9,10 @@ import java.util.function.Consumer;
  * aplikaci provádět určité akce nebo operace nad daty typu {@code T}, jako je třeba
  * tisk, zpracování, ukládání, nebo jakákoliv jiná manipulace s daty, která neprovádí
  * návratovou hodnotu
+ * <p>
+ * U této implementace dochází k logování chyb
  */
 @FunctionalInterface
-public interface TypSenzoruKonzument<T> {
+public interface ErrorLogKonzument<T> {
     void akceptovat(T t);
 }
