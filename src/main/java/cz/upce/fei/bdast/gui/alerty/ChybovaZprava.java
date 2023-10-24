@@ -5,8 +5,8 @@ package cz.upce.fei.bdast.gui.alerty;
  * konkrétní hodnoty těchto chybových zpráv
  */
 public enum ChybovaZprava {
-    VYTVORENI_ELEKTRIKY("Špatně nastavena pole pro měření vody"),
-    VYTVORENI_VODY("Špatně nastavena pole pro měření elektriky");
+    VYTVORENI_ELEKTRIKY("Špatně nastavena pole pro měření elektriky"),
+    VYTVORENI_VODY("Špatně nastavena pole pro měření vody");
 
     private final String zprava;
 

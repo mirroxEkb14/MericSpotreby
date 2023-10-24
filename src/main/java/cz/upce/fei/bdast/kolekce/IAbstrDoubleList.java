@@ -38,52 +38,52 @@ import java.util.Iterator;
 public interface IAbstrDoubleList<T> extends Iterable<T> {
 
     /**
-     * Zrušení celého seznamu.
+     * Zrušení celého seznamu
      */
     void zrus();
 
     /**
      * Zjišťovací metoda
      * <p>
-     * Test naplněnosti seznamu.
+     * Test naplněnosti seznamu
      *
      * @return vrací {@code true}, když je seznam prázdný, jinak {@code false}
      */
     boolean jePrazdny();
 
     /**
-     * Vkládací metoda.
+     * Vkládací metoda
      * <p>
-     * Vložení prvku do seznamu na první místo.
+     * Vložení prvku do seznamu na první místo
      *
-     * @param data datová entita typu T.
+     * @param data datová entita typu T
      */
     void vlozPrvni(T data);
 
     /**
-     * Vkládací metoda.
+     * Vkládací metoda
      * <p>
-     * Vložení prvku do seznamu na poslední místo.
+     * Vložení prvku do seznamu na poslední místo
      *
-     * @param data datová entita typu T.
+     * @param data datová entita typu T
      */
     void vlozPosledni(T data);
 
     /**
-     * Vkládací metoda.
+     * Vkládací metoda
      * <p>
-     * Vložení prvku do seznamu jakožto následníka aktuálního prvku.
+     * Vložení prvku do seznamu jakožto následníka aktuálního prvku
      *
-     * @param data datová entita typu T.
+     * @param data datová entita typu T
      */
     void vlozNaslednika(T data);
 
     /**
-     * Vkládací metoda.
+     * Vkládací metoda
      * <p>
-     * Vložení prvku do seznamu jakožto předchůdce aktuálního prvku.
+     * Vložení prvku do seznamu jakožto předchůdce aktuálního prvku
      *
-     * @param data datová entita typu T.
+     * @param data datová entita typu T
      */
     void vlozPredchudce(T data);
 
@@ -91,98 +91,98 @@ public interface IAbstrDoubleList<T> extends Iterable<T> {
      * Přístupová metoda
      * <p>
      * Zpřístupnění aktuálního prvku seznamu: vrací hodnotu aktuálního prvku a
-     * přestaví vnitřní aktuální ukazatel na další prvek seznamu.
+     * přestaví vnitřní aktuální ukazatel na další prvek seznamu
      *
-     * @return vrací odkaz na object/datovou entitu typu T z aktuálního prvku seznamu.
+     * @return vrací odkaz na object/datovou entitu typu T z aktuálního prvku seznamu
      */
     T zpristupniAktualni();
 
     /**
      * Přístupová metoda
      * <p>
-     * Zpřístupnění prvního prvku seznamu: vrací hodnotu prvního prvku.
+     * Zpřístupnění prvního prvku seznamu: vrací hodnotu prvního prvku
      *
-     * @return vrací odkaz na object/datovou entitu typu T z prvního prvku seznamu.
+     * @return vrací odkaz na object/datovou entitu typu T z prvního prvku seznamu
      */
     T zpristupniPrvni();
 
     /**
      * Přístupová metoda
      * <p>
-     * Zpřístupnění posledního prvku seznamu: vrací hodnotu posledního prvku.
+     * Zpřístupnění posledního prvku seznamu: vrací hodnotu posledního prvku
      *
-     * @return vrací odkaz na objekt/datovou entitu typu T z posledního prvku seynamu.
+     * @return vrací odkaz na objekt/datovou entitu typu T z posledního prvku seynamu
      */
     T zpristupniPosledni();
 
     /**
      * Přístupová metoda
      * <p>
-     * Zpřístupnění následníka aktuálního prvku.
+     * Zpřístupnění následníka aktuálního prvku
      *
-     * @return vrací odkaz na object/datovou entitu typu T za aktuálním prvkem seznamu.
+     * @return vrací odkaz na object/datovou entitu typu T za aktuálním prvkem seznamu
      */
     T zpristupniNaslednika();
 
     /**
      * Přístupová metoda
      * <p>
-     * Zpřístupnění předchůdce aktuálního prvku.
+     * Zpřístupnění předchůdce aktuálního prvku
      *
-     * @return vrací odkaz na object/datovou entitu typu T před aktuálním prvkem seznamu.
+     * @return vrací odkaz na object/datovou entitu typu T před aktuálním prvkem seznamu
      */
     T zpristupniPredchudce();
 
     /**
-     * Odebírací metoda.
+     * Odebírací metoda
      * <p>
-     * Odebrání (vyjmutí) aktuálního prvku ze seznamu poté je aktuální prvek nastaven na první prvek.
+     * Odebrání (vyjmutí) aktuálního prvku ze seznamu poté je aktuální prvek nastaven na první prvek
      *
-     * @return vrací odkaz na odebíraný objekt, datovou entitu typu T.
+     * @return vrací odkaz na odebíraný objekt, datovou entitu typu T
      */
     T odeberAktualni();
 
     /**
-     * Odebírací metoda.
+     * Odebírací metoda
      * <p>
-     * Odebrání prvního prvku ze seznamu.
+     * Odebrání prvního prvku ze seznamu
      *
-     * @return vrací odkaz na odebíraný objekt, datovou entitu typu T.
+     * @return vrací odkaz na odebíraný objekt, datovou entitu typu T
      */
     T odeberPrvni();
 
     /**
-     * Odebírací metoda.
+     * Odebírací metoda
      * <p>
-     * Odebrání posledního prvku ze seznamu.
+     * Odebrání posledního prvku ze seznamu
      *
-     * @return vrací odkaz na odebíraný objekt, datovou entitu typu T.
+     * @return vrací odkaz na odebíraný objekt, datovou entitu typu T
      */
     T odeberPosledni();
 
     /**
-     * Odebírací metoda.
+     * Odebírací metoda
      * <p>
-     * Odebrání následníka aktuálního prvku ze seznamu.
+     * Odebrání následníka aktuálního prvku ze seznamu
      *
-     * @return vrací odkaz na odebíraný objekt, datovou entitu typu T.
+     * @return vrací odkaz na odebíraný objekt, datovou entitu typu T
      */
     T odeberNaslednika();
 
     /**
-     * Odebírací metoda.
+     * Odebírací metoda
      * <p>
-     * Odebrání předchůdce aktuálního prvku ze seznamu.
+     * Odebrání předchůdce aktuálního prvku ze seznamu
      *
-     * @return vrací odkaz na odebíraný objekt, datovou entitu typu T.
+     * @return vrací odkaz na odebíraný objekt, datovou entitu typu T
      */
     T odeberPredchudce();
 
     /**
      * Vytvoří iterátor dle rozhraní {@link Iterable} pro procházení
-     * položek objektů seznamu.
+     * položek objektů seznamu
      *
-     * @return vrací iterátor nad prvky typu T.
+     * @return vrací iterátor nad prvky typu T
      */
     Iterator<T> iterator();
 }

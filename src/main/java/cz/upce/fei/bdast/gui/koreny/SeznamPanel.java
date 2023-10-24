@@ -1,8 +1,10 @@
 package cz.upce.fei.bdast.gui.koreny;
 
 import cz.upce.fei.bdast.data.model.Mereni;
+import cz.upce.fei.bdast.data.vycty.Pozice;
 import cz.upce.fei.bdast.kolekce.IAbstrDoubleList;
 import cz.upce.fei.bdast.kolekce.AbstrDoubleList;
+import cz.upce.fei.bdast.spravce.SpravceMereni;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -42,6 +44,15 @@ public final class SeznamPanel extends ListView<Mereni> {
     private static final String NAZEV_SEZNAM_FONTU = "Monospaced";
     private static final int DIMENZE_SEZNAM_FONTU = 13;
     private static final String PRAZDNY_RETEZEC = "";
+    /**
+     * Privátní kosntanta pro kontroly na číslo nula. Používá se, aby se vyhnout
+     * magickým číslem (magic numbers) v kódu
+     */
+    private static final int NULOVA_HODNOTA = 0;
+    /**
+     * Instance na správu seznamu {@link SpravceMereni}
+     */
+    private final SpravceMereni seznamMereni = SpravceMereni.getInstance();
 
     private static SeznamPanel instance;
 
@@ -50,12 +61,23 @@ public final class SeznamPanel extends ListView<Mereni> {
      * této třídy
      */
     public static SeznamPanel getInstance() {
-        if (instance == null)
+        if (instance == null){
             return new SeznamPanel();
+        }
         return instance;
     }
 
     private SeznamPanel() { nastavSeznamPanel(); }
+
+    /**
+     * Přidá novou instanci třídy {@link Mereni} do seznamu a do vizuálního seznamu
+     *
+     * @param noveMereni nově vytvořená instance {@link Mereni}
+     */
+    public void pridej(Mereni noveMereni) {
+        this.getItems().add(noveMereni);
+        seznamMereni.vlozMereni(noveMereni, Pozice.POSLEDNI);
+    }
 
     /**
      * Popis logicky:
@@ -80,6 +102,7 @@ public final class SeznamPanel extends ListView<Mereni> {
         while (seznamIterator.hasNext()) {
             final Mereni mereni = seznamIterator.next();
             this.getItems().add(mereni);
+            refresh();
         }
     }
 
@@ -139,4 +162,8 @@ public final class SeznamPanel extends ListView<Mereni> {
             }
         });
     }
+
+    public int dejVelikost() { return this.getItems().size(); }
+
+    public boolean jeSeznamPanelPrazdny() { return dejVelikost() == NULOVA_HODNOTA; }
 }

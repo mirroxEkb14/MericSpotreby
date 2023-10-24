@@ -4,11 +4,10 @@ package cz.upce.fei.bdast.gui.komponenty;
 import cz.upce.fei.bdast.data.model.Mereni;
 import cz.upce.fei.bdast.data.vycty.TypSenzoru;
 import cz.upce.fei.bdast.gui.Titulek;
-import cz.upce.fei.bdast.gui.alerty.ChybovaZprava;
-import cz.upce.fei.bdast.gui.alerty.ErrorAlert;
 import cz.upce.fei.bdast.gui.dialogy.DialogVlozeni;
 import cz.upce.fei.bdast.gui.dialogy.TypSenzoruValidator;
 import cz.upce.fei.bdast.gui.kontejnery.*;
+import cz.upce.fei.bdast.gui.koreny.Okno;
 import cz.upce.fei.bdast.gui.koreny.PrikazPanel;
 import cz.upce.fei.bdast.gui.koreny.SeznamPanel;
 import cz.upce.fei.bdast.tvurce.TvurceMereni;
@@ -34,6 +33,11 @@ public final class KomponentVlozeni extends TitulkovyPanel {
      * Deklarace výběrových polí
      */
     private final ChoiceBox<String> cbVlozPrvni, cbVlozPosledni, cbVlozNaslednika, cbVlozPredchudce;
+    /**
+     * Reference na již existující {@link SeznamPanel} vytvořený v rámci třídy
+     * {@link Okno}, aby byl možným přístup ke seznamu s prvky
+     */
+    private final SeznamPanel seznamPanel = SeznamPanel.getInstance();
     /**
      * Implementace {@link TypSenzoruValidator} pro ověření typu senzorů a
      * následné vracení nalezeného typu
@@ -66,11 +70,13 @@ public final class KomponentVlozeni extends TitulkovyPanel {
                 Titulek.NASLEDNIK.getNadpis());
         this.cbVlozNaslednika.getSelectionModel().select(
                 Titulek.NASLEDNIK.getNadpis());
+        this.cbVlozNaslednika.setDisable(true);
 
         this.cbVlozPredchudce = new VyberovePole(
                 Titulek.PREDCHUDCE.getNadpis());
         this.cbVlozPredchudce.getSelectionModel().select(
                 Titulek.PREDCHUDCE.getNadpis());
+        this.cbVlozPredchudce.setDisable(true);
 
         nastavKomponentVlozeni();
     }
@@ -90,6 +96,8 @@ public final class KomponentVlozeni extends TitulkovyPanel {
     }
 
     /**
+     * Přivátní pomocní metoda
+     * <p>
      * Metoda {@link Button#setOnAction(EventHandler)} se používá k nastavení akce
      * (události) nebo kódu, který se má provést po stisknutí tohoto tlačítka, což
      * dává tlačítkům funkcionalitu
@@ -101,8 +109,26 @@ public final class KomponentVlozeni extends TitulkovyPanel {
      */
     private void nastavUdalostVlozPrvni() {
         final Optional<Mereni> noveMereni = dejNoveMereni();
-        System.out.println(noveMereni);
+
+        if (noveMereni.isPresent()) {
+            seznamPanel.pridej(noveMereni.get());
+            if (jsouVypnutyNasladenikPredchudce()) {
+                prepniBtnVlozNaslednika();
+                prepniBtnVlozPredchudce();
+            }
+        }
         cbVlozPrvni.getSelectionModel().select(Titulek.PRVNI.getNadpis());
+    }
+
+    /**
+     * Přivátní pomocní metoda
+     * <p>
+     * Ověří, zda jsou tlačítka {@code cbVlozNaslednika} a {@code cbVlozPredchudce} vypnuty/deaktivovány
+     *
+     * @return vrací {@code true}, pokud jsou vypnuty (disabled), v opačném případě {@code false}
+     */
+    private boolean jsouVypnutyNasladenikPredchudce() {
+        return cbVlozNaslednika.isDisabled() && cbVlozPredchudce.isDisabled();
     }
 
     /**
@@ -124,21 +150,18 @@ public final class KomponentVlozeni extends TitulkovyPanel {
             return Optional.empty();
 
         final TypSenzoru typSenzoru = typValidator.aplikovat(vstupniTyp);
-        final int idSenzoru = SeznamPanel.getInstance().getItems().size() + PrikazPanel.ZVETSOVAC_SEZNAMU;
+        final int idSenzoru = seznamPanel.dejVelikost() + PrikazPanel.ZVETSOVAC_SEZNAMU;
 
         final DialogVlozeni dialogVlozeni = new DialogVlozeni(idSenzoru, typSenzoru);
         Optional<ButtonType> odpoved = dialogVlozeni.showAndWait();
-        try {
-            if (odpoved.isPresent() && jeTlacitkoOk(odpoved.get()))
-                return TvurceMereni.dejNoveMereni(idSenzoru, typSenzoru);
-            return Optional.empty(); // nedosažitelný kód
-        } catch (NumberFormatException | NullPointerException ex) {
-            ErrorAlert.nahlasErrorLog(ChybovaZprava.VYTVORENI_ELEKTRIKY.getZprava());
-            return Optional.empty();
-        }
+        if (odpoved.isPresent() && jeTlacitkoOk(odpoved.get()))
+            return TvurceMereni.dejNoveMereni(idSenzoru, typSenzoru);
+        return Optional.empty();
     }
 
     /**
+     * Přivátní pomocní metoda
+     * <p>
      * Ověří, zda {@link ButtonType} reprezentuje výchozí tlačítko v dialogu nebo scéně.
      * Výchozí tlačítko obvykle bývá aktivováno, když uživatel stiskne klávesu "Enter"
      * nebo "Return" a poskytuje pohodlný způsob pro vykonání akce:
@@ -189,13 +212,13 @@ public final class KomponentVlozeni extends TitulkovyPanel {
  * aby bylo možné rychle najít potřebnou hodnotu
  * </ul>
  */
-// <editor-fold defaultstate="collapsed" desc="Gettery">
-    public ChoiceBox<String> getBtnVlozPrvni() { return cbVlozPrvni; }
+// <editor-fold defaultstate="collapsed" desc="Přepínače">
+    public void prepniBtnVlozPrvni() { cbVlozPrvni.setDisable(!cbVlozPrvni.isDisabled()); }
 
-    public ChoiceBox<String> getBtnVlozPosledni() { return cbVlozPosledni; }
+    public void prepniBtnVlozPosledni() { cbVlozPosledni.setDisable(!cbVlozPosledni.isDisabled()); }
 
-    public ChoiceBox<String> getBtnVlozNaslednika() { return cbVlozNaslednika; }
+    public void prepniBtnVlozNaslednika() { cbVlozNaslednika.setDisable(!cbVlozNaslednika.isDisabled()); }
 
-    public ChoiceBox<String> getBtnVlozPredchudce() { return cbVlozPredchudce; }
+    public void prepniBtnVlozPredchudce() { cbVlozPredchudce.setDisable(!cbVlozPredchudce.isDisabled()); }
 // </editor-fold>
 }

@@ -43,7 +43,19 @@ public abstract class Mereni {
 
     public int getIdSenzor() { return idSenzor; }
 
+    public TypSenzoru getTypSenzoru() { return typSenzoru; }
+
     public LocalDateTime getCasMereni() { return casMereni; }
 
     public String getZformatovanyCasMereni() { return casMereni.format(formatter); }
+
+    @Override
+    public String toString() {
+        return "Mereni{" +
+                "formatter=" + formatter +
+                ", idSenzor=" + idSenzor +
+                ", typSenzoru=" + typSenzoru +
+                ", casMereni=" + casMereni +
+                '}';
+    }
 }

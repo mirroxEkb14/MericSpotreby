@@ -19,8 +19,8 @@ public final class ErrorAlert extends Alert {
     /**
      * Tyto soukromé a neměnné konstanty určují titulek a záhlaví chybového okna
      */
-    private final String TITULEK = "Titulek";
-    private final String ZAHLAVI = "Zahlavi";
+    private final String TITULEK = "Chybový Alert";
+    private final String ZAHLAVI = "Chyba";
 
     /**
      * Konstruktor přijímá zprávu o chybě jako parametr a vytváří nový chybový alert

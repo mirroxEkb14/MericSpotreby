@@ -3,7 +3,6 @@ package cz.upce.fei.bdast.gui.koreny;
 import cz.upce.fei.bdast.data.model.Mereni;
 import cz.upce.fei.bdast.gui.komponenty.*;
 import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
-import cz.upce.fei.bdast.spravce.SpravceMereni;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ListView;
 
@@ -34,12 +33,6 @@ public final class PrikazPanel extends VBox {
     public static final int ZVETSOVAC_SEZNAMU = 1;
 
     /**
-     * Reference na již existující {@link SeznamPanel} vytvořený
-     * v rámci třídy {@link Okno}, aby byl možným přístup ke seznamu s prvky
-     */
-    private final SeznamPanel seznamPanel;
-
-    /**
      * Deklarace jednotlivých komponent okna
      */
     private TitulkovyPanel komponentVlozeni;
@@ -49,18 +42,12 @@ public final class PrikazPanel extends VBox {
     private TitulkovyPanel komponentSouboru;
 
     /**
-     * Instance na správu seznamu
-     */
-    private final SpravceMereni seznamMereni = SpravceMereni.getInstance();
-
-    /**
      * Konstruktor zajistí inicializaci hodnot privátních instančních proměnných a
      * provede postupné vytvoření kontejnerů pro uživatelskou navigaci
      *
      * @param seznamPanel instance na {@link ListView} seznam
      */
-    public PrikazPanel(SeznamPanel seznamPanel) {
-        this.seznamPanel = seznamPanel;
+    public PrikazPanel() {
         nastavPrikazPanel();
     }
 
