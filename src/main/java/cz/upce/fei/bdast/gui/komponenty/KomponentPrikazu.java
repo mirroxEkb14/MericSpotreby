@@ -69,7 +69,7 @@ public final class KomponentPrikazu extends TitulkovyPanel {
      *
      * @return vrací {@code true}, pokud je vypnuto (disabled), v opačném případě {@code false}
      */
-    public boolean jeVypnutoZrus() { return btnZrus.isDisabled(); }
+    public boolean jeVypnutoBtnZrus() { return btnZrus.isDisabled(); }
 
 // <editor-fold defaultstate="collapsed" desc="Přepínače">
     public void zapniBtnZrus() { btnZrus.setDisable(true); }

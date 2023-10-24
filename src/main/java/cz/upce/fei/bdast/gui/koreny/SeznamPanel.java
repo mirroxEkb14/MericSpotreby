@@ -144,7 +144,7 @@ public final class SeznamPanel extends ListView<Mereni> {
     private void pridejPredchudce(Mereni mereni) {
         if (jeIndexPlatny()) {
             this.getItems().add(aktualniIndex, mereni);
-            aktualniIndex++;
+            zvysAktualniUkazatel();
         }
     }
 
@@ -167,7 +167,25 @@ public final class SeznamPanel extends ListView<Mereni> {
     }
 
     /**
-     * Privátní pomocní metoda
+     * Nastaví interní ukazatel {@code aktualniIndex} na následující prvek v seznamu
+     * a vybere tento prvek
+     */
+    public void posunNaNaslednika() {
+        zvysAktualniUkazatel();
+        this.getSelectionModel().select(aktualniIndex);
+    }
+
+    /**
+     * Nastaví interní ukazatel {@code aktualniIndex} na předchozí prvek v seznamu
+     * a vybere tento prvek
+     */
+    public void posunNaPredchudce() {
+        snizAktualniUkazatel();
+        this.getSelectionModel().select(aktualniIndex);
+    }
+
+    /**
+     * Veřejná pomocní metoda
      * <p>
      * Zkontroluje, zda je {@code aktualniIndex} v platném rozmezí pro seznam prvků. To znamená, že se
      * ověřuje, zda je aktuální index větší než nebo roven {@code 0} (což značí platný index v seznamu)
@@ -175,7 +193,43 @@ public final class SeznamPanel extends ListView<Mereni> {
      *
      * @return vrací {@code true}, pokud je index v platném rozmezí, v opačném případě {@code false}
      */
-    private boolean jeIndexPlatny() { return aktualniIndex >= 0 && aktualniIndex < getItems().size(); }
+    private boolean jeIndexPlatny() { return aktualniIndex >= NULOVA_HODNOTA && aktualniIndex < getItems().size(); }
+
+    /**
+     * Veřejná pomocní metoda
+     *
+     * @return vrací {@code true}, pokud je aktuální index platný a méně než počet prvků v seznamu - 1
+     * (což značí, že nejsme na konci seznamu), v opačném případě {@code false}
+     */
+    public boolean jeIndexPlatnyProNaslednika() {
+        return aktualniIndex >= NULOVA_HODNOTA && aktualniIndex < getItems().size() - ZMENSOVAC_SEZNAMU;
+    }
+
+    /**
+     * Veřejná pomocní metoda
+     *
+     * @return vrací {@code true}, pokud aktuální prvek je následníkem posledního prvku v seznamu,
+     * a {@code false}, pokud není
+     */
+    public boolean jeNaslednikPoslednim() { return aktualniIndex == getItems().size() - ZMENSOVAC_SEZNAMU; }
+
+    /**
+     * Veřejná pomocní metoda
+     *
+     * @return vrací {@code true}, pokud aktuální prvek je předchůdcem pvního prvku v seznamu,
+     * a {@code false}, pokud není
+     */
+    public boolean jePredchudcePrvnim() { return aktualniIndex == NULOVA_HODNOTA; }
+
+    /**
+     * Privátní pomocní metoda
+     *
+     * @return vrací {@code true}, pokud je aktuální index větší než {@code 0} a méně než počet prvků
+     * v seznamu (což značí, že ukazatel není na začátku seznamu), v opačném případě {@code false}
+     */
+    public boolean jeIndexPlatnyProPredchudce() {
+        return aktualniIndex > NULOVA_HODNOTA && aktualniIndex < getItems().size();
+    }
 
     /**
      * Popis logicky:
@@ -263,4 +317,18 @@ public final class SeznamPanel extends ListView<Mereni> {
     public int dejVelikost() { return this.getItems().size(); }
 
     public boolean jeSeznamPanelPrazdny() { return dejVelikost() == NULOVA_HODNOTA; }
+
+    /**
+     * Privátní pomocní metoda
+     * <p>
+     * Zvýší aktuální index o {@code 1}
+     */
+    private void zvysAktualniUkazatel() { aktualniIndex++; }
+
+    /**
+     * Privátní pomocní metoda
+     * <p>
+     * Sníží aktuální index o {@code 1}
+     */
+    private void snizAktualniUkazatel() { aktualniIndex--; }
 }

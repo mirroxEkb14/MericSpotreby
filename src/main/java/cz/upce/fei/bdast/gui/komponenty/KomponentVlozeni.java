@@ -163,27 +163,18 @@ public final class KomponentVlozeni extends TitulkovyPanel {
      * tlačítka {@code Posledni}
      */
     private void overPanelProPrvniPosledni() {
-        if (KomponentZpristupnovani.getInstance().jeVypnutoZpristupniPrvni())
+        if (KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniPrvni())
             KomponentZpristupnovani.getInstance().zapniBtnZpristupniPrvni();
-        if (KomponentZpristupnovani.getInstance().jeVypnutoZpristupniPosledni())
+        if (KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniPosledni())
             KomponentZpristupnovani.getInstance().zapniBtnZpristupniPosledni();
-        if (KomponentOdebrani.getInstance().jeVypnutoOdeberPrvni())
+        if (KomponentOdebrani.getInstance().jeVypnutoBtnOdeberPrvni())
             KomponentOdebrani.getInstance().zapniBtnOdeberPrvni();
-        if (KomponentOdebrani.getInstance().jeVypnutoOdeberPosledni())
+        if (KomponentOdebrani.getInstance().jeVypnutoBtnOdeberPosledni())
             KomponentOdebrani.getInstance().zapniBtnOdeberPosledni();
-        if (KomponentPrikazu.getInstance().jeVypnutoZrus())
+        if (KomponentPrikazu.getInstance().jeVypnutoBtnZrus())
             KomponentPrikazu.getInstance().zapniBtnZrus();
-        if (KomponentSouboru.getInstance().jeVypnutoUloz())
-            KomponentSouboru.getInstance()
-
-        if () {
-            KomponentZpristupnovani.getInstance().prepniBtnZpristupniPrvni();
-            KomponentZpristupnovani.getInstance().prepniBtnZpristupniPosledni();
-            KomponentOdebrani.getInstance().prepniBtnOdeberPrvni();
-            KomponentOdebrani.getInstance().prepniBtnOdeberPosledni();
-            KomponentPrikazu.getInstance().prepniBtnZrus();
-            KomponentSouboru.getInstance().prepniBtnUloz();
-        }
+        if (KomponentSouboru.getInstance().jeVypnutoBtnUloz())
+            KomponentSouboru.getInstance().zapniBtnUloz();
     }
 
     /**
@@ -200,6 +191,9 @@ public final class KomponentVlozeni extends TitulkovyPanel {
 
         noveMereni.ifPresent(mereni -> seznamPanel.pridej(mereni, Pozice.NASLEDNIK));
         cbVlozNaslednika.getSelectionModel().select(Titulek.NASLEDNIK.getNadpis());
+
+        if (KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniNaslednika())
+            KomponentZpristupnovani.getInstance().zapniBtnZpristupniNaslednika();
     }
 
     /**
@@ -216,15 +210,18 @@ public final class KomponentVlozeni extends TitulkovyPanel {
 
         noveMereni.ifPresent(mereni -> seznamPanel.pridej(mereni, Pozice.PREDCHUDCE));
         cbVlozPredchudce.getSelectionModel().select(Titulek.PREDCHUDCE.getNadpis());
+
+        if (KomponentZpristupnovani.getInstance().jeVypnutoBtnZpristupniPredchudce())
+            KomponentZpristupnovani.getInstance().zapniBtnZpristupniPredchudce();
     }
 
-    public boolean jeVypnutoVlozPrvni() { return cbVlozPrvni.isDisabled(); }
+    public boolean jeVypnutoBtnVlozPrvni() { return cbVlozPrvni.isDisabled(); }
 
-    public boolean jeVypnutoVlozPosledni() { return cbVlozPosledni.isDisabled(); }
+    public boolean jeVypnutoBtnVlozPosledni() { return cbVlozPosledni.isDisabled(); }
 
-    public boolean jeVypnutoVlozNaslednika() { return cbVlozNaslednika.isDisabled(); }
+    public boolean jeVypnutoBtnVlozNaslednika() { return cbVlozNaslednika.isDisabled(); }
 
-    public boolean jeVypnutoVlozPredchudce() { return cbVlozPredchudce.isDisabled(); }
+    public boolean jeVypnutoBtnVlozPredchudce() { return cbVlozPredchudce.isDisabled(); }
 
     /**
      * Přivátní pomocní metoda

@@ -81,33 +81,15 @@ public final class KomponentOdebrani extends TitulkovyPanel {
         return gridPane;
     }
 
-    public boolean jeVypnutoOdeberPrvni() { return btnOdeberPrvni.isDisabled(); }
+    public boolean jeVypnutoBtnOdeberPrvni() { return btnOdeberPrvni.isDisabled(); }
 
-    public boolean jeVypnutoOdeberPosledni() { return btnOdeberPosledni.isDisabled(); }
+    public boolean jeVypnutoBtnOdeberPosledni() { return btnOdeberPosledni.isDisabled(); }
 
-    public boolean jeVypnutoOdeberNaslednika() { return btnOdeberNaslednika.isDisabled(); }
+    public boolean jeVypnutoBtnOdeberNaslednika() { return btnOdeberNaslednika.isDisabled(); }
 
-    public boolean jeVypnutoOdeberPredchudce() { return btnOdeberPredchudce.isDisabled(); }
+    public boolean jeVypnutoBtnOdeberPredchudce() { return btnOdeberPredchudce.isDisabled(); }
 
-    /**
-     * Veřejná pomocní metoda
-     * <p>
-     * Ověří, zda jsou tlačítka {@code btnOdeberNaslednika} a {@code btnOdeberPredchudce} vypnuty/deaktivovány
-     *
-     * @return vrací {@code true}, pokud jsou vypnuty (disabled), v opačném případě {@code false}
-     */
-    public boolean jsouVypnutyNasladenikPredchudce() {
-        return btnOdeberNaslednika.isDisabled() && btnOdeberPredchudce.isDisabled();
-    }
-
-    /**
-     * Veřejná pomocní metoda
-     * <p>
-     * Ověří, zda je tlačítko {@code btnOdeberAktualni} vypnuto/deaktivováno
-     *
-     * @return vrací {@code true}, pokud je vypnuto (disabled), v opačném případě {@code false}
-     */
-    public boolean jeVypnutoAktualni() { return btnOdeberAktualni.isDisabled(); }
+    public boolean jeVypnutoBtnAktualni() { return btnOdeberAktualni.isDisabled(); }
 
 
 // <editor-fold defaultstate="collapsed" desc="Přepínače">
@@ -126,5 +108,9 @@ public final class KomponentOdebrani extends TitulkovyPanel {
     public void zapniBtnOdeberPredchudce() { btnOdeberPredchudce.setDisable(false); }
 
     public void vypniBtnOdeberPredchudce() { btnOdeberPredchudce.setDisable(true); }
+
+    public void zapniBtnOdeberAktualni() { btnOdeberAktualni.setDisable(false); }
+
+    public void vypniBtnOdeberAktualni() { btnOdeberAktualni.setDisable(true); }
 // </editor-fold>
 }

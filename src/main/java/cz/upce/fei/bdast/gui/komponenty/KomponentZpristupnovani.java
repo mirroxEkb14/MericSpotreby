@@ -56,10 +56,12 @@ public final class KomponentZpristupnovani extends TitulkovyPanel {
         this.btnZpristupniNaslednika = new Tlacitko(
                 Titulek.NASLEDNIK.getNadpis());
         this.btnZpristupniNaslednika.setDisable(true);
+        this.btnZpristupniNaslednika.setOnAction(actionEvent -> nastavUdalostZpristupniNaslednika());
 
         this.btnZpristupniPredchudce = new Tlacitko(
                 Titulek.PREDCHUDCE.getNadpis());
         this.btnZpristupniPredchudce.setDisable(true);
+        this.btnZpristupniPredchudce.setOnAction(actionEvent -> nastavUdalostZpristupniPredchudce());
 
         this.btnZpristupniAktualni = new Tlacitko(
                 Titulek.AKTUALNI.getNadpis());
@@ -93,10 +95,11 @@ public final class KomponentZpristupnovani extends TitulkovyPanel {
     private void nastavUdalostZpristupniPrvni() {
         SeznamPanel.getInstance().posunNaPrvni();
         SpravceMereni.getInstance().zpristupniMereni(Pozice.PRVNI);
-        if (KomponentVlozeni.getInstance().jeVypnutoVlozNaslednika())  KomponentVlozeni.getInstance().zapniBtnVlozNaslednika();
-        if (jeVypnutoZpristupniNaslednika())  zapniBtnZpristupniNaslednika();
+        if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozNaslednika())  KomponentVlozeni.getInstance().zapniBtnVlozNaslednika();
+        if (jeVypnutoBtnZpristupniNaslednika())  zapniBtnZpristupniNaslednika();
+        if (jeVypnutoBtnZpristupniAktualni()) zapniBtnZpristupniAktualni();
 
-        KomponentVlozeni.getInstance().vypniBtnVlozPredchudce();
+        vypniBtnZpristupniPredchudce();
     }
 
     /**
@@ -107,25 +110,71 @@ public final class KomponentZpristupnovani extends TitulkovyPanel {
     private void nastavUdalostZpristupniPosledni() {
         SeznamPanel.getInstance().posunNaPosledni();
         SpravceMereni.getInstance().zpristupniMereni(Pozice.POSLEDNI);
-        if (KomponentVlozeni.getInstance().jeVypnutoVlozPredchudce())  KomponentVlozeni.getInstance().zapniBtnVlozPredchudce();
-        if (jeVypnutoZpristupniPredchudce())  zapniBtnZpristupniPredchudce();
+        if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozPredchudce())  KomponentVlozeni.getInstance().zapniBtnVlozPredchudce();
+        if (jeVypnutoBtnZpristupniPredchudce()) zapniBtnZpristupniPredchudce();
+        if (jeVypnutoBtnZpristupniAktualni()) zapniBtnZpristupniAktualni();
 
-        KomponentVlozeni.getInstance().vypniBtnVlozNaslednika();
+        vypniBtnZpristupniNaslednika();
     }
 
-    public boolean jeVypnutoZpristupniPrvni() { return btnZpristupniPrvni.isDisabled(); }
+    /**
+     * Přivátní pomocní metoda
+     * <p>
+     * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#NASLEDNIK}
+     */
+    private void nastavUdalostZpristupniNaslednika() {
+        if (SeznamPanel.getInstance().jeIndexPlatnyProNaslednika()) {
+            SeznamPanel.getInstance().posunNaNaslednika();
+            SpravceMereni.getInstance().zpristupniMereni(Pozice.NASLEDNIK);
 
-    public boolean jeVypnutoZpristupniPosledni() { return btnZpristupniPosledni.isDisabled(); }
+            if (SeznamPanel.getInstance().jeNaslednikPoslednim()) {
+                vypniBtnZpristupniNaslednika();
+                return;
+            }
+            if (jeVypnutoBtnZpristupniPredchudce()) zapniBtnZpristupniPredchudce();
+            if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozPredchudce()) zapniBtnZpristupniPredchudce();
+            if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozNaslednika())
+                KomponentVlozeni.getInstance().zapniBtnVlozNaslednika();
+            if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozPredchudce())
+                KomponentVlozeni.getInstance().zapniBtnVlozPredchudce();
+        }
+    }
 
-    public boolean jeVypnutoZpristupniNaslednika() { return btnZpristupniNaslednika.isDisabled(); }
+    /**
+     * Přivátní pomocní metoda
+     * <p>
+     * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#PREDCHUDCE}
+     */
+    private void nastavUdalostZpristupniPredchudce() {
+        if (SeznamPanel.getInstance().jeIndexPlatnyProPredchudce()) {
+            SeznamPanel.getInstance().posunNaPredchudce();
+            SpravceMereni.getInstance().zpristupniMereni(Pozice.PREDCHUDCE);
 
-    public boolean jeVypnutoZpristupniPredchudce() { return btnZpristupniPredchudce.isDisabled(); }
+            if (SeznamPanel.getInstance().jePredchudcePrvnim()) {
+                vypniBtnZpristupniPredchudce();
+                return;
+            }
+            if (jeVypnutoBtnZpristupniNaslednika()) zapniBtnZpristupniNaslednika();
+            if (jeVypnutoBtnZpristupniPredchudce()) zapniBtnZpristupniPredchudce();
+            if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozNaslednika())
+                KomponentVlozeni.getInstance().zapniBtnVlozNaslednika();
+            if (KomponentVlozeni.getInstance().jeVypnutoBtnVlozPredchudce())
+                KomponentVlozeni.getInstance().zapniBtnVlozPredchudce();
 
-    public boolean jeVypnutoZpristupniAktualni() { return btnZpristupniAktualni.isDisabled(); }
+        }
+    }
+
+    public boolean jeVypnutoBtnZpristupniPrvni() { return btnZpristupniPrvni.isDisabled(); }
+
+    public boolean jeVypnutoBtnZpristupniPosledni() { return btnZpristupniPosledni.isDisabled(); }
+
+    public boolean jeVypnutoBtnZpristupniNaslednika() { return btnZpristupniNaslednika.isDisabled(); }
+
+    public boolean jeVypnutoBtnZpristupniPredchudce() { return btnZpristupniPredchudce.isDisabled(); }
+
+    public boolean jeVypnutoBtnZpristupniAktualni() { return btnZpristupniAktualni.isDisabled(); }
 
 // <editor-fold defaultstate="collapsed" desc="Přepínače">
-    public void prepniBtnZpristupniAktualni() { btnZpristupniAktualni.setDisable(!btnZpristupniAktualni.isDisabled()); }
-
     public void zapniBtnZpristupniPrvni() { btnZpristupniPrvni.setDisable(false); }
 
     public void vypniBtnZpristupniPrvni() { btnZpristupniPrvni.setDisable(true); }
@@ -141,5 +190,9 @@ public final class KomponentZpristupnovani extends TitulkovyPanel {
     public void zapniBtnZpristupniPredchudce() { btnZpristupniPredchudce.setDisable(false); }
 
     public void vypniBtnZpristupniPredchudce() { btnZpristupniPredchudce.setDisable(true); }
+
+    public void zapniBtnZpristupniAktualni() { btnZpristupniAktualni.setDisable(false); }
+
+    public void vypniBtnZpristupniAktualni() { btnZpristupniAktualni.setDisable(true); }
 // </editor-fold>
 }

@@ -68,7 +68,7 @@ public final class KomponentSouboru extends TitulkovyPanel {
      *
      * @return vrací {@code true}, pokud je vypnuto (disabled), v opačném případě {@code false}
      */
-    public boolean jeVypnutoUloz() { return btnUloz.isDisabled(); }
+    public boolean jeVypnutoBtnUloz() { return btnUloz.isDisabled(); }
 
     /**
      * Veřejná pomocní metoda
@@ -77,7 +77,7 @@ public final class KomponentSouboru extends TitulkovyPanel {
      *
      * @return vrací {@code true}, pokud je vypnuto (disabled), v opačném případě {@code false}
      */
-    public boolean jeVypnutoNacti() { return btnNacti.isDisabled(); }
+    public boolean jeVypnutoBtnNacti() { return btnNacti.isDisabled(); }
 
 
 // <editor-fold defaultstate="collapsed" desc="Přepínače">
