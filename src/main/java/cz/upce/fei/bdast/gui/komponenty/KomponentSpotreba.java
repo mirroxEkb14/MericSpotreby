@@ -3,6 +3,8 @@ package cz.upce.fei.bdast.gui.komponenty;
 import cz.upce.fei.bdast.gui.Titulek;
 import cz.upce.fei.bdast.gui.alerty.ChybovaZprava;
 import cz.upce.fei.bdast.gui.alerty.ErrorAlert;
+import cz.upce.fei.bdast.gui.dialogy.DialogSpotreba;
+import cz.upce.fei.bdast.gui.dialogy.TypSpotreby;
 import cz.upce.fei.bdast.gui.kontejnery.MrizkovyPanel;
 import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
 import cz.upce.fei.bdast.gui.kontejnery.Tlacitko;
@@ -77,7 +79,7 @@ public final class KomponentSpotreba extends TitulkovyPanel {
      * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#SPOTREBA_MAX}
      */
     private void nastavSpotrebaMax() {
-        ErrorAlert.nahlasErrorLog(ChybovaZprava.NEDOSTUPNI.getZprava());
+        new DialogSpotreba(TypSpotreby.MAX).showAndWait();
     }
 
     /**

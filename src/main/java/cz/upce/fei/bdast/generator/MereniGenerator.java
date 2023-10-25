@@ -17,7 +17,7 @@ import java.util.Random;
 public final class MereniGenerator implements Generator<Mereni> {
 
     /**
-     * Tyto konstanty se používají hlavně v rámci metody {@link MereniGenerator#dejNahodneDatum()}
+     * Tyto konstanty se používají hlavně v rámci metody {@link MereniGenerator#dejNahodneDatumRoku()}
      * pro generování náhodného data
      */
     private static final int POCET_DNU_V_ROCE = 365;
@@ -46,7 +46,7 @@ public final class MereniGenerator implements Generator<Mereni> {
     public void generuj(IAbstrDoubleList<Mereni> seznam, int pocet) {
         do {
             final int idSenzor = dejNahodnyUnikatniId(seznam);
-            final LocalDateTime casMereni = dejNahodneDatum();
+            final LocalDateTime casMereni = dejNahodneDatumMesice();
 
             final int nahodneCislo = Generator.super.dejNahodneCislo();
             switch (nahodneCislo) {
@@ -117,6 +117,31 @@ public final class MereniGenerator implements Generator<Mereni> {
     private double dejNahodneDesetinneCislo() { return Math.round(new Random().nextDouble() * CINITEL) / DELITEL; }
 
     /**
+     * Vratí náhodné datum v rámci aktuálního měsíce
+     * <p>
+     * Popis logiky:
+     * <ol>
+     * <li> Získá aktuální datum a čas v rámci běžícího systému a uloží jej do proměnné {@code now}
+     * <li> Získá měsíc z objektu {@code now}. Metoda {@link LocalDateTime#getMonth()} vrátí aktuální
+     * měsíc (jako výčtový typ {@link Month}) z objektu {@code now}
+     * <li> Vytvoří novou instanci třídy {@link Random}, která poslouží k generování náhodných čísel
+     * <li> Generuje náhodný den v měsíci. {@link Month#minLength()} vrátí minimální počet dnů v
+     * aktuálním měsíci (např. 28, 30 nebo 31, závisí na měsíci). Pak generuje náhodné číslo mezi {@code 0}
+     * (včetně) a zadaným maximem (ne včetně). Potom přidá {@code 1}, aby získala náhodný den od {@code 1}
+     * do maximálního počtu dnů v měsíci
+     * <li> Vytvoří nový objekt {@code nahodnyDen}, který bude obsahovat náhodný den v aktuálním měsíci.
+     * {@link LocalDateTime#withDayOfMonth(int)} se použije k nastavení dne měsíce v rámci objektu {@code now}
+     * na zvolený náhodný den
+     * </ol>
+     */
+    private LocalDateTime dejNahodneDatumMesice() {
+        LocalDateTime now = LocalDateTime.now();
+        Month aktualniMesic = now.getMonth();
+        int nahodnyDen = new Random().nextInt(aktualniMesic.minLength()) + 1;
+        return now.withDayOfMonth(nahodnyDen);
+    }
+
+    /**
      * Privátní pomocní metoda
      * <p>
      * Generuje náhodné datum v rámci letošního roku
@@ -144,7 +169,7 @@ public final class MereniGenerator implements Generator<Mereni> {
      * @return objekt typu {@link LocalDateTime} reprezentující náhodné datum
      * letošního roku
      */
-    private LocalDateTime dejNahodneDatum() {
+    private LocalDateTime dejNahodneDatumRoku() {
         final int letostiRok = LocalDateTime.now().getYear();
         final int denRoku = 1 + (int) (Math.random() * POCET_DNU_V_ROCE);
         final LocalDateTime zacatekRoku = LocalDateTime.of(letostiRok,

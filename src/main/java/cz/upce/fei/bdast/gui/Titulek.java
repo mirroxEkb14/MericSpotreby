@@ -37,7 +37,11 @@ public enum Titulek {
     KONTEXT_DIALOGU_GENERATORU("Zadejte celočíselný počet:"),
     SPOTREBA_MAX("Max"),
     SPOTREBA_PRUMER("Průměr"),
-    SPOTREBA_DEN("Den");
+    SPOTREBA_DEN("Den"),
+    DIALOG_SPOTREBA("Výpočet spotřeby"),
+    KOMPONENT_DIALOGU_SPOTREBA("Spotřeba"),
+    DATUM_OD("Datum od:"),
+    DATUM_DO("Datum do:");
 
     private final String nadpis;
 
