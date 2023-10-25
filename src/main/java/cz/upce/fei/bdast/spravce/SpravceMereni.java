@@ -234,7 +234,6 @@ public final class SpravceMereni implements Ovladani {
                              LocalDateTime konecneDatum) {
         final int idNalezenehoMereni = mereni.getIdSenzor();
         final LocalDateTime datumMereni = mereni.getCasMereni();
-
         final boolean jsouIdStejne = jsouStejnaCisla(idNalezenehoMereni, idSenzoru);
         final boolean jeVIntervalu = jeVRamciIntervalu(datumMereni, pocatecneDatum, konecneDatum);
         return jsouIdStejne && jeVIntervalu;

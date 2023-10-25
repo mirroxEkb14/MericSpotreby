@@ -10,7 +10,8 @@ public enum ChybovaZprava {
     GENEROVANI("Špatně nastavena data pro generování nových prvků"),
     ZALOHOVANI("Seznam nebyl uložen: chyba s operacemi vstupu a výstupu (I/O)"),
     OBNOVENI("Seznam nebyl načten: chyba s operacemi vstupu a výstupu (I/O)"),
-    NEDOSTUPNI("Zatím bohužel není dostupné");
+    NEDOSTUPNI("Zatím bohužel není dostupné"),
+    MAXIMALNI_SPOTREBA("Špatně nastavena data: číslo by mělo být celočíselné");
 
     private final String zprava;
 

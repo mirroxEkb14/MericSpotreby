@@ -41,7 +41,11 @@ public enum Titulek {
     DIALOG_SPOTREBA("Výpočet spotřeby"),
     KOMPONENT_DIALOGU_SPOTREBA("Spotřeba"),
     DATUM_OD("Datum od:"),
-    DATUM_DO("Datum do:");
+    DATUM_DO("Datum do:"),
+    ZAHLAVI_ALERTU_SPOTREBA_MAX("Maximální Spotřeba Senzorů v Intervalu"),
+    ZPRAVA_ALERT_SPOTREBA_NAX("Nebyl nalezen žádný senzor s takovým id v rámci požadovaného data"),
+    ZAHLAVI_ALERTU_SPOTREBA_PRUMER("Průměrná Spotřeba Senzorů v Intervalu"),
+    ZAHLAVI_ALERTU_SPOTREBA_DEN("Všechny Měření v Rámci Dne");
 
     private final String nadpis;
 
