@@ -191,6 +191,14 @@ public final class KomponentVlozeni extends TitulkovyPanel {
                 KomponentOdebrani.getInstance().jeVypnutoBtnOdeberPredchudce()) {
             KomponentOdebrani.getInstance().zapniBtnOdeberPredchudce();
         }
+        if (KomponentSouboru.getInstance().jeVypnutoBtnUloz())
+            KomponentSouboru.getInstance().zapniBtnUloz();
+        if (KomponentSpotreba.getInstance().jeVypnutoBtnSpotrebaMax())
+            KomponentSpotreba.getInstance().zapniBtnSpotrebaMax();
+        if (KomponentSpotreba.getInstance().jeVypnutoBtnSpotrebaPrumer())
+            KomponentSpotreba.getInstance().zapniBtnSpotrebaPrumer();
+        if (KomponentSpotreba.getInstance().jeVypnutoBtnSpotrebaDen())
+            KomponentSpotreba.getInstance().zapniBtnSpotrebaDen();
     }
 
     /**
@@ -239,10 +247,6 @@ public final class KomponentVlozeni extends TitulkovyPanel {
         }
     }
 
-    public boolean jeVypnutoBtnVlozPrvni() { return cbVlozPrvni.isDisabled(); }
-
-    public boolean jeVypnutoBtnVlozPosledni() { return cbVlozPosledni.isDisabled(); }
-
     public boolean jeVypnutoBtnVlozNaslednika() { return cbVlozNaslednika.isDisabled(); }
 
     public boolean jeVypnutoBtnVlozPredchudce() { return cbVlozPredchudce.isDisabled(); }
@@ -273,7 +277,7 @@ public final class KomponentVlozeni extends TitulkovyPanel {
             return Optional.empty();
 
         final TypSenzoru typSenzoru = typValidator.aplikovat(vstupniTyp);
-        final int idSenzoru = seznamPanel.dejVelikost() + seznamPanel.ZVETSOVAC_SEZNAMU;
+        final int idSenzoru = SeznamPanel.getInstance().dejUnikatniIdSenzoru();
 
         final DialogVlozeni dialogVlozeni = new DialogVlozeni(idSenzoru, typSenzoru);
         Optional<ButtonType> odpoved = dialogVlozeni.showAndWait();
@@ -336,14 +340,6 @@ public final class KomponentVlozeni extends TitulkovyPanel {
  * </ul>
  */
 // <editor-fold defaultstate="collapsed" desc="Přepínače">
-    public void zapniBtnVlozPrvni() { cbVlozPrvni.setDisable(false); }
-
-    public void vypniBtnVlozPrvni() { cbVlozPrvni.setDisable(true); }
-
-    public void zapniBtnVlozPosledni() { cbVlozPosledni.setDisable(false); }
-
-    public void vypniBtnVlozPosledni() { cbVlozPosledni.setDisable(true); }
-
     public void zapniBtnVlozNaslednika() { cbVlozNaslednika.setDisable(false); }
 
     public void vypniBtnVlozNaslednika() { cbVlozNaslednika.setDisable(true); }

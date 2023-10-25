@@ -2,8 +2,6 @@ package cz.upce.fei.bdast.gui.koreny;
 
 import cz.upce.fei.bdast.data.model.Mereni;
 import cz.upce.fei.bdast.data.vycty.Pozice;
-import cz.upce.fei.bdast.kolekce.IAbstrDoubleList;
-import cz.upce.fei.bdast.kolekce.AbstrDoubleList;
 import cz.upce.fei.bdast.spravce.SpravceMereni;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -12,7 +10,7 @@ import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.text.Font;
 import cz.upce.fei.bdast.gui.Titulek;
 
-import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * Tato třída, reprezentující {@link ListView}:
@@ -49,7 +47,16 @@ public final class SeznamPanel extends ListView<Mereni> {
      * Privátní kosntanta pro kontroly na číslo nula. Používá se, aby se vyhnout
      * magickým číslem (magic numbers) v kódu
      */
-    private static final int NULOVA_HODNOTA = 0;
+    private final int NULOVA_HODNOTA = 0;
+    /**
+     * Privátní kosntanta pro kontroly na číslo jedna. Používá se, aby se vyhnout
+     * magickým číslem (magic numbers) v kódu
+     */
+    private final int JEDNICKA = 1;
+    /**
+     * Privátní konstanta pro použití hodnoty pro zvětšení čehokoli o jedničku
+     */
+    private final int HODNOTA_INKREMENTU = 1;
     /**
      * Instance na správu seznamu {@link SpravceMereni}
      */
@@ -60,7 +67,7 @@ public final class SeznamPanel extends ListView<Mereni> {
      *
      * @see SeznamPanel#pridej(Mereni, Pozice)
      */
-    private final int PRVNI_INDEX_SEZNAMU = 0;
+    private final int INDEX_PRVNIHO_PRVKU = 0;
     /**
      * Veřejná konstanta vyjadřuje číslo zvyšující velikost seznamu o jedničku
      * <p>
@@ -92,10 +99,6 @@ public final class SeznamPanel extends ListView<Mereni> {
      * a manipulaci s prvky v seznamu
      */
     private int aktualniIndex = VYCHOZI_HODNOTA_AKTUALNIHO_INDEXU;
-    /**
-     * Konstanta reprezentuje pozici prvního prvku v seznamu
-     */
-    private final int INDEX_PRVNI = 0;
 
     private static SeznamPanel instance;
 
@@ -118,7 +121,7 @@ public final class SeznamPanel extends ListView<Mereni> {
      */
     public void pridej(Mereni mereni, Pozice pozice) {
         switch (pozice) {
-            case PRVNI -> this.getItems().add(PRVNI_INDEX_SEZNAMU, mereni);
+            case PRVNI -> this.getItems().add(INDEX_PRVNIHO_PRVKU, mereni);
             case POSLEDNI -> this.getItems().add(mereni);
             case NASLEDNIK -> pridejNaslednika(mereni);
             case PREDCHUDCE -> pridejPredchudce(mereni);
@@ -157,7 +160,7 @@ public final class SeznamPanel extends ListView<Mereni> {
      * tento prvek v seznamu
      */
     public void posunNaPrvni() {
-        aktualniIndex = INDEX_PRVNI;
+        aktualniIndex = INDEX_PRVNIHO_PRVKU;
         this.getSelectionModel().select(aktualniIndex);
     }
 
@@ -198,11 +201,65 @@ public final class SeznamPanel extends ListView<Mereni> {
      * případě {@code false}
      */
     public boolean smazPrvni() {
-        final boolean bylAktualniPrvnim = (aktualniIndex == INDEX_PRVNI);
-        aktualniIndex = VYCHOZI_HODNOTA_AKTUALNIHO_INDEXU;
-        this.getItems().remove(INDEX_PRVNI);
-        this.getSelectionModel().clearSelection();
+        final boolean bylAktualniPrvnim = (aktualniIndex == INDEX_PRVNIHO_PRVKU);
+        this.getItems().remove(INDEX_PRVNIHO_PRVKU);
+        if (bylAktualniPrvnim) {
+            vynulujAktualniUkazatel();
+            this.getSelectionModel().clearSelection();
+        }
+        if (jeNastavenAktualni()) snizAktualniUkazatel();
         return bylAktualniPrvnim;
+    }
+
+    /**
+     * Provádí odebrání posledního prvku ze seznamu a následně ověří, zda byl tento prvek
+     * zároveň aktuálním prvkem
+     *
+     * @return vrací {@code true}, pokud byl aktuální prvek zároveň posledním, v opačném
+     * případě {@code false}
+     */
+    public boolean smazPosledni() {
+        final int posledniIndex = dejVelikost() - ZMENSOVAC_SEZNAMU;
+        final boolean bylAktualniPoslednim = (aktualniIndex == posledniIndex);
+        this.getItems().remove(posledniIndex);
+        if (bylAktualniPoslednim) {
+            vynulujAktualniUkazatel();
+            this.getSelectionModel().clearSelection();
+        }
+        if (jeNastavenAktualni()) aktualniIndex = Math.min(aktualniIndex, posledniIndex);
+        return bylAktualniPoslednim;
+    }
+
+    /**
+     * Odebírá prvek, který následuje po aktuálním prvku v seznamu
+     */
+    public void smazNaslednika() { this.getItems().remove(aktualniIndex + ZVETSOVAC_NASLEDNIKA); }
+
+    /**
+     * Odebírá prvek, který předchází aktuálnímu prvku v seznamu
+     */
+    public void smazPredchudce() {
+        snizAktualniUkazatel();
+        this.getItems().remove(aktualniIndex);
+    }
+
+    /**
+     * Smaže aktuální prvek ze seznamu
+     */
+    public Mereni smazAktualni() {
+        final Mereni aktualniMereni = this.getItems().get(aktualniIndex);
+        this.getItems().remove(aktualniIndex);
+        vynulujAktualniUkazatel();
+        this.getSelectionModel().clearSelection();
+        return aktualniMereni;
+    }
+
+    /**
+     * Vyčistí obsah seznamu (všechny položky)
+     */
+    public void vymaz() {
+        this.getItems().clear();
+        vynulujAktualniUkazatel();
     }
 
     /**
@@ -214,7 +271,7 @@ public final class SeznamPanel extends ListView<Mereni> {
      *
      * @return vrací {@code true}, pokud je index v platném rozmezí, v opačném případě {@code false}
      */
-    private boolean jeIndexPlatny() { return aktualniIndex >= NULOVA_HODNOTA && aktualniIndex < getItems().size(); }
+    public boolean jeIndexPlatny() { return aktualniIndex >= NULOVA_HODNOTA && aktualniIndex < getItems().size(); }
 
     /**
      * Veřejná pomocní metoda
@@ -240,7 +297,23 @@ public final class SeznamPanel extends ListView<Mereni> {
      * @return vrací {@code true}, pokud aktuální prvek je předchůdcem pvního prvku v seznamu,
      * a {@code false}, pokud není
      */
-    public boolean jePredchudcePrvnim() { return aktualniIndex == INDEX_PRVNI; }
+    public boolean jePredchudcePrvnim() { return aktualniIndex == INDEX_PRVNIHO_PRVKU; }
+
+    /**
+     * Veřejná pomocní metoda
+     *
+     * @return vrací {@code true}, pokud není seznam prázdný a existuje následující prvek
+     * za aktuálním prvkem, v opačném případě {@code false}
+     */
+    public boolean jeNaslednik() { return !jePrazdny() && aktualniIndex < dejVelikost() - ZMENSOVAC_SEZNAMU; }
+
+    /**
+     * Veřejná pomocní metoda
+     *
+     * @return vrací {@code true}, pokud není seznam prázdný a existuje předcházející
+     * prvek před aktuálním prvkem, v opačném případě {@code false}
+     */
+    public boolean jePredchudce() { return !jePrazdny() && aktualniIndex > NULOVA_HODNOTA; }
 
     public boolean jePrazdny() { return this.getItems().isEmpty(); }
 
@@ -255,29 +328,69 @@ public final class SeznamPanel extends ListView<Mereni> {
     }
 
     /**
-     * Popis logicky:
+     * Hledá chybějící {@code idSenzor} v seznamu
+     * <p>
+     * Popis logiky:
      * <ol>
-     * <li> Odstraní veškerý stávající obsah seznamu tím, že vymaže všechny existující
-     * položky (objekty) v {@link ListView}
-     * <li> Cyklus {@code while} projde všechny položky seznamu pomocí iterátoru
-     * <li> V každém průchodu cyklem se aktuální objekt meření (nově vybraný) přidá do
-     * seznamu {@link ListView}
+     * <li> Inicializuje proměnnou {@code maxIdSenzoru} s hodnotou {@code 0}, která bude sloužit k
+     * určení maximálního {@code idSenzoru} v seznamu
+     * <li> Deklaruje pole {@code boolean}, které bude sloužit k označení existujících {@code idSenzorů}
+     * <li> První průchod seznamem pro nalezení maximálního {@code idSenzoru}. <b>Cyklus {@code for-each}</b>:
+     *      <ol>
+     *      <li> Každý prvek je zkoumán, a pokud má vyšší {@code idSenzor} než aktuální {@code maxIdSenzoru},
+     *      tak ten {@code maxIdSenzoru} je aktualizován
+     *      </ol>
+     * <li> Vytvoří pole {@code existujiciIdSenzory} s délkou o jedna vyšší než {@code maxIdSenzoru}, což
+     * umožní použít {@code idSenzory} jako indexy v poli
+     * <li> Druhý průchod seznamem pro označení existujících {@code}. <b>Cyklus {@code for-each}</b>:
+     *      <ol>
+     *      <li> Každý prvek je zkoumán, a jeho {@code idSenzor} je použit jako index v poli
+     *      {@code existujiciIdSenzory}, kde je nastaven na {@code true}
+     *      </ol>
+     * <li> Třetí průchod, tentokrát prohledá pole {@code existujiciIdSenzory}, aby našel první chybějící
+     * idSenzor. <b>Cyklus {@code for-each}</b>:
+     *      <ol>
+     *      <li> Pokud narazí na {@code false}, vrátí aktuální {@code i}, což je chybějící {@code idSenzor}
+     *      </ol>
+     * <li> Vrátí nejbližší {@code idSenzor} za nejvyšším nalezeným {@code idSenzorem} v seznamu, pokud se
+     * nepodařilo najít žádný chybějící {@code idSenzor} v předchozím průchodu
      * </ol>
-     * <b>Poznámka</b>: pokud by třída {@link IAbstrDoubleList} také deklarovala metodu
-     * {@code Stream&lt;T&gt; stream()}, která by převedla obsah seznamu na datový proud
-     * (v implementační třídě {@link AbstrDoubleList} by se nepřekrývala), bylo by možné
-     * použit ten datovod jako argument - {@code Stream&lt;Motorka&gt; datovod}
-     *
-     * @param seznamMereni seznam obsahující objekty typu {@link Mereni}
      */
-    public void obnovSeznam(IAbstrDoubleList<Mereni> seznamMereni) {
-        this.getItems().clear();
-
-        final Iterator<Mereni> seznamIterator = seznamMereni.iterator();
-        while (seznamIterator.hasNext()) {
-            final Mereni mereni = seznamIterator.next();
-            this.getItems().add(mereni);
+    public int dejUnikatniIdSenzoru() {
+        int maxIdSenzoru = NULOVA_HODNOTA;
+        boolean[] existujiciIdSenzory;
+        for (Mereni mereni : this.getItems()) {
+            int idSenzoru = mereni.getIdSenzor();
+            if (idSenzoru > maxIdSenzoru) {
+                maxIdSenzoru = idSenzoru;
+            }
         }
+        existujiciIdSenzory = new boolean[maxIdSenzoru + ZVETSOVAC_SEZNAMU];
+        for (Mereni mereni : this.getItems()) {
+            int idSenzoru = mereni.getIdSenzor();
+            existujiciIdSenzory[idSenzoru] = true;
+        }
+        for (int i = JEDNICKA; i <= maxIdSenzoru; i++) {
+            if (!existujiciIdSenzory[i]) {
+                return i;
+            }
+        }
+        return maxIdSenzoru + HODNOTA_INKREMENTU;
+    }
+
+    /**
+     * Aktualizije obsah {@link ListView} na základě dat dodávaných prostřednictvím {@link Stream}
+     * z argumentu {@code datovod}:
+     * <ol>
+     * <li> Vymaže všechny existující položky v seznamu a připraví ho na aktualizaci
+     * <li> Iteruje přes prvky v {@code datovod} a přidá každou položku do seznamu
+     * </ol>
+     *
+     * @param datovod nové položky
+     */
+    public void obnovSeznam(Stream<Mereni> datovod) {
+        this.getItems().clear();
+        datovod.forEach(this.getItems()::add);
     }
 
     /**
@@ -354,4 +467,6 @@ public final class SeznamPanel extends ListView<Mereni> {
      * Sníží aktuální index o {@code 1}
      */
     private void snizAktualniUkazatel() { aktualniIndex--; }
+
+    private void vynulujAktualniUkazatel() { aktualniIndex = VYCHOZI_HODNOTA_AKTUALNIHO_INDEXU; }
 }

@@ -199,9 +199,7 @@ public final class KomponentZpristupnovani extends TitulkovyPanel {
      * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#AKTUALNI}
      */
     private void nastavUdalostZpristupniAktualni() {
-        final InfoAlert infoAlert = new InfoAlert(
-                SeznamPanel.getInstance().dejAktualniPrvek().toString());
-        infoAlert.showAndWait();
+        InfoAlert.nahlasInfoLog(SeznamPanel.getInstance().dejAktualniPrvek().toString());
     }
 
     public boolean jeVypnutoBtnZpristupniPrvni() { return btnZpristupniPrvni.isDisabled(); }

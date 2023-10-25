@@ -117,7 +117,7 @@ public class SpravceMereniTest {
             instance.vlozMereni(V1, Pozice.POSLEDNI);
             instance.vlozMereni(V2, Pozice.POSLEDNI);
             IAbstrDoubleList<Mereni> mereni = instance.MereniDen(1, LocalDate.from(LocalDateTime.now()));
-            int result = ((AbstrDoubleList<Mereni>) mereni).pocet();
+            int result = mereni.velikost();
             int expected = 1;
             assertEquals(expected, result);
         } catch (Exception ex) {

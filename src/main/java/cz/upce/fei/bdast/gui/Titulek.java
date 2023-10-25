@@ -12,6 +12,7 @@ public enum Titulek {
     KOMPONENT_ODEBRANI("Odebrání"),
     KOMPONENT_PRIKAZU("Příkazy"),
     KOMPONENT_SOUBORU("Soubory"),
+    KOMPONENT_SPOTREBA("Spotřeba"),
     PRVNI("První"),
     POSLEDNI("Poslední"),
     NASLEDNIK("Následník"),
@@ -29,7 +30,14 @@ public enum Titulek {
     SPOTREBA_M3("Spotřeba m^3:"),
     KALENDAR("Kalendář:"),
     TLACITKO_FAJN("Fajn"),
-    TLACITKO_ZRUSIT("Zrušit");
+    TLACITKO_ZRUSIT("Zrušit"),
+    NAPOVEDA_DIALOGU_GENERATORU("10"),
+    TITULEK_DIALOGU_GENERATORU("Generátor"),
+    ZAHLAVI_DIALOGU_GENERATORU("Generování Měření"),
+    KONTEXT_DIALOGU_GENERATORU("Zadejte celočíselný počet:"),
+    SPOTREBA_MAX("Max"),
+    SPOTREBA_PRUMER("Průměr"),
+    SPOTREBA_DEN("Den");
 
     private final String nadpis;
 

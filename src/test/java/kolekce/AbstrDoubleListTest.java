@@ -326,7 +326,7 @@ public class AbstrDoubleListTest {
         try {
             instance.vlozPrvni(T1);
             instance.vlozPosledni(T4);
-            int result = instance.pocet();
+            int result = instance.velikost();
             instance.zrus();
             int expected = 2;
             assertEquals(expected, result);
@@ -400,7 +400,7 @@ public class AbstrDoubleListTest {
         try {
             instance.vlozPrvni(T1);
             instance.odeberPrvni();
-            int result = instance.pocet();
+            int result = instance.velikost();
             int expected = 0;
             assertEquals(expected,result);
         } catch (NullPointerException ex) {

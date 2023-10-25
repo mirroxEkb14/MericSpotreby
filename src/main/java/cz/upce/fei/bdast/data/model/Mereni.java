@@ -2,6 +2,9 @@ package cz.upce.fei.bdast.data.model;
 
 import cz.upce.fei.bdast.data.vycty.TypSenzoru;
 
+import java.io.ObjectStreamClass;
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -14,7 +17,10 @@ import java.time.format.DateTimeFormatter;
  *
  * @author amirov 10/4/2023
  */
-public abstract class Mereni {
+public abstract class Mereni implements Serializable  {
+
+    @Serial
+    private static final long serialVersionUID = ObjectStreamClass.lookup(Mereni.class).getSerialVersionUID();
 
     /**
      * Vlastní formát pro zobrazení {@link LocalDateTime} u přektyté metody {@link Object#toString()}
@@ -42,8 +48,6 @@ public abstract class Mereni {
     }
 
     public int getIdSenzor() { return idSenzor; }
-
-    public TypSenzoru getTypSenzoru() { return typSenzoru; }
 
     public LocalDateTime getCasMereni() { return casMereni; }
 

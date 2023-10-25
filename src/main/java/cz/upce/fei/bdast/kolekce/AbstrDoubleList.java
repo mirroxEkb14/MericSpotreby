@@ -632,12 +632,8 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T> {
         };
     }
 
-    /**
-     * Vracení aktuálního počtu dat v seznamu.
-     *
-     * @return vrací hodnotu s počtem dat v seznamu.
-     */
-    public int pocet() { return pocet; }
+    @Override
+    public int velikost() { return pocet; }
 
     /**
      * Privátní pomocní metoda.

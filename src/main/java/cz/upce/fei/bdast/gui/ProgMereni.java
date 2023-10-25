@@ -27,7 +27,7 @@ public final class ProgMereni extends Application {
      * </ol>
      */
     private static final int SIRKA_SCENY = 880;
-    private static final int VYSKA_SCENY = 600;
+    private static final int VYSKA_SCENY = 625;
     private static final boolean MENITELNOST_SCENY = false;
     private static final String TITULEK_SCENY = "Měření Senzorů. Obousměrně Necyklicky Zřetězený Lineární Seznam";
 

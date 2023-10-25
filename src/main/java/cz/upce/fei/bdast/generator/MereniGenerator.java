@@ -32,6 +32,11 @@ public final class MereniGenerator implements Generator<Mereni> {
      */
     private static final double CINITEL = 100.0;
     /**
+     * Konstanta reprezentující dělitel, pomocí které je možné zaokrouhlit výsledné náhodné číslo,
+     * které má být pouze jedno desetinné místo
+     */
+    private final double DELITEL = 10.0;
+    /**
      * Konstanta vyjadřuje horní omezení pro možnost generování náhodných
      * unikátních identifikátoru jednotlivých senzorů
      */
@@ -57,7 +62,7 @@ public final class MereniGenerator implements Generator<Mereni> {
                             idSenzor, casMereni, spotrebaM3));
                 }
             }
-        } while (pocet-- != Generator.KONTROLUJICI_NULA);
+        } while (--pocet != Generator.KONTROLUJICI_NULA);
     }
 
     /**
@@ -109,9 +114,7 @@ public final class MereniGenerator implements Generator<Mereni> {
      *
      * @return náhodné desetinné číslo v rozsahu >=0 a <100
      */
-    private double dejNahodneDesetinneCislo() {
-        return new Random().nextDouble() * CINITEL;
-    }
+    private double dejNahodneDesetinneCislo() { return Math.round(new Random().nextDouble() * CINITEL) / DELITEL; }
 
     /**
      * Privátní pomocní metoda

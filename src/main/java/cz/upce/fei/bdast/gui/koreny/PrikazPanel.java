@@ -39,6 +39,7 @@ public final class PrikazPanel extends VBox {
         this.getChildren().add(KomponentZpristupnovani.getInstance());
         this.getChildren().add(KomponentOdebrani.getInstance());
         this.getChildren().add(KomponentPrikazu.getInstance());
+        this.getChildren().add(KomponentSpotreba.getInstance());
         this.getChildren().add(KomponentSouboru.getInstance());
     }
 }

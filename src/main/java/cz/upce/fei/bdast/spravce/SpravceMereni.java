@@ -4,12 +4,16 @@ import cz.upce.fei.bdast.data.model.Mereni;
 import cz.upce.fei.bdast.data.model.MereniElektrika;
 import cz.upce.fei.bdast.data.model.MereniVoda;
 import cz.upce.fei.bdast.data.vycty.Pozice;
+import cz.upce.fei.bdast.generator.MereniGenerator;
 import cz.upce.fei.bdast.kolekce.AbstrDoubleList;
 import cz.upce.fei.bdast.kolekce.IAbstrDoubleList;
+import cz.upce.fei.bdast.perzistence.MereniPerzistence;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * Tento modul umožnuje správu měření z jednotlivých měření od senzorů
@@ -25,6 +29,9 @@ public final class SpravceMereni implements Ovladani {
      * Konstanta se používá při ošetřování na hodnotu nula
      */
     private static final int NULTA_HODNOTA = 0;
+
+    private final MereniGenerator generator = new MereniGenerator();
+    private final MereniPerzistence perzistence = new MereniPerzistence();
 
     private static SpravceMereni instance;
 
@@ -313,6 +320,29 @@ public final class SpravceMereni implements Ovladani {
         return dejPrumernouSpotrebu(celkovaSpotreba, citacMereni);
     }
 
+    @Override
+    public boolean zalohuj() {
+        try {
+            perzistence.ulozBin(seznam);
+            return true;
+        } catch (IOException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean obnov() {
+        try {
+            perzistence.nactiBin(seznam);
+            return true;
+        } catch (IOException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public void generuj(int pocet) { generator.generuj(seznam, pocet); }
+
     /**
      * Privátní pomocná metoda
      * <p>
@@ -331,6 +361,9 @@ public final class SpravceMereni implements Ovladani {
 
     @Override
     public void zrus() { seznam.zrus(); }
+
+    @Override
+    public Stream<Mereni> dejDatovod() { return seznam.stream(); }
 
     /**
      * Privátní pomocná metoda.

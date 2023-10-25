@@ -3,6 +3,7 @@ package cz.upce.fei.bdast.spravce;
 import cz.upce.fei.bdast.data.model.Mereni;
 import cz.upce.fei.bdast.data.vycty.Pozice;
 import cz.upce.fei.bdast.kolekce.IAbstrDoubleList;
+import  cz.upce.fei.bdast.gui.koreny.SeznamPanel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -83,6 +84,34 @@ public interface Ovladani extends Iterable<Mereni> {
      * @return vrací maximální spotřebu senzoru v rámci určitého intervalu.
      */
     double maxSpotreba(int idSenzoru, LocalDateTime datumOd, LocalDateTime datumDo);
+
+    /**
+     * Zálohuje seznam dat do binárního souboru
+     *
+     * @return vrací {@code true}, když data byla úspěšně zálohována
+     */
+    boolean zalohuj();
+
+    /**
+     * Obnoví seznam dat z binárního souboru
+     *
+     * @return vrací {@code true}, když data byla úspěšně načtena a seznam byl obnoven
+     */
+    boolean obnov();
+
+    /**
+     * Generuje náhodne data pro testování
+     *
+     * @param pocet počet {@link Mereni} pro generaci
+     */
+    void generuj(int pocet);
+
+    /**
+     * Dodá datový stream. Je pomocní pro {@link SeznamPanel#obnovSeznam(Stream)}.
+     *
+     * @return datový stream prvků
+     */
+    Stream<Mereni> dejDatovod();
 
     /**
      * Pomocí iterátoru zjistí průměrnou spotřebu v rámci daného intervalu. Pro elektrický

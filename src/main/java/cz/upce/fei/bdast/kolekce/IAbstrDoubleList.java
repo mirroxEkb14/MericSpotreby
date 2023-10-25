@@ -1,6 +1,8 @@
 package cz.upce.fei.bdast.kolekce;
 
 import java.util.Iterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Tento interfejs deklaruje metody obousměrně necyklického zřetězeného
@@ -185,4 +187,22 @@ public interface IAbstrDoubleList<T> extends Iterable<T> {
      * @return vrací iterátor nad prvky typu T
      */
     Iterator<T> iterator();
+
+    /**
+     * Vrací aktuální počet dat v seznamu
+     *
+     * @return vrací hodnotu s počtem dat v seznamu
+     */
+    int velikost();
+
+    /**
+     * Metoda převede obsah seznamu na datový proud, který předá při návratu
+     * <p>
+     * V implementačních třídách se nepřekrývá
+     *
+     * @return datovy proud
+     */
+    default Stream<T> stream() {
+        return StreamSupport.stream(spliterator(), false);
+    }
 }

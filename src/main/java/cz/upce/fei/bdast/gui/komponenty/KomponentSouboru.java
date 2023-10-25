@@ -1,10 +1,14 @@
 package cz.upce.fei.bdast.gui.komponenty;
 
 // <editor-fold defaultstate="collapsed" desc="Importy">
+import cz.upce.fei.bdast.gui.alerty.ChybovaZprava;
+import cz.upce.fei.bdast.gui.alerty.ErrorAlert;
 import cz.upce.fei.bdast.gui.kontejnery.MrizkovyPanel;
 import cz.upce.fei.bdast.gui.Titulek;
 import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
 import cz.upce.fei.bdast.gui.kontejnery.Tlacitko;
+import cz.upce.fei.bdast.gui.koreny.SeznamPanel;
+import cz.upce.fei.bdast.spravce.SpravceMereni;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 // </editor-fold>
@@ -41,10 +45,12 @@ public final class KomponentSouboru extends TitulkovyPanel {
         this.btnUloz = new Tlacitko(
                 Titulek.ULOZ.getNadpis());
         this.btnUloz.setDisable(true);
+        this.btnUloz.setOnAction(actionEvent -> nastavUdalostUloz());
 
         this.btnNacti = new Tlacitko(
                 Titulek.NACTI.getNadpis());
         this.btnNacti.setDisable(true);
+        this.btnNacti.setOnAction(actionEvent -> nastavUdalostNacti());
 
         nastavKomponentSouboru();
     }
@@ -59,6 +65,33 @@ public final class KomponentSouboru extends TitulkovyPanel {
         gridPane.add(btnUloz, MrizkovyPanel.SLOUPCOVY_INDEX_PRVNI, MrizkovyPanel.RADKOVY_INDEX_PRVNI);
         gridPane.add(btnNacti, MrizkovyPanel.SLOUPCOVY_INDEX_DRUHY, MrizkovyPanel.RADKOVY_INDEX_PRVNI);
         return gridPane;
+    }
+
+    /**
+     * Přivátní pomocní metoda
+     * <p>
+     * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#ULOZ}
+     */
+    private void nastavUdalostUloz() {
+        if (SpravceMereni.getInstance().zalohuj()) {
+            zapniBtnNacti();
+            return;
+        }
+        ErrorAlert.nahlasErrorLog(ChybovaZprava.ZALOHOVANI.getZprava());
+    }
+
+    /**
+     * Přivátní pomocní metoda
+     * <p>
+     * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#NACTI}
+     */
+    private void nastavUdalostNacti() {
+        if (SpravceMereni.getInstance().obnov()) {
+            SeznamPanel.getInstance().obnovSeznam(
+                    SpravceMereni.getInstance().dejDatovod());
+            return;
+        }
+        ErrorAlert.nahlasErrorLog(ChybovaZprava.OBNOVENI.getZprava());
     }
 
     /**
@@ -81,12 +114,12 @@ public final class KomponentSouboru extends TitulkovyPanel {
 
 
 // <editor-fold defaultstate="collapsed" desc="Přepínače">
-    public void zapniBtnUloz() { btnUloz.setDisable(true); }
+    public void zapniBtnUloz() { btnUloz.setDisable(false); }
 
-    public void vypniBtnUloz() { btnUloz.setDisable(false); }
+    public void vypniBtnUloz() { btnUloz.setDisable(true); }
 
-    public void zapniBtnNacti() { btnNacti.setDisable(true); }
+    public void zapniBtnNacti() { btnNacti.setDisable(false); }
 
-    public void vypniBtnNacti() { btnNacti.setDisable(false); }
+    public void vypniBtnNacti() { btnNacti.setDisable(true); }
 // </editor-fold>
 }

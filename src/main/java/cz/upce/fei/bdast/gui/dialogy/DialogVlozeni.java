@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.collections.ObservableList;
 import cz.upce.fei.bdast.data.model.Mereni;
+import cz.upce.fei.bdast.tvurce.TvurceMereni;
 
 import java.util.Collection;
 
@@ -29,7 +30,10 @@ import java.util.Collection;
 public final class DialogVlozeni extends Dialog<ButtonType> {
 
     /**
+     * Statický atribut uchovává instanci dialogu s uživatelskými daty. Používá se
+     * hladně při vytvoření nového {@link Mereni}
      *
+     * @see TvurceMereni#dejNoveMereni(int, TypSenzoru)
      */
     private static PolozkaVlozeni dialogovyKomponent;
 
