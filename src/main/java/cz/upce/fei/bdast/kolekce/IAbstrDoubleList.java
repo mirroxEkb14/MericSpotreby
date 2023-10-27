@@ -202,7 +202,5 @@ public interface IAbstrDoubleList<T> extends Iterable<T> {
      *
      * @return datovy proud
      */
-    default Stream<T> stream() {
-        return StreamSupport.stream(spliterator(), false);
-    }
+    default Stream<T> stream() { return StreamSupport.stream(spliterator(), false); }
 }

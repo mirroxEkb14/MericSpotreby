@@ -1,8 +1,6 @@
 package cz.upce.fei.bdast.gui.komponenty;
 
 // <editor-fold defaultstate="collapsed" desc="Importy">
-import cz.upce.fei.bdast.data.model.Mereni;
-import cz.upce.fei.bdast.data.model.MereniElektrika;
 import cz.upce.fei.bdast.gui.Titulek;
 import cz.upce.fei.bdast.gui.kontejnery.MrizkovyPanel;
 import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
@@ -13,10 +11,11 @@ import javafx.scene.layout.GridPane;
 // </editor-fold>
 
 /**
- * U této implementace dochází k vytvoření dialogu pro vytvoření nového {@link Mereni},
- * a to je měření typu {@link MereniElektrika}
+ * Třída slouží k vytvoření komponenty pro zadávání dat o průměrné spotřebě. Obsahuje grafické prvky pro
+ * zadávání identifikátoru senzoru a rozsahu dat, a je konfigurována pro zobrazení těchto prvků ve vhodném
+ * rozložení. Také poskytuje metody {@code getter} pro získání hodnot těchto grafických prvků
  */
-public final class KomponentMaxSpotreba extends TitulkovyPanel
+public final class KomponentPrumerSpotreba extends TitulkovyPanel
         implements PolozkaKomponenty {
 
     /**
@@ -27,12 +26,10 @@ public final class KomponentMaxSpotreba extends TitulkovyPanel
     private final Label lIdSenzoru, lDatumOd, lDatumDo;
 
     /**
-     * Konstruktor inicializuje všechny výše uvedené grafické prvky. Používá k tomu textová pole,
-     * výběry data a popisky a přiřazuje jim odpovídající hodnoty a texty. Také volá privátní
-     * pomocní metodu {@link KomponentMaxSpotreba#nastavKomponentMaxSpotreba()}, která provádí
-     * konfiguraci komponenty
+     * Konstruktor inicializuje všechny výše uvedené grafické prvky. Používá k tomu
+     * textová pole, výběry data a popisky a přiřazuje jim odpovídající hodnoty a texty
      */
-    public KomponentMaxSpotreba() {
+    public KomponentPrumerSpotreba() {
         this.tfIdSenzoru = new TextField();
         this.dpDatumOd = dejMesicniKalendar();
         this.dpDatumDo = dejMesicniKalendar();
@@ -40,7 +37,7 @@ public final class KomponentMaxSpotreba extends TitulkovyPanel
         this.lDatumOd = new Label(Titulek.DATUM_OD.getNadpis());
         this.lDatumDo = new Label(Titulek.DATUM_DO.getNadpis());
 
-        nastavKomponentMaxSpotreba();
+        nastavKomponentPrumerSpotreba();
     }
 
     /**
@@ -48,7 +45,7 @@ public final class KomponentMaxSpotreba extends TitulkovyPanel
      * <p>
      * Nastavuje text titulku a obsah této třídy
      */
-    private void nastavKomponentMaxSpotreba() {
+    private void nastavKomponentPrumerSpotreba() {
         this.setText(Titulek.KOMPONENT_DIALOGU_SPOTREBA.getNadpis());
         this.setContent(dejGridPane());
     }
@@ -56,9 +53,8 @@ public final class KomponentMaxSpotreba extends TitulkovyPanel
     /**
      * Privátní pomocní metoda
      * <p>
-     * je zodpovědná za vytvoření a nastavení {@link GridPane}, což je prostředek pro organizaci
-     * grafických prvků. Dále provádí přidání textových polí, výběrů data a popisků do {@link GridPane}
-     * na konkrétní umístění. Tím vytváří vhodné rozložení těchto prvků v rámci kontejneru
+     * Vytváří a konfiguruje {@link GridPane}, což je kontejnerem pro uspořádání grafických prvků.
+     * Následně přidává textová pole, výběry data a popisky do tohoto {@link GridPane} na konkrétní pozice
      */
     private GridPane dejGridPane() {
         final GridPane gridPane = new MrizkovyPanel();
@@ -72,7 +68,7 @@ public final class KomponentMaxSpotreba extends TitulkovyPanel
     }
 
 /**
- * Pomáhají získat možnost manipulovat s privátními atributy (grafickými prvky) třídy z různých částí programu
+ * Umožňují získat přístup k soukromým atributům (grafickým prvkům) třídy z jiných částí programu
  */
 // <editor-fold defaultstate="collapsed" desc="Gettery">
     public TextField getTfIdSenzoru() { return tfIdSenzoru; }

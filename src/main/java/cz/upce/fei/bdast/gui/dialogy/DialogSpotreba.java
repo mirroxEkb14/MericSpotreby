@@ -1,8 +1,10 @@
 package cz.upce.fei.bdast.gui.dialogy;
 
 import cz.upce.fei.bdast.gui.Titulek;
+import cz.upce.fei.bdast.gui.komponenty.KomponentDenSpotreba;
 import cz.upce.fei.bdast.gui.komponenty.KomponentMaxSpotreba;
-import cz.upce.fei.bdast.gui.komponenty.PolozkaVlozeni;
+import cz.upce.fei.bdast.gui.komponenty.KomponentPrumerSpotreba;
+import cz.upce.fei.bdast.gui.komponenty.PolozkaKomponenty;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -18,7 +20,7 @@ public final class DialogSpotreba extends Dialog<ButtonType>
     /**
      * Statický atribut pro pozdější získání zvenčí
      */
-    private static PolozkaVlozeni dialogovyKomponent;
+    private static PolozkaKomponenty dialogovyKomponent;
 
     /**
      * Konstruktor nastaví titulek dialogového okna na hodnotu z konstanty, pak nastaví tlačítka
@@ -41,14 +43,14 @@ public final class DialogSpotreba extends Dialog<ButtonType>
      */
     private void nastavDialogSpotreba(TypSpotreby typSpotreby) {
         switch (typSpotreby) {
-            case MAX -> {
-                dialogovyKomponent = new KomponentMaxSpotreba();
-                this.getDialogPane().setContent((Node) dialogovyKomponent);
-            }
+            case MAX -> dialogovyKomponent = new KomponentMaxSpotreba();
+            case DEN -> dialogovyKomponent = new KomponentDenSpotreba();
+            case PRUMER -> dialogovyKomponent = new KomponentPrumerSpotreba();
         }
+        this.getDialogPane().setContent((Node) dialogovyKomponent);
     }
 
 // <editor-fold defaultstate="collapsed" desc="Gettery">
-    public static PolozkaVlozeni getDialogovyKomponent() { return dialogovyKomponent; }
+    public static PolozkaKomponenty getDialogovyKomponent() { return dialogovyKomponent; }
 // </editor-fold>
 }

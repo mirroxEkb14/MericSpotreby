@@ -37,6 +37,20 @@ public final class MereniGenerator implements Generator<Mereni> {
      */
     private final double DELITEL = 10.0;
     /**
+     * Konstanta se používá pro získání čísla měsíce (od {@code 1} do maximálního
+     * počtu dnů v měsíci)
+     *
+     * @see MereniGenerator#dejNahodneDatumMesice()
+     */
+    private final int ZVETSOVAC_MESICU = 1;
+    /**
+     * Konstanta je určena pro posun rozsahu na 1 (včetně) až 365 (včetně) pro
+     *  platný rozsah dnů v roce
+     *
+     * @see MereniGenerator#dejNahodneDatumRoku()
+     */
+    private final int ZVETSOVAC_ROKU = 1;
+    /**
      * Konstanta vyjadřuje horní omezení pro možnost generování náhodných
      * unikátních identifikátoru jednotlivých senzorů
      */
@@ -137,7 +151,7 @@ public final class MereniGenerator implements Generator<Mereni> {
     private LocalDateTime dejNahodneDatumMesice() {
         LocalDateTime now = LocalDateTime.now();
         Month aktualniMesic = now.getMonth();
-        int nahodnyDen = new Random().nextInt(aktualniMesic.minLength()) + 1;
+        int nahodnyDen = new Random().nextInt(aktualniMesic.minLength()) + ZVETSOVAC_MESICU;
         return now.withDayOfMonth(nahodnyDen);
     }
 
@@ -165,13 +179,14 @@ public final class MereniGenerator implements Generator<Mereni> {
      * datu začátku roku počet dnů, který byl vygenerován v předchozím kroku ({@code denRoku}),
      * což vlastně způsobí posun v datu na požadovaný náhodný den v rámci aktuálního roku
      * </ol>
+     * <b>Poznámka</b>: metoda se momentálně v rámci projektu nepoužívá
      *
      * @return objekt typu {@link LocalDateTime} reprezentující náhodné datum
      * letošního roku
      */
     private LocalDateTime dejNahodneDatumRoku() {
         final int letostiRok = LocalDateTime.now().getYear();
-        final int denRoku = 1 + (int) (Math.random() * POCET_DNU_V_ROCE);
+        final int denRoku = ZVETSOVAC_ROKU + (int) (Math.random() * POCET_DNU_V_ROCE);
         final LocalDateTime zacatekRoku = LocalDateTime.of(letostiRok,
                 PRVNI_MESIC_ROKU, PRVNI_DEN_V_MESICI, NULOVA_HODINA, NULOVA_MINUTA);
         return zacatekRoku.plusDays(denRoku);

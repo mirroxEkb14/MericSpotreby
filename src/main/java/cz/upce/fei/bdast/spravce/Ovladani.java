@@ -68,7 +68,7 @@ public interface Ovladani extends Iterable<Mereni> {
      *
      * @return vrací seznam nalezených prvků.
      */
-    IAbstrDoubleList<Mereni> MereniDen(int idSenzoru, LocalDate datum);
+    IAbstrDoubleList<Mereni> mereniDen(int idSenzoru, LocalDate datum);
 
     /**
      * Pomocí iterátoru vyhledá maximální spotřebu daného senzoru v rámci

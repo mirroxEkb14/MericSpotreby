@@ -24,14 +24,17 @@ import java.time.temporal.TemporalAdjusters;
  * přístup k této konstantě, která je použita pro nastavení výchozí hodnoty pro spotřebu (energie
  * a vody)
  * <p>
- * Obsahuje metodu {@link PolozkaVlozeni#dejMesicniKalendar()}, která vrací {@link DatePicker}
+ * Obsahuje metodu {@link PolozkaKomponenty#dejMesicniKalendar()}, která vrací {@link DatePicker}
  * komponentu pro výběr měsíce
  * <p>
  * Třídy {@link KomponentVlozeniElektriky} a {@link KomponentVlozeniVody} jsou konkrétními
  * implementacemi tohoto rozhraní pro různé typy položek, tj. pro elektrická a vodní měření a
  * obsahují metody a atributy specifické pro každý typ položky
+ * <p>
+ * Slouží také jako označení pro třídy, které implementují tento "kontrakt" jako jsou {@link KomponentMaxSpotreba},
+ * {@link KomponentDenSpotreba} a {@link KomponentPrumerSpotreba}
  */
-public interface PolozkaVlozeni {
+public interface PolozkaKomponenty {
 
     LocalDate VYCHOZI_KALENDAR = LocalDate.now();
     String VYCHOZI_HODNOTA_SPOTREBY = "100";

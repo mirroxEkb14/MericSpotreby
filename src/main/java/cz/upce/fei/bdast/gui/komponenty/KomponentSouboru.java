@@ -107,6 +107,8 @@ public final class KomponentSouboru extends TitulkovyPanel {
      * Veřejná pomocní metoda
      * <p>
      * Ověří, zda je tlačítko {@code btnNacti} vypnuto/deaktivováno
+     * <p>
+     * <b>Poznámka</b>: metoda se momentálně v rámci projektu nepoužívá
      *
      * @return vrací {@code true}, pokud je vypnuto (disabled), v opačném případě {@code false}
      */
@@ -119,7 +121,5 @@ public final class KomponentSouboru extends TitulkovyPanel {
     public void vypniBtnUloz() { btnUloz.setDisable(true); }
 
     public void zapniBtnNacti() { btnNacti.setDisable(false); }
-
-    public void vypniBtnNacti() { btnNacti.setDisable(true); }
 // </editor-fold>
 }

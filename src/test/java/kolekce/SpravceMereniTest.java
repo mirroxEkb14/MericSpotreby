@@ -4,7 +4,6 @@ import cz.upce.fei.bdast.data.model.Mereni;
 import cz.upce.fei.bdast.data.model.MereniElektrika;
 import cz.upce.fei.bdast.data.model.MereniVoda;
 import cz.upce.fei.bdast.data.vycty.Pozice;
-import cz.upce.fei.bdast.kolekce.AbstrDoubleList;
 import cz.upce.fei.bdast.kolekce.IAbstrDoubleList;
 import cz.upce.fei.bdast.spravce.Ovladani;
 import cz.upce.fei.bdast.spravce.SpravceMereni;
@@ -116,7 +115,7 @@ public class SpravceMereniTest {
             instance.vlozMereni(E2, Pozice.POSLEDNI);
             instance.vlozMereni(V1, Pozice.POSLEDNI);
             instance.vlozMereni(V2, Pozice.POSLEDNI);
-            IAbstrDoubleList<Mereni> mereni = instance.MereniDen(1, LocalDate.from(LocalDateTime.now()));
+            IAbstrDoubleList<Mereni> mereni = instance.mereniDen(1, LocalDate.from(LocalDateTime.now()));
             int result = mereni.velikost();
             int expected = 1;
             assertEquals(expected, result);

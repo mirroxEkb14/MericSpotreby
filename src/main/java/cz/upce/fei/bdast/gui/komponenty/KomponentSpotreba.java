@@ -1,5 +1,7 @@
 package cz.upce.fei.bdast.gui.komponenty;
 
+// <editor-fold defaultstate="collapsed" desc="Importy">
+import cz.upce.fei.bdast.data.model.Mereni;
 import cz.upce.fei.bdast.gui.Titulek;
 import cz.upce.fei.bdast.gui.alerty.ChybovaZprava;
 import cz.upce.fei.bdast.gui.alerty.ErrorAlert;
@@ -9,14 +11,18 @@ import cz.upce.fei.bdast.gui.dialogy.TypSpotreby;
 import cz.upce.fei.bdast.gui.kontejnery.MrizkovyPanel;
 import cz.upce.fei.bdast.gui.kontejnery.TitulkovyPanel;
 import cz.upce.fei.bdast.gui.kontejnery.Tlacitko;
+import cz.upce.fei.bdast.kolekce.IAbstrDoubleList;
 import cz.upce.fei.bdast.spravce.SpravceMereni;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.TextField;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+// </editor-fold>
 
 /**
  * U této implementace dochází k vytvoření panelu {@link TitledPane} s
@@ -30,6 +36,8 @@ public final class KomponentSpotreba extends TitulkovyPanel {
      * Deklarace tlačítek
      */
     private final Button btnSpotrebaMax, btnSpotrebaPrumer, btnSpotrebaDen;
+
+    private final String ODRADKOVANI = "\n";
 
     private static KomponentSpotreba instance;
 
@@ -145,18 +153,115 @@ public final class KomponentSpotreba extends TitulkovyPanel {
      * Přivátní pomocní metoda
      * <p>
      * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#SPOTREBA_PRUMER}
+     * <p>
+     * Popis logiky:
+     * <ol>
+     * <li> Vytváří nový dialog typu {@link DialogSpotreba} s argumentem {@link TypSpotreby#PRUMER} a zobrazí
+     * ho voláním {@link Dialog#showAndWait()}. Tento dialog slouží k zadávání parametrů pro výpočet průměrné
+     * spotřeby
+     * <li> Po zavření dialogu:
+     *      <ol>
+     *      <li> Získává dialogový komponent {@link KomponentPrumerSpotreba} z dialogu pro získání dat z dialogu
+     *      <li> Získává textový vstup z textového pole {@code tfIdSenzoru} v dialogovém komponentu, které obsahuje
+     *      identifikátor senzoru
+     *      <li> Validuje vstup od uživatele pomocí {@link TextValidator}. Pokud vstup odpovídá očekávanému
+     *      celočíselnému formátu, pokračuje v dalším zpracování:
+     *          <ol>
+     *          <li> Převádí textový vstup na celočíselný identifikátor senzoru {@code idSenzoru}
+     *          <li> Získává data o datumech od a do z dialogového komponentu {@link KomponentPrumerSpotreba} a
+     *          konvertuje je na {@link LocalDateTime}
+     *          <li> Volá metodu {@link SpravceMereni#prumerSpotreba(int, LocalDateTime, LocalDateTime)} ze správce s
+     *          předanými parametry (identifikátor senzoru a datumy), která provádí výpočet průměrné spotřeby
+     *          <li> Pokud byla průměrná spotřeba úspěšně získána:
+     *              <ol>
+     *              <li> Zobrazí průměrnou spotřebu jako hlášku (alert). V případě chyby (například pokud průměrná
+     *              spotřeba nemůže být spočítána) metoda zobrazí chybové hlášení (alert)
+     *              </ol>
+     *          </ol>
+     *      <li> Pokud dojde k nějaké neočekávané chybě nebo neplatnému vstupu, zobrazí jeden z druhů chybového hlášení,
+     *      čímž zaznamenává chybu a zobrazuje uživateli chybové hlášení
+     *      </ol>
+     * </ol>
      */
     private void nastavSpotrebaPrumer() {
-        ErrorAlert.nahlasErrorLog(ChybovaZprava.NEDOSTUPNI.getZprava());
+        new DialogSpotreba(TypSpotreby.PRUMER).showAndWait();
+
+        final KomponentPrumerSpotreba dialogovyKomponent = (KomponentPrumerSpotreba) DialogSpotreba.getDialogovyKomponent();
+        final String vstup = dialogovyKomponent.getTfIdSenzoru().getText();
+        if (validatorCelychCisel.testuj(vstup)) {
+            final int idSenzoru = Integer.parseInt(vstup);
+            final LocalDateTime datumOd = LocalDateTime.of(
+                    dialogovyKomponent.getDpDatumOd().getValue(), LocalTime.MIDNIGHT);
+            final LocalDateTime datumDo = LocalDateTime.of(
+                    dialogovyKomponent.getDpDatumDo().getValue(), LocalTime.MIDNIGHT);
+
+            final double pozadovanyId = SpravceMereni.getInstance().prumerSpotreba(idSenzoru, datumOd, datumDo);
+            if (pozadovanyId == Double.MIN_VALUE) {
+                SpotrebaAlert.zobraziSpotrebuAlert(Titulek.ZPRAVA_ALERT_SPOTREBA_PRUMER.getNadpis(),
+                        Titulek.ZAHLAVI_ALERTU_SPOTREBA_PRUMER.getNadpis());
+                return;
+            }
+            SpotrebaAlert.zobraziSpotrebuAlert(String.valueOf(pozadovanyId), Titulek.ZAHLAVI_ALERTU_SPOTREBA_PRUMER.getNadpis());
+            return;
+        }
+        ErrorAlert.nahlasErrorLog(ChybovaZprava.PRUMER_SPOTREBA.getZprava());
     }
 
     /**
      * Přivátní pomocní metoda
      * <p>
      * Vastaví událost (action), která se provede po stisknutí tlačítka {@link Titulek#SPOTREBA_DEN}
+     * <p>
+     * Popis logiky:
+     * <ol>
+     * <li> Vytváří nový dialog typu {@link DialogSpotreba} s argumentem {@link TypSpotreby#DEN} a zobrazí ho voláním
+     * {@link Dialog#showAndWait()}, který slouží k zadávání parametrů pro výpočet spotřeby pro konkrétní den
+     * <li> Po zavření dialogu:
+     *      <ol>
+     *      <li> Získává dialogový komponent {@link KomponentDenSpotreba} z dialogu pro získání dat z dialogu
+     *      <li> Získává textový vstup z textového pole {@code tfIdSenzoru} v dialogovém komponentu, obsahující
+     *      identifikátor senzoru
+     *      <li> Validuje vstup od uživatele pomocí {@link TextValidator}. Pokud vstup odpovídá očekávanému
+     *      celočíselnému formátu, pokračuje v dalším zpracování:
+     *          <ol>
+     *          <li> Převádí textový vstup na celočíselný identifikátor senzoru {@code idSenzoru}
+     *          <li> Získává datum z dialogového komponentu pomocí {@link KomponentDenSpotreba#getDatum()}. Datum
+     *          reprezentuje konkrétní den, pro který se má provést výpočet spotřeby
+     *          <li> Volá metodu {@link SpravceMereni#mereniDen(int, LocalDate)} ze správce s předanými parametry
+     *          (identifikátor senzoru a datum), která provádí výpočet spotřeby pro konkrétní den
+     *          <li> V případě, že seznam měření je prázdný:
+     *              <ol>
+     *              <li> Zobrazí chybovou zprávu, že nejsou k dispozici žádná data
+     *              </ol>
+     *          <li> Pokud byla spotřeba úspěšně získána, zobrazí výsledky v podobě textového řetězce, obsahující data o
+     *          měřeních pro daný den
+     *          </ol>
+     *      <li> Pokud vstup nebyl validní, metoda také zaznamená chybovou zprávu
+     *      </ol>
+     * </ol>
      */
     private void nastavSpotrebaDen() {
-        ErrorAlert.nahlasErrorLog(ChybovaZprava.NEDOSTUPNI.getZprava());
+        new DialogSpotreba(TypSpotreby.DEN).showAndWait();
+
+        final KomponentDenSpotreba dialogovyKomponent = (KomponentDenSpotreba) DialogSpotreba.getDialogovyKomponent();
+        final String vstup = dialogovyKomponent.getTfIdSenzoru().getText();
+        if (validatorCelychCisel.testuj(vstup)) {
+            final int idSenzoru = Integer.parseInt(vstup);
+            final LocalDate datum = dialogovyKomponent.getDatum().getValue();
+
+            final IAbstrDoubleList<Mereni> seznamMereni = SpravceMereni.getInstance().mereniDen(idSenzoru, datum);
+            if (seznamMereni.jePrazdny()) {
+                ErrorAlert.nahlasErrorLog(ChybovaZprava.DEN_SPOTREBA_ZADNE_PRVKY.getZprava());
+                return;
+            }
+            final StringBuilder sb = new StringBuilder();
+            for (Mereni mereni : seznamMereni) {
+                sb.append(mereni);
+                sb.append(ODRADKOVANI);
+            }
+            SpotrebaAlert.zobraziSpotrebuAlert(sb.toString(), Titulek.ZAHLAVI_ALERTU_SPOTREBA_DEN.getNadpis());
+        }
+        ErrorAlert.nahlasErrorLog(ChybovaZprava.DEN_SPOTREBA_SPATNA_DATA.getZprava());
     }
 
     public boolean jeVypnutoBtnSpotrebaMax() { return btnSpotrebaMax.isDisabled(); }

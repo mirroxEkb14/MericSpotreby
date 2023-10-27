@@ -17,7 +17,7 @@ import javafx.scene.layout.GridPane;
  * a to je měření typu {@link MereniVoda}
  */
 public final class KomponentVlozeniVody extends TitulkovyPanel
-        implements PolozkaVlozeni {
+        implements PolozkaKomponenty {
 
     /**
      * Deklarace grafických prvků

@@ -2,6 +2,8 @@ package cz.upce.fei.bdast.data.vycty;
 
 import cz.upce.fei.bdast.generator.MereniGenerator;
 
+import java.util.Random;
+
 /**
  * Tento výčtový typ uchovává jednotlivé typy senzorů.
  *
@@ -25,14 +27,16 @@ public enum TypSenzoru {
 
     public String getNazev() { return nazev; }
 
-    //    /**
-//     * Získá náhodnou enum konstantu z tohoto výčtového typu
-//     *
-//     * @return náhodná hodnota tohoto vyčtového typy
-//     */
-//    public static TypSenzoru dejNahodnyTyp() {
-//        final Random nahodnost = new Random();
-//        final int delkaEnumu = TypSenzoru.values().length;
-//        return TypSenzoru.values()[nahodnost.nextInt(delkaEnumu)];
-//    }
+    /**
+     * Získá náhodnou enum konstantu z tohoto výčtového typu
+     * <p>
+     * <b>Poznámka</b>: metoda se momentálně v rámci projektu nepoužívá
+     *
+     * @return náhodná hodnota tohoto vyčtového typy
+     */
+    public static TypSenzoru dejNahodnyTyp() {
+        final Random nahodnost = new Random();
+        final int delkaEnumu = TypSenzoru.values().length;
+        return TypSenzoru.values()[nahodnost.nextInt(delkaEnumu)];
+    }
 }

@@ -4,7 +4,7 @@ import cz.upce.fei.bdast.data.vycty.TypSenzoru;
 import cz.upce.fei.bdast.gui.Titulek;
 import cz.upce.fei.bdast.gui.komponenty.KomponentVlozeniElektriky;
 import cz.upce.fei.bdast.gui.komponenty.KomponentVlozeniVody;
-import cz.upce.fei.bdast.gui.komponenty.PolozkaVlozeni;
+import cz.upce.fei.bdast.gui.komponenty.PolozkaKomponenty;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import cz.upce.fei.bdast.data.model.Mereni;
@@ -33,7 +33,7 @@ public final class DialogVlozeni extends Dialog<ButtonType>
      *
      * @see TvurceMereni#dejNoveMereni(int, TypSenzoru)
      */
-    private static PolozkaVlozeni dialogovyKomponent;
+    private static PolozkaKomponenty dialogovyKomponent;
 
     public DialogVlozeni(int idSenzoru, TypSenzoru typSenzoru) {
         this.setTitle(Titulek.DIALOG_VLOZENI.getNadpis());
@@ -66,6 +66,6 @@ public final class DialogVlozeni extends Dialog<ButtonType>
     }
 
 // <editor-fold defaultstate="collapsed" desc="Gettery">
-    public static PolozkaVlozeni getDialogovyKomponent() { return dialogovyKomponent; }
+    public static PolozkaKomponenty getDialogovyKomponent() { return dialogovyKomponent; }
 // </editor-fold>
 }

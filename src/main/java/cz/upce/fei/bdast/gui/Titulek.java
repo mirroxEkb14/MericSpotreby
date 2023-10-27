@@ -44,8 +44,10 @@ public enum Titulek {
     DATUM_DO("Datum do:"),
     ZAHLAVI_ALERTU_SPOTREBA_MAX("Maximální Spotřeba Senzorů v Intervalu"),
     ZPRAVA_ALERT_SPOTREBA_NAX("Nebyl nalezen žádný senzor s takovým id v rámci požadovaného data"),
-    ZAHLAVI_ALERTU_SPOTREBA_PRUMER("Průměrná Spotřeba Senzorů v Intervalu"),
-    ZAHLAVI_ALERTU_SPOTREBA_DEN("Všechny Měření v Rámci Dne");
+    KONKRETNI_DEN("Den:"),
+    ZAHLAVI_ALERTU_SPOTREBA_DEN("Všechny Měření v Rámci Dne"),
+    ZAHLAVI_ALERTU_SPOTREBA_PRUMER("Průměrná Spotřeba v Rámci Daného Intervalu"),
+    ZPRAVA_ALERT_SPOTREBA_PRUMER("Nebyla nalezena průměrná spotřeba v rámci daného intervalu");
 
     private final String nadpis;
 

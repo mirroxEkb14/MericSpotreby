@@ -54,9 +54,7 @@ public final class SpravceMereni implements Ovladani {
      */
     private SpravceMereni() { nastav(); }
 
-    private void nastav() {
-        this.seznam = new AbstrDoubleList<>();
-    }
+    private void nastav() { this.seznam = new AbstrDoubleList<>(); }
 
     @Override
     public void vlozMereni(Mereni mereni, Pozice pozice) {
@@ -111,7 +109,7 @@ public final class SpravceMereni implements Ovladani {
      * </ol>
      */
     @Override
-    public IAbstrDoubleList<Mereni> MereniDen(int idSenzoru, LocalDate datum) {
+    public IAbstrDoubleList<Mereni> mereniDen(int idSenzoru, LocalDate datum) {
         final IAbstrDoubleList<Mereni> vsechnaMereni = new AbstrDoubleList<>();
         final Iterator<Mereni> seznamIterator = seznam.iterator();
         while (seznamIterator.hasNext()) {
@@ -296,7 +294,7 @@ public final class SpravceMereni implements Ovladani {
                                  LocalDateTime datumOd,
                                  LocalDateTime datumDo) {
         double celkovaSpotreba = Double.MIN_VALUE;
-        int citacMereni = Integer.MIN_VALUE;
+        int citacMereni = 0;
 
         final Iterator<Mereni> seznamIterator = seznam.iterator();
         while (seznamIterator.hasNext()) {
