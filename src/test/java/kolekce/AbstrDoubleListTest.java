@@ -1,6 +1,6 @@
 package kolekce;
 
-import cz.upce.fei.bdast.kolekce.AbstrDoubleList;
+import cz.upce.fei.bdats.kolekce.AbstrDoubleList;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class AbstrDoubleListTest {
 
     /**
-     * Testovací třída pro ověření implementace třídy {@link cz.upce.fei.bdast.kolekce.AbstrDoubleList}.
+     * Testovací třída pro ověření implementace třídy {@link cz.upce.fei.bdats.kolekce.AbstrDoubleList}.
      */
     private static class TestClass {
         int cisloInstance;

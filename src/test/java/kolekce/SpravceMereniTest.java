@@ -1,12 +1,12 @@
 package kolekce;
 
-import cz.upce.fei.bdast.data.model.Mereni;
-import cz.upce.fei.bdast.data.model.MereniElektrika;
-import cz.upce.fei.bdast.data.model.MereniVoda;
-import cz.upce.fei.bdast.data.vycty.Pozice;
-import cz.upce.fei.bdast.kolekce.IAbstrDoubleList;
-import cz.upce.fei.bdast.spravce.Ovladani;
-import cz.upce.fei.bdast.spravce.SpravceMereni;
+import cz.upce.fei.bdats.data.model.Mereni;
+import cz.upce.fei.bdats.data.model.MereniElektrika;
+import cz.upce.fei.bdats.data.model.MereniVoda;
+import cz.upce.fei.bdats.data.vycty.Pozice;
+import cz.upce.fei.bdats.kolekce.IAbstrDoubleList;
+import cz.upce.fei.bdats.spravce.Ovladani;
+import cz.upce.fei.bdats.spravce.SpravceMereni;
 import org.junit.*;
 
 import java.time.LocalDate;
@@ -29,7 +29,7 @@ public class SpravceMereniTest {
     private static final double DELTA = Double.MIN_NORMAL;
 
     /**
-     * Sada instancí třídy {@link cz.upce.fei.bdast.data.model.Mereni} pro testování.
+     * Sada instancí třídy {@link cz.upce.fei.bdats.data.model.Mereni} pro testování.
      */
     private final MereniElektrika E1 = new MereniElektrika(
             1,
