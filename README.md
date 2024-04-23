@@ -10,7 +10,7 @@ Motivační příklad:
 ## Použité datové struktury
 
 * V rámci modulu **AbstrDoubleList** je implementuvaná abstraktní datová struktura (ADS) *obousměrně necyklicky zřetězený lineární seznam* v dynamické paměti (stylizovaně znázorněný v rámci obr. 1):
-  * tato třída implementuje rozhraní **IAbstrDoubleList**, které implementuje implicitní rozhraní **Iterable**
+  * tato třída implementuje rozhraní **IAbstrDoubleList**, které implementuje implicitní rozhraní **Iterable**;
 * Rozhraní **IAbstrDoubleList** je definováno následovně:
   * **void zrus()** - zrušení celého seznamu;
   * **boolean jePrazdny()** - test naplněnosti seznamu;
